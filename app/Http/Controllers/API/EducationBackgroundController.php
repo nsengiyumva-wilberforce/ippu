@@ -33,11 +33,11 @@ class EducationBackgroundController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['institution_name' => 'required', 'start_date' => 'required']);
+        $request->validate(['title' => 'required', 'start_date' => 'required']);
 
         try {
             $experience = new Experience;
-            $experience->title = $request->institution_name;
+            $experience->title = $request->title;
             $experience->type = "Education";
             $experience->start_date = $request->start_date;
             $experience->end_date = $request->end_date;
