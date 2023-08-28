@@ -5,6 +5,7 @@ use App\Http\Controllers\API\EducationBackgroundController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CpdsController;
+use App\Http\Controllers\API\AccountTypeController;
 
 
 
@@ -14,7 +15,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
 });
-
+Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
 
 //Cpds API resource routes with auth middleware
 Route::middleware('auth:sanctum')->group(function () {
