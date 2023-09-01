@@ -18,7 +18,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
 
 //Cpds API resource routes with auth middleware
-Route::middleware('auth:sanctum')->group(function () {
+
     Route::apiResource('cpds', CpdsController::class);
     Route::apiResource('events', EventController::class);
     Route::apiResource('education-background', EducationBackgroundController::class);
@@ -26,4 +26,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('attended-cpds', [CpdsController::class, 'attended']);
     Route::get('upcoming-events', [EventController::class, 'upcoming']);
     Route::get('attended-events', [EventController::class, 'attended']);
-});
