@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendence;
 use App\Models\Cpd;
 use Illuminate\Http\Request;
 
@@ -69,7 +70,7 @@ class CpdsController extends Controller
     }
     public function upcoming()
     {
-        $cpds = Cpd::where('start_date','>=',date('Y-m-d'))->get();
+        $cpds = Cpd::where('start_date', '>=', date('Y-m-d'))->get();
 
         return response()->json([
             'data' => $cpds,
@@ -83,5 +84,26 @@ class CpdsController extends Controller
         return response()->json([
             'data' => $cpds,
         ]);
+    }
+
+    public function confirm_attendence(Request $request)
+    {
+        try {
+            $attendence = new Attendence;
+            $attendence->user_id = $request->user_id;
+            $attendence->cpd_id = $request->cpd_id;
+            $attendence->type = "CPD";
+            $attendence->status = "Pending";
+            $attendence->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'CPD has been recorded!',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }
