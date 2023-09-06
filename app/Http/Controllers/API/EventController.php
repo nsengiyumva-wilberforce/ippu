@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendence;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -70,19 +71,40 @@ class EventController extends Controller
 
     public function upcoming()
     {
-        $events = Event::where('start_date','>=',date('Y-m-d'))->get();
+        $events = Event::where('start_date', '>=', date('Y-m-d'))->get();
 
         return response()->json([
             'data' => $events,
-        ]);   
-     }
+        ]);
+    }
 
-     public function attended()
-     {
-         $events = Event::whereHas('attended')->get();
+    public function attended()
+    {
+        $events = Event::whereHas('attended')->get();
+
+        return response()->json([
+            'data' => $events,
+        ]);
+    }
+
+    public function confirm_attendence(Request $request)
+    {
+        try {
+            $attendence = new Attendence;
+            $attendence->user_id = \Auth::user()->id;
+            $attendence->event_id = $request->event_id;
+            $attendence->type = "Event";
+            $attendence->status = "Pending";
+            $attendence->save();
 
             return response()->json([
-                'data' => $events,
+                'message' => 'Attendence Confirmed',
             ]);
-      }
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
