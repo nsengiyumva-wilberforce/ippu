@@ -8,7 +8,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CpdsController;
 use App\Http\Controllers\API\AccountTypeController;
 use App\Http\Controllers\API\JobsController;
-use App\Http\Controllers\ApI\CommunicationController;
+use App\Http\Controllers\API\CommunicationController;
 
 //routes for authentication
 Route::controller(AuthController::class)->group(function () {
