@@ -8,6 +8,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CpdsController;
 use App\Http\Controllers\API\AccountTypeController;
 use App\Http\Controllers\API\JobsController;
+use App\Http\Controllers\ApI\CommunicationController;
 
 //routes for authentication
 Route::controller(AuthController::class)->group(function () {
@@ -34,3 +35,6 @@ Route::apiResource('jobs', JobsController::class)->only(['index', 'show']);
 
 //profile routes
 Route::apiResource('profile', ProfileController::class)->only(['update']);
+
+//communication routes
+Route::apiResource('communications', CommunicationController::class);
