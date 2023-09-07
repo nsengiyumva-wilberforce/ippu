@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendence;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EventController extends Controller
 {
@@ -89,8 +90,9 @@ class EventController extends Controller
 
     public function attended(string $id)
     {
-        $events = Attendence::where('user_id', $id)
-        ->where('type', 'Event')->get();
+        $events = new Event();
+
+        $events = $events->attended_events($id)->get();
 
         return response()->json([
             'data' => $events,
@@ -117,4 +119,23 @@ class EventController extends Controller
             ], 500);
         }
     }
+
+    public function certificate(Request $request, $eventId)
+    {
+        $event = Event::find($eventId);
+
+        if (!$event) {
+            return Response::json(['error' => 'Event not found'], 404);
+        }
+
+        // Convert $event to an array
+        $eventArray = $event->toArray();
+
+        // Generate the PDF
+        $pdf = PDF::loadView('members.events.certificate', compact('eventArray'));
+
+        // Return the PDF as a download response
+        return $pdf->download('certificate.pdf');
+    }
+
 }

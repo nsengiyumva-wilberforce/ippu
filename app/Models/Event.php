@@ -21,6 +21,17 @@ class Event extends Model
         return $this->hasOne(Attendence::class)->where('user_id',\Auth::user()->id);
     }
 
+        /**
+     * Event has one Attended for mobile app(API)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function attended_events(string $user_id)
+    {
+        // hasOne(RelatedModel, foreignKeyOnRelatedModel = event_id, localKey = id)
+        return $this->hasOne(Attendence::class)->where('user_id',$user_id);
+    }
+
     /**
      * Event has many Attendences.
      *
