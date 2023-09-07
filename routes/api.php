@@ -22,7 +22,7 @@ Route::apiResource('education-background', EducationBackgroundController::class)
 //cpds routes
 Route::apiResource('cpds', CpdsController::class);
 Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
-Route::get('attended-cpds', [CpdsController::class, 'attended']);
+Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
 Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
 
 //events routes
