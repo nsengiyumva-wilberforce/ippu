@@ -87,9 +87,9 @@ class EventController extends Controller
         ]);
     }
 
-    public function attended()
+    public function attended(string $id)
     {
-        $events = Event::whereHas('attended')->get();
+        $events = Attendence::where('user_id', $id)->get();
 
         return response()->json([
             'data' => $events,

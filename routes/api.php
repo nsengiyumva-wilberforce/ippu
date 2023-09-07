@@ -27,7 +27,7 @@ Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
 
 //events routes
 Route::get('upcoming-events', [EventController::class, 'upcoming']);
-Route::get('attended-events', [EventController::class, 'attended']);
+Route::get('attended-events/{id}', [EventController::class, 'attended']);
 Route::apiResource('events', EventController::class);
 
 //jobs routes
