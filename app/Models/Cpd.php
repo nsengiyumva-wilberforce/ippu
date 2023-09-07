@@ -21,6 +21,16 @@ class Cpd extends Model
         return $this->hasOne(Attendence::class)->where('user_id',\Auth::user()->id);
     }
 
+            /**
+     * Cpd has one Attended for mobile app(API)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function attendedCpds()
+    {
+        return $this->hasMany(Attendence::class, 'cpd_id');
+    }
+
     /**
      * Event has many Attendences.
      *
