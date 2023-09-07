@@ -86,12 +86,13 @@ class CpdsController extends Controller
         ]);
     }
 
-    public function attended()
+    public function attended(string $id)
     {
-        $cpds = Cpd::whereHas('attended')->get();
+        $events = Attendence::where('user_id', $id)
+        ->where('type', 'CPD')->get();
 
         return response()->json([
-            'data' => $cpds,
+            'data' => $events,
         ]);
     }
 
