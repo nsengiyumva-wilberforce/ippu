@@ -88,16 +88,18 @@ class EventController extends Controller
         ]);
     }
 
-    public function attended(string $id)
+    public function attended(string $userId)
     {
-        $events = new Event();
-
-        $events = $events->attended_events($id)->get();
+        // Query events associated with the specified user and where 'type' is 'Event'
+        $events = Event::whereHas('attendedEvents', function ($query) use ($userId) {
+            $query->where('user_id', $userId)->where('type', 'Event');
+        })->get();
 
         return response()->json([
             'data' => $events,
         ]);
     }
+
 
     public function confirm_attendence(Request $request)
     {
