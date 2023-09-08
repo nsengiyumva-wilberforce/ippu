@@ -29,7 +29,6 @@ Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
 Route::get('upcoming-events', [EventController::class, 'upcoming']);
 Route::get('attended-events/{id}', [EventController::class, 'attended']);
 Route::apiResource('events', EventController::class);
-Route::get('events/certificate/{eventId}', [EventController::class, 'certificate']);
 
 //jobs routes
 Route::apiResource('jobs', JobsController::class)->only(['index', 'show']);

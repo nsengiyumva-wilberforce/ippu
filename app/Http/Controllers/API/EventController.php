@@ -126,11 +126,17 @@ class EventController extends Controller
     {
         $event = Event::find($eventId);
 
-        $data = [
-            'event'=> $event,
-        ];
+        if (!$event) {
+            return Response::json(['error' => 'Event not found'], 404);
+        }
 
-        $pdf = Pdf::loadView('members.events.certificate', $data);
+        // Convert $event to an array
+        $eventArray = $event->toArray();
+
+        // Generate the PDF
+        $pdf = PDF::loadView('members.events.certificate', compact('eventArray'));
+
+        // Return the PDF as a download response
         return $pdf->download('certificate.pdf');
     }
 
