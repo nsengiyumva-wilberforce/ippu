@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\EducationBackgroundController;
 use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CpdsController;
@@ -17,7 +18,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout');
 });
 Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
-Route::apiResource('education-background', EducationBackgroundController::class);
+Route::get('education-background/{userId}', [EducationBackgroundController::class, 'index']);
+Route::post('education-background', [EducationBackgroundController::class, 'store']);
+Route::get('work-experience/{userId}', [WorkExperienceController::class, 'index']);
+Route::post('work-experience', [WorkExperienceController::class, 'store']);
 
 //cpds routes
 Route::apiResource('cpds', CpdsController::class);

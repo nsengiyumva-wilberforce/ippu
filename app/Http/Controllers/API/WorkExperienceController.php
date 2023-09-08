@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Experience;
 use Illuminate\Http\Request;
 
-class EducationBackgroundController extends Controller
+class WorkExperienceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,9 @@ class EducationBackgroundController extends Controller
     public function index($userId)
     {
         $experiences = Experience::where('user_id',$userId)
-                                    ->where('type','Education')
+                                    ->where('type','Employement')
                                     ->get();
+
         return response()->json([
             'data' => $experiences,
         ]);
@@ -34,16 +35,16 @@ class EducationBackgroundController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['title' => 'required', 'start_date' => 'required']);
+        $request->validate(['title' => 'required', 'start_date' => 'required', 'description' => 'required', 'position' => 'required']);
 
         try {
             $experience = new Experience;
             $experience->title = $request->title;
-            $experience->type = "Education";
+            $experience->type = "Employement";
             $experience->start_date = $request->start_date;
             $experience->end_date = $request->end_date;
-            $experience->points = str_replace(',', '', $request->points);
-            $experience->field = $request->field;
+            $experience->description = $request->description;
+            $experience->position = $request->position;
             $experience->user_id = $request->user_id;
             $experience->save();
 
@@ -89,5 +90,4 @@ class EducationBackgroundController extends Controller
     {
         //
     }
-
 }
