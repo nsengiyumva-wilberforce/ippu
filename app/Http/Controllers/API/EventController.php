@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Attendence;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -122,24 +123,39 @@ class EventController extends Controller
         }
     }
 
-    public function certificate(Request $request, $eventId)
+    public function certificate(Request $request, $eventId, $userId)
     {
         $event = Event::find($eventId);
 
         if (!$event) {
-            return Response::json(['error' => 'Event not found'], 404);
+            return response()->json(['error' => 'Event not found'], 404);
         }
+
+        // Get the user ID from the request (you might want to validate this)
+        // $userId = $request->input('user_id');
+
+        // Retrieve the user's name from the database based on the user ID
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Authenticate the retrieved user
+        auth()->login($user);
 
         // Convert $event to an array
         $data = [
-            'event' => $event
+            'event' => $event,
         ];
 
         // Generate the PDF
-        $pdf = PDF::loadView('members.events.certificate', $data);
+        $pdf = Pdf::loadView('members.events.certificate', $data);
+
+        // Logout the authenticated user to revert to the original authentication
+        auth()->logout();
 
         // Return the PDF as a download response
         return $pdf->download('certificate.pdf');
     }
-
 }
