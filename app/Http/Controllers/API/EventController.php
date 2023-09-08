@@ -131,10 +131,12 @@ class EventController extends Controller
         }
 
         // Convert $event to an array
-        $eventArray = $event->toArray();
+        $data = [
+            'event' => $event
+        ];
 
         // Generate the PDF
-        $pdf = PDF::loadView('members.events.certificate', compact('eventArray'));
+        $pdf = PDF::loadView('members.events.certificate', $data);
 
         // Return the PDF as a download response
         return $pdf->download('certificate.pdf');
