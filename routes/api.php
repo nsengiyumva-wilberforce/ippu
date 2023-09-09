@@ -24,16 +24,16 @@ Route::get('work-experience/{userId}', [WorkExperienceController::class, 'index'
 Route::post('work-experience', [WorkExperienceController::class, 'store']);
 
 //cpds routes
-// Route::apiResource('cpds', CpdsController::class);
-// Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
-// Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
-// Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
+Route::apiResource('cpds', CpdsController::class);
+Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
+Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
+Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
 
 //events routes
-// Route::get('upcoming-events', [EventController::class, 'upcoming']);
-// Route::get('attended-events/{id}', [EventController::class, 'attended']);
-// Route::apiResource('events', EventController::class);
-// Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'certificate']);
+Route::get('upcoming-events', [EventController::class, 'upcoming']);
+Route::get('attended-events/{id}', [EventController::class, 'attended']);
+Route::apiResource('events', EventController::class);
+Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'certificate']);
 
 
 //jobs routes
@@ -44,15 +44,3 @@ Route::apiResource('profile', ProfileController::class)->only(['update']);
 
 //communication routes
 Route::apiResource('communications', CommunicationController::class);
-
-//group into sanctum middleware
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('cpds', CpdsController::class);
-    Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
-    Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
-
-    Route::get('upcoming-events', [EventController::class, 'upcoming']);
-    Route::get('attended-events/{id}', [EventController::class, 'attended']);
-    Route::apiResource('events', EventController::class);
-    Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'certificate']);
-});
