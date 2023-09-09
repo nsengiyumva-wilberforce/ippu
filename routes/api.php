@@ -24,7 +24,7 @@ Route::get('work-experience/{userId}', [WorkExperienceController::class, 'index'
 Route::post('work-experience', [WorkExperienceController::class, 'store']);
 
 //cpds routes
-Route::apiResource('cpds', CpdsController::class);
+Route::apiResource('cpds', CpdsController::class)->middleware('auth:sanctum');
 Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
 Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
 Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
@@ -32,7 +32,7 @@ Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
 //events routes
 Route::get('upcoming-events', [EventController::class, 'upcoming']);
 Route::get('attended-events/{id}', [EventController::class, 'attended']);
-Route::apiResource('events', EventController::class);
+Route::apiResource('events', EventController::class)->middleware('auth:sanctum');
 Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'certificate']);
 
 
