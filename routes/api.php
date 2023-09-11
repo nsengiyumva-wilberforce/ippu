@@ -40,7 +40,7 @@ Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'ce
 Route::apiResource('jobs', JobsController::class)->only(['index', 'show']);
 
 //profile routes
-Route::apiResource('profile', ProfileController::class)->only(['update']);
+Route::apiResource('profile', ProfileController::class)->only(['update', 'show']);
 
 //communication routes
 Route::apiResource('communications', CommunicationController::class);

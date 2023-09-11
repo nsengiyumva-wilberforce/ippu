@@ -37,7 +37,16 @@ class ProfileController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Find the resource by ID
+        $resource = User::find($id);
+
+        // Check if the resource exists
+        if (!$resource) {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
+
+        // Return the resource as a JSON response
+        return response()->json(['data' => $resource], 200);
     }
 
     /**
