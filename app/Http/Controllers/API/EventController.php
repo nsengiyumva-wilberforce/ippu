@@ -106,7 +106,7 @@ class EventController extends Controller
     {
         try {
             $attendence = new Attendence;
-            $attendence->user_id = \Auth::user()->id;
+            $attendence->user_id = $request->user_id;
             $attendence->event_id = $request->event_id;
             $attendence->type = "Event";
             $attendence->status = "Pending";
