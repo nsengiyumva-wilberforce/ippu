@@ -12,12 +12,24 @@ class CpdsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($userId)
     {
         $cpds = Cpd::all();
 
+        $cpdsWithAttendance = [];
+
+        foreach ($cpds as $cpd){
+            $attendanceRequest = Attendence::where('cpd_id', $cpd->id)
+            ->where('user_id', $userId)
+            ->exists();
+
+            $cpd->attendance_request = $attendanceRequest;
+
+            array_push($cpdsWithAttendance, $cpd);
+        }
+
         return response()->json([
-            'data' => $cpds,
+            'data' => $cpdsWithAttendance,
         ]);
     }
 
