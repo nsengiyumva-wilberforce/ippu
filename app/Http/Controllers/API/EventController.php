@@ -23,7 +23,7 @@ class EventController extends Controller
         foreach ($events as $event){
             $attendanceRequest = Attendence::where('event_id', $event->id)
             ->where('user_id', $userId)
-            ->eists();
+            ->exists();
 
             $event->attendance_request = $attendanceRequest;
 
