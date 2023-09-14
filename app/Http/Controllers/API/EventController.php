@@ -14,12 +14,24 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($userId)
     {
         $events = Event::all();
 
+        $eventsWithAttendance = [];
+
+        foreach ($events as $event){
+            $attendanceRequest = Attendence::where('event_id', $event->id)
+            ->where('user_id', $userId)
+            ->eists();
+
+            $event->attendance_request = $attendanceRequest;
+
+            array_push($eventsWithAttendance, $event);
+        }
+
         return response()->json([
-            'data' => $events,
+            'data' => $eventsWithAttendance,
         ]);
     }
 

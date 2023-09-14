@@ -28,11 +28,13 @@ Route::apiResource('cpds', CpdsController::class);
 Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
 Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
 Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
+Route::get('cpds/certificate/{userId}/{cpdId}', [CpdsController::class, 'certificate']);
 
 //events routes
 Route::get('upcoming-events', [EventController::class, 'upcoming']);
 Route::get('attended-events/{id}', [EventController::class, 'attended']);
 Route::apiResource('events', EventController::class);
+Route::get('events/{userId}', [EventController::class, 'index']);
 Route::post('attend-event', [EventController::class, 'confirm_attendence']);
 Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'certificate']);
 
