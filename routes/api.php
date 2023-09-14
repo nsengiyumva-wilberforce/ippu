@@ -24,7 +24,7 @@ Route::get('work-experience/{userId}', [WorkExperienceController::class, 'index'
 Route::post('work-experience', [WorkExperienceController::class, 'store']);
 
 //cpds routes
-Route::apiResource('cpds', CpdsController::class);
+Route::get('cpds/{userId}', [CpdsController::class, 'index']);
 Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
 Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
 Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
