@@ -92,9 +92,21 @@ class EventController extends Controller
         //
     }
 
-    public function upcoming()
+    public function upcoming($userId)
     {
         $events = Event::where('start_date', '>=', date('Y-m-d'))->get();
+
+        $eventsWithAttendance = [];
+
+        foreach ($events as $event){
+            $attendanceRequest = Attendence::where('event_id', $event->id)
+            ->where('user_id', $userId)
+            ->exists();
+
+            $event->attendance_request = $attendanceRequest;
+
+            array_push($eventsWithAttendance, $event);
+        }
 
         return response()->json([
             'data' => $events,

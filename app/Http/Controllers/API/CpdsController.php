@@ -89,12 +89,24 @@ class CpdsController extends Controller
     {
         //
     }
-    public function upcoming()
+    public function upcoming($userId)
     {
         $cpds = Cpd::where('start_date', '>=', date('Y-m-d'))->get();
 
+        $cpdsWithAttendance = [];
+
+        foreach ($cpds as $cpd){
+            $attendanceRequest = Attendence::where('cpd_id', $cpd->id)
+            ->where('user_id', $userId)
+            ->exists();
+
+            $cpd->attendance_request = $attendanceRequest;
+
+            array_push($cpdsWithAttendance, $cpd);
+        }
+
         return response()->json([
-            'data' => $cpds,
+            'data' => $cpdsWithAttendance,
         ]);
     }
 

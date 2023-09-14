@@ -25,13 +25,13 @@ Route::post('work-experience', [WorkExperienceController::class, 'store']);
 
 //cpds routes
 Route::get('cpds/{userId}', [CpdsController::class, 'index']);
-Route::get('upcoming-cpds', [CpdsController::class, 'upcoming']);
+Route::get('upcoming-cpds/{userId}', [CpdsController::class, 'upcoming']);
 Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
 Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
 Route::get('cpds/certificate/{userId}/{cpdId}', [CpdsController::class, 'certificate']);
 
 //events routes
-Route::get('upcoming-events', [EventController::class, 'upcoming']);
+Route::get('upcoming-events/{userId}', [EventController::class, 'upcoming']);
 Route::get('attended-events/{id}', [EventController::class, 'attended']);
 //Route::apiResource('events', EventController::class);
 Route::get('events/{userId}', [EventController::class, 'index']);
