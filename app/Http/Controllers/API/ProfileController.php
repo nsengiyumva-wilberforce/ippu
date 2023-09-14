@@ -46,9 +46,20 @@ class ProfileController extends Controller
             return response()->json(['message' => 'Resource not found'], 404);
         }
 
-        // Return the resource as a JSON response
+        // Check if the user has a latest membership
+        if ($resource->latestMembership) {
+            // If a latest membership is found, set the subscription_status field
+            $resource->subscription_status = $resource->latestMembership->status;
+        } else {
+            // If the user has no subscription, set the subscription_status field to false
+            $resource->subscription_status = false;
+        }
+
+        // Return the resource as a JSON response with the added subscription_status field
         return response()->json(['data' => $resource], 200);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
