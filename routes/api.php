@@ -33,7 +33,6 @@ Route::get('cpds/certificate/{userId}/{cpdId}', [CpdsController::class, 'certifi
 //events routes
 Route::get('upcoming-events/{userId}', [EventController::class, 'upcoming']);
 Route::get('attended-events/{id}', [EventController::class, 'attended']);
-//Route::apiResource('events', EventController::class);
 Route::get('events/{userId}', [EventController::class, 'index']);
 Route::post('attend-event', [EventController::class, 'confirm_attendence']);
 Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'certificate']);
@@ -43,7 +42,8 @@ Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'ce
 Route::apiResource('jobs', JobsController::class)->only(['index', 'show']);
 
 //profile routes
-Route::apiResource('profile', ProfileController::class)->only(['update', 'show']);
+Route::apiResource('profile', ProfileController::class)->only(['index', 'update', 'show']);
+Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes
 Route::apiResource('communications', CommunicationController::class);

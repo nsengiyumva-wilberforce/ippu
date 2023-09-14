@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Auth;
 
 class ProfileController extends Controller
 {
@@ -13,7 +14,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -97,5 +98,46 @@ class ProfileController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    //subscribe to the app
+    public function subscribe(Request $request)
+    {
+
+        try {
+            $membership = new \App\Models\Membership;
+            $membership->user_id = $request->user_id;
+            $membership->status = "Pending";
+            $membership->save();
+
+            // Retrieve the user's name from the database based on the user ID
+            $user = User::find($request->user_id);
+
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+
+            // Authenticate the retrieved user
+            auth()->login($user);
+
+
+            \Mail::to(Auth::user())->send(new \App\Mail\ApplicationReview($membership));
+
+            auth()->logout();
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Application submitted successfully'
+            ]);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Application failed'
+            ]);
+        }
+
+
     }
 }
