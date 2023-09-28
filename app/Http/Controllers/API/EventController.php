@@ -147,7 +147,7 @@ class EventController extends Controller
         }
     }
 
-    public function certificate(Request $request, $eventId, $userId)
+    public function certificate(Request $request, $userId, $eventId)
     {
         $event = Event::find($eventId);
 
