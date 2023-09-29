@@ -151,4 +151,21 @@ class ProfileController extends Controller
 
 
     }
+
+    public function delete_my_account($userId)
+    {
+        $user = User::find($userId);
+        //return user not found error
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'User deleted successfully',
+        ]);
+    }
 }
