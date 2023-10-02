@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 
 
@@ -56,6 +58,19 @@ class AuthController extends Controller
             'account_type_id' => $request->account_type_id,
             'user_type' => 'Member',
         ]);
+
+        //first check if user creation was successful
+        if (!$user) {
+            return response()->json([
+                'message' => 'Account creation failed',
+            ], 500);
+        }
+
+        //generate random code
+        $code = rand(100000, 999999);
+
+        //send email to the user
+        Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
 
         return response()->json([
             'message' => 'User created successfully',
