@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Mail\VerifyEmail;
 use App\Models\User;
+use App\Models\VerificationCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +70,17 @@ class AuthController extends Controller
         //generate random code
         $code = rand(100000, 999999);
 
+        //save code to database
+        $verificationCode = new VerificationCode();
+        $verificationCode->email = $user->email;
+        $verificationCode->code = $code;
+        $verificationCode->save();
+
+        if(!$verificationCode){
+            return response()->json([
+                'message' => 'Account creation failed',
+            ], 500);
+        }
         //send email to the user
         Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
 
@@ -96,4 +108,22 @@ class AuthController extends Controller
             ]
         ]);
     }
+
+    //verify email using the code
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'code' => ['required', 'string'],
+        ]);
+
+        $verificationCode = VerificationCode::where('email', $request->email)->where('code', $request->code)->first();
+
+        if (!$verificationCode) {
+            return response()->json([
+                'message' => 'Invalid verification code',
+            ], 401);
+
+            }
+        }
 }
