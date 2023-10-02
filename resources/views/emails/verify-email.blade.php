@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>WELCOME TO IPPU MEMBERSHIP APP</h1>
-    <p>Dear {{ $user->name }},</p>
+    <p>Dear {{ $name }},</p>
     <p>Thank you for registering with us. Your Email Verification Code is <strong>{{$code}}.</strong></p>
     <p>Please use the code to comfirm your email.</p>
     <p>Thank you</p>
