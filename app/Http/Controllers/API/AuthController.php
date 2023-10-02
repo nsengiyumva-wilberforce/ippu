@@ -125,5 +125,23 @@ class AuthController extends Controller
             ], 401);
 
             }
+
+        //update user email_verified_at column
+        $user = User::where('email', $request->email)->first();
+        $user->email_verified_at = now();
+
+        if (!$user->save()) {
+            return response()->json([
+                'message' => 'Verification failed',
+            ], 500);
         }
+
+        //delete verification code from database
+        $verificationCode->delete();
+
+        return response()->json([
+            'message' => 'Email verified successfully',
+        ], 200);
+    }
+
 }
