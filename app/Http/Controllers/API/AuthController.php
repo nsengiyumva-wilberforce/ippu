@@ -163,8 +163,13 @@ class AuthController extends Controller
             ], 500);
         }
 
-        //send email to the user
-        Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
+        //temporarily auth the user to get the name
+        $user = User::where('email', $request->email)->first();
+        auth()->login($user);
+
+        $name = auth()->user()->name;
+        Mail::to($user->email)->send(new VerifyEmail($code, $name));
+        auth()->logout();
 
         return response()->json([
             'message' => 'Verification code resent successfully',
