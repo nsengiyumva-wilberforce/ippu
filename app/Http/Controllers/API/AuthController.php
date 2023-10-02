@@ -117,7 +117,7 @@ class AuthController extends Controller
             'code' => ['required', 'string'],
         ]);
 
-        $verificationCode = VerificationCode::where('email', $request->email)->where('code', $request->code)->first();
+        $verificationCode = VerificationCode::where('email', $request->email)->where('code', (int)$request->code)->first();
 
         if (!$verificationCode) {
             return response()->json([
