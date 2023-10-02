@@ -45,6 +45,7 @@ Route::apiResource('jobs', JobsController::class)->only(['index', 'show']);
 Route::apiResource('profile', ProfileController::class)->only(['index', 'update', 'show']);
 Route::delete('profile/remove/{userId}', [ProfileController::class, 'delete_my_account']);
 Route::post('profile/verify-email', [AuthController::class, 'verifyEmail']);
+Route::post('profile/resend-verification-code', [AuthController::class, 'resendVerificationCode']);
 Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes

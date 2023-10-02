@@ -17,7 +17,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum', ['except' => ['login', 'register', 'verifyEmail']]);
+        $this->middleware('auth:sanctum', ['except' => ['login', 'register', 'verifyEmail', 'resendVerificationCode']]);
     }
 
     public function login(Request $request)
@@ -141,6 +141,33 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Email verified successfully',
+        ], 200);
+    }
+
+    public function resendVerificationCode(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $user = VerificationCode::where('email', $request->email)->first();
+
+        //regenerate code and update database
+        $code = rand(100000, 999999);
+
+        $user->code = $code;
+
+        if (!$user->save()) {
+            return response()->json([
+                'message' => 'Failed to resend verification code',
+            ], 500);
+        }
+
+        //send email to the user
+        Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
+
+        return response()->json([
+            'message' => 'Verification code resent successfully',
         ], 200);
     }
 
