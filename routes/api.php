@@ -46,6 +46,8 @@ Route::apiResource('profile', ProfileController::class)->only(['index', 'update'
 Route::delete('profile/remove/{userId}', [ProfileController::class, 'delete_my_account']);
 Route::post('profile/verify-email', [AuthController::class, 'verifyEmail']);
 Route::post('profile/resend-verification-code', [AuthController::class, 'resendVerificationCode']);
+Route::post('profile/reset-password-code', [AuthController::class, 'resetPasswordCode']);
+Route::post('profile/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes
