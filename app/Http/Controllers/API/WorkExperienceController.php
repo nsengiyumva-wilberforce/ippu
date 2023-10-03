@@ -45,7 +45,7 @@ class WorkExperienceController extends Controller
             $experience->end_date = $request->end_date;
             $experience->description = $request->description;
             $experience->position = $request->position;
-            $experience->user_id = (int)$request->user_id;
+            $experience->user_id = $request->user_id;
             $experience->save();
 
             return response()->json([
