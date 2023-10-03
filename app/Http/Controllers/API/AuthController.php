@@ -18,7 +18,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum', ['except' => ['login', 'register', 'verifyEmail', 'resendVerificationCode', 'resetPasswordCode', 'resetPassword']]);
+        $this->middleware('auth:sanctum', ['except' => ['login', 'register', 'verifyEmail', 'resendVerificationCode', 'resetPasswordCode', 'resetPassword', 'verifyPasswordResetEmail']]);
     }
 
     public function login(Request $request)
@@ -260,7 +260,7 @@ class AuthController extends Controller
     }
 
         //verify email using the code
-        public function verifyPasswordReseEmail(Request $request)
+        public function verifyPasswordResetEmail(Request $request)
         {
             $request->validate([
                 'email' => ['required', 'string', 'email'],

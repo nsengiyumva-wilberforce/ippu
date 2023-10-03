@@ -45,7 +45,7 @@ Route::apiResource('jobs', JobsController::class)->only(['index', 'show']);
 Route::apiResource('profile', ProfileController::class)->only(['index', 'update', 'show']);
 Route::delete('profile/remove/{userId}', [ProfileController::class, 'delete_my_account']);
 Route::post('profile/verify-email', [AuthController::class, 'verifyEmail']);
-Route::post('profile/verify-password-reset-email', [AuthController::class, 'verifyPasswordReseEmail']);
+Route::post('profile/verify-password-reset-email', [AuthController::class, 'verifyPasswordResetEmail']);
 Route::post('profile/resend-verification-code', [AuthController::class, 'resendVerificationCode']);
 Route::post('profile/reset-password-code', [AuthController::class, 'resetPasswordCode']);
 Route::post('profile/reset-password', [AuthController::class, 'resetPassword']);
