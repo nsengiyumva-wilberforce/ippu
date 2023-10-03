@@ -224,10 +224,21 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required',]]
+            'code' => ['required', 'string'],
+            'password' => ['required']]
         );
 
+        //check if user exists in the verification code table
+        $verificationCode = VerificationCode::where('email', $request->email)->where('code', (int)$request->code)->first();
+
+        if (!$verificationCode) {
+            return response()->json([
+                'message' => 'Invalid verification code',
+            ], 401);
+        }
+
         //update user password
+
         $user = User::where('email', $request->email)->first();
 
         $user->password = Hash::make($request->password);
@@ -238,10 +249,36 @@ class AuthController extends Controller
             ], 500);
         }
 
+        //delete verification code from database
+
+        $verificationCode->delete();
+
         return response()->json([
             'message' => 'Password reset successfully',
         ], 200);
 
     }
+
+        //verify email using the code
+        public function verifyPasswordReseEmail(Request $request)
+        {
+            $request->validate([
+                'email' => ['required', 'string', 'email'],
+                'code' => ['required', 'string'],
+            ]);
+
+            $verificationCode = VerificationCode::where('email', $request->email)->where('code', (int)$request->code)->first();
+
+            if (!$verificationCode) {
+                return response()->json([
+                    'message' => 'Invalid verification code',
+                ], 401);
+
+                }
+
+            return response()->json([
+                'message' => 'Code verified successfully',
+            ], 200);
+        }
 
 }
