@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Communication;
 use App\Models\User;
+use App\Models\UserCommunicationStatus;
 use Illuminate\Http\Request;
 
 class CommunicationController extends Controller
@@ -92,4 +93,33 @@ class CommunicationController extends Controller
     {
         //
     }
+
+    public function markAsRead($userId, $messageId)
+    {
+
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        auth()->login($user);
+
+        // Find the corresponding record in user_communication_status and update its status to 'read'
+        $status = UserCommunicationStatus::where('user_id', auth()->user()->id)
+            ->where('communication_id', $messageId)
+            ->first();
+
+        if ($status) {
+            $status->status = 'read';
+            $status->save();
+        } else {
+            return response()->json(['message' => 'Message not found'], 404);
+        }
+
+        auth()->logout();
+
+        return response()->json(['message' => 'Message marked as read'], 200);
+    }
+
 }
