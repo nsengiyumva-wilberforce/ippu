@@ -19,4 +19,9 @@ class Communication extends Model
         // belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
         return $this->belongsTo(User::class);
     }
+
+    public function communicationStatus()
+    {
+        return $this->hasMany(UserCommunicationStatus::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\UserCommunicationStatus;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -61,6 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
         return $this->hasMany(Attendence::class,'user_id')->where('type','CPD');
+    }
+
+    public function communicationStatus()
+    {
+        return $this->hasMany(UserCommunicationStatus::class);
     }
 
     public function getProfileAttribute()
