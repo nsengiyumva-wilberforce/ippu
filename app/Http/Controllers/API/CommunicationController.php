@@ -103,10 +103,10 @@ class CommunicationController extends Controller
         //
     }
 
-    public function markAsRead($userId, $messageId)
+    public function markAsRead(Request $request)
     {
 
-        $user = User::find($userId);
+        $user = User::find($request->user_id);
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
@@ -116,7 +116,7 @@ class CommunicationController extends Controller
 
         // Find the corresponding record in user_communication_status and update its status to 'read'
         $status = UserCommunicationStatus::where('user_id', auth()->user()->id)
-            ->where('communication_id', $messageId)
+            ->where('communication_id', $request->message_id)
             ->first();
 
         if ($status) {
@@ -126,7 +126,7 @@ class CommunicationController extends Controller
             //just create a new record
             UserCommunicationStatus::create([
                 'user_id' => auth()->user()->id,
-                'communication_id' => $messageId,
+                'communication_id' => $request->message_id,
                 'status' => 'read'
             ]);
         }

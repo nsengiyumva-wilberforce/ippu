@@ -53,5 +53,5 @@ Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes
 Route::get('communications/{userId}', [CommunicationController::class, 'index']);
-Route::post('communications/mark-as-read/{userId}/{$messageId}', [CommunicationController::class, 'markAsRead']);
+Route::post('mark-as-read', [CommunicationController::class, 'markAsRead']);
 
