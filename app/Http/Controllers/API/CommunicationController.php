@@ -23,12 +23,13 @@ class CommunicationController extends Controller
 
         auth()->login($user);
 
-        //fetch all communications with their statuses for a user
-        $communications = Communication::with([
-            'communicationStatus' => function ($query) {
-                $query->where('user_id', auth()->user()->id);
-            }
-        ])->get();
+        //fetch all communications with their statuses for a user and create a column 'status' in the response, true if the status is 'read', false otherwise
+        $communications = Communication::with(['communicationStatus' => function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        }])->get()->map(function ($communication) {
+            $communication->status = $communication->communicationStatus->first()->status === 'read' ? true : false;
+            return $communication;
+        });
 
         //logout the user
         auth()->logout();

@@ -52,6 +52,6 @@ Route::post('profile/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes
-Route::get('communications/{userId}', [EventController::class, 'index']);
+Route::get('communications/{userId}', [CommunicationController::class, 'index']);
 Route::post('communications/mark-as-read/{userId}/{$messageId}', [CommunicationController::class, 'markAsRead']);
 
