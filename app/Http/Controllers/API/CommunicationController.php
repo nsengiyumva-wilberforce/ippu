@@ -123,7 +123,12 @@ class CommunicationController extends Controller
             $status->status = 'read';
             $status->save();
         } else {
-            return response()->json(['message' => 'Message not found'], 404);
+            //just create a new record
+            UserCommunicationStatus::create([
+                'user_id' => auth()->user()->id,
+                'communication_id' => $messageId,
+                'status' => 'read'
+            ]);
         }
 
         auth()->logout();
