@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Communication;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CommunicationController extends Controller
@@ -11,13 +12,28 @@ class CommunicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, $userId)
     {
-        $communications = Communication::all();
+        $user = User::find($userId);
 
-        return response()->json([
-            'data' => $communications,
-        ]);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        auth()->login($user);
+
+        //fetch all communications with their statuses for a user
+        $communications = Communication::with([
+            'communicationStatus' => function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            }
+        ])->get();
+
+        //logout the user
+        auth()->logout();
+
+        // Return the resource as a JSON response
+        return response()->json(['data' => $communications], 200);
     }
 
     /**

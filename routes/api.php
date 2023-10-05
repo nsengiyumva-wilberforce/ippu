@@ -52,4 +52,5 @@ Route::post('profile/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes
-Route::apiResource('communications', CommunicationController::class);
+Route::get('communications/{userId}', [EventController::class, 'index']);
+
