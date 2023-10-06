@@ -169,12 +169,10 @@ class EventController extends Controller
         auth()->login($user);
 
         //get the name of the logged in user
-        $name = $user->name;
 
         // Convert $event to an array
         $data = [
-            'event' => $event,
-            'name' => $name,
+            'event' => $event
         ];
 
         // Generate the PDF
