@@ -100,7 +100,7 @@
                 <h3>This Certificate Is Proudly Presented To</h3>
                 <p>{{$name}}</p>
                 <h3>Has Completed</h3>
-                <p>Cohort</p>
+                <p>{{$event->name}}</p>
                 <h3>On</h3>
                 <p>Feburary 5, 2021</p>
                 <div class="badge">
