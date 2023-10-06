@@ -168,13 +168,17 @@ class EventController extends Controller
         // Authenticate the retrieved user
         auth()->login($user);
 
+        //get the name of the logged in user
+        $name = auth()->user()->name;
+
         // Convert $event to an array
         $data = [
             'event' => $event,
+            'name' => $name,
         ];
 
         // Generate the PDF
-        $pdf = Pdf::loadView('members.events.certificate', $data);
+        $pdf = Pdf::loadView('members.events.certificate-template', $data);
 
         // Logout the authenticated user to revert to the original authentication
         auth()->logout();
