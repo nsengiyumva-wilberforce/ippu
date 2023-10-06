@@ -169,7 +169,7 @@ class EventController extends Controller
         auth()->login($user);
 
         //get the name of the logged in user
-        $name = auth()->user()->name;
+        $name = $user->name;
 
         // Convert $event to an array
         $data = [
