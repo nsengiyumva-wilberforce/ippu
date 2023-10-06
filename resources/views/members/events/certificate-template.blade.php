@@ -98,7 +98,7 @@
                 <h1>Certificate</h1>
                 <h2>of Excellence</h2>
                 <h3>This Certificate Is Proudly Presented To</h3>
-                <p>{{$name}}</p>
+                <p>John Doe</p>
                 <h3>Has Completed</h3>
                 <p>{{$event->name}}</p>
                 <h3>On</h3>
