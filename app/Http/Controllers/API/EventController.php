@@ -155,6 +155,10 @@ class EventController extends Controller
             return response()->json(['error' => 'Event not found'], 404);
         }
 
+        return response()->json([
+            'data' => $event,
+        ]);
+
         // Get the user ID from the request (you might want to validate this)
         // $userId = $request->input('user_id');
 
