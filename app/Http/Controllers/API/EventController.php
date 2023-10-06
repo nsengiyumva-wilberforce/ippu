@@ -150,8 +150,7 @@ class EventController extends Controller
     public function certificate($userId, $eventId)
     {
         $event = Event::find($eventId);
-
-        return $eventId;
+        
         if (!$event) {
             return response()->json(['error' => 'Event not found'], 404);
         }
