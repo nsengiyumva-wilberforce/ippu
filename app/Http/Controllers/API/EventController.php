@@ -150,7 +150,7 @@ class EventController extends Controller
     public function certificate($userId, $eventId)
     {
         $event = Event::find($eventId);
-        
+
         if (!$event) {
             return response()->json(['error' => 'Event not found'], 404);
         }
@@ -176,14 +176,7 @@ class EventController extends Controller
             'event' => $event,
             'name' => $name,
         ];
-
-        // Generate the PDF
-        $pdf = Pdf::loadView('members.events.certificate-template', $data);
-
-        // Logout the authenticated user to revert to the original authentication
-        auth()->logout();
-
-        // Return the PDF as a download response
-        return $pdf->download('certificate.pdf');
+        
+        return view('members.events.certificate', $data);
     }
 }
