@@ -86,6 +86,13 @@ class EducationBackgroundController extends Controller
                                             ->where('id',$educationBackgroundId)
                                             ->first();
 
+        //check if the education background exists
+        if(!$educationBackground){
+            return response()->json([
+                'message' => 'Education background not found'
+            ],404);
+        }
+
         $educationBackground->title = $request->title;
         $educationBackground->start_date = $request->start_date;
         $educationBackground->end_date = $request->end_date;
