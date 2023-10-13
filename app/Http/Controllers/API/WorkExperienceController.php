@@ -78,9 +78,37 @@ class WorkExperienceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        //get the user id and work experience id
+        $userId = $request->user_id;
+        $experienceId = $request->experience_id;
+
+        //find the work experience
+        $experience = Experience::where('user_id',$userId)
+                                    ->where('id',$experienceId)
+                                    ->first();
+
+        //check if the work experience exists
+        if(!$experience){
+            return response()->json([
+                'message' => 'Work experience not found',
+            ], 404);
+        }
+
+        //update the work experience
+        $experience->title = $request->title;
+        $experience->start_date = $request->start_date;
+        $experience->end_date = $request->end_date;
+        $experience->description = $request->description;
+        $experience->position = $request->position;
+        $experience->save();
+
+        //return the updated work experience and a success message with a 200 status code
+        return response()->json([
+            'data' => $experience,
+            'message' => 'Work experience updated successfully'
+        ],200);
     }
 
     /**
