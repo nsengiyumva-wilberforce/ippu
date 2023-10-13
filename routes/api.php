@@ -19,8 +19,10 @@ Route::controller(AuthController::class)->group(function () {
 });
 Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
 Route::get('education-background/{userId}', [EducationBackgroundController::class, 'index']);
+Route::put('edit-education-background', [EducationBackgroundController::class, 'update']);
 Route::post('education-background', [EducationBackgroundController::class, 'store']);
 Route::get('work-experience/{userId}', [WorkExperienceController::class, 'index']);
+Route::put('edit-work-experience', [WorkExperienceController::class, 'update']);
 Route::post('work-experience', [WorkExperienceController::class, 'store']);
 
 //cpds routes

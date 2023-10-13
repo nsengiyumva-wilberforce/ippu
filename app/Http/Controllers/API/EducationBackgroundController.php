@@ -77,9 +77,26 @@ class EducationBackgroundController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $userId = $request->user_id;
+        $educationBackgroundId = $request->education_background_id;
+
+        $educationBackground = Experience::where('user_id',$userId)
+                                            ->where('id',$educationBackgroundId)
+                                            ->first();
+
+        $educationBackground->title = $request->title;
+        $educationBackground->start_date = $request->start_date;
+        $educationBackground->end_date = $request->end_date;
+        $educationBackground->points = str_replace(',', '', $request->points);
+        $educationBackground->field = $request->field;
+        $educationBackground->save();
+
+        return response()->json([
+            'data' => $educationBackground,
+            'message' => 'Education background updated successfully'
+        ],200);
     }
 
     /**
