@@ -17,7 +17,10 @@
 						<td><?php echo e($user->name); ?></td>
 						<td><?php echo e($user->email); ?></td>
 						<td>
-							<a href="javascript:void(0)" data-url="<?php echo e(url('admin/edit_user/'.$user->id)); ?>" data-ajax-popup="true" data-bs-toggle="tooltip" title="<?php echo e(__('Edit User')); ?>" data-size="lg" title="<?php echo e(__('Edit User Details')); ?>" data-title="<?php echo e(__('Edit User Details')); ?>" >Edit</a>
+							<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('make admin')): ?>
+								<a href="<?php echo e(url('admin/change_account_type/Member/'.$user->id)); ?>" class="btn btn-danger btn-sm">Make Member</a>
+							<?php endif; ?>
+							<a href="javascript:void(0)" class="btn btn-primary btn-sm ms-2" data-url="<?php echo e(url('admin/edit_user/'.$user->id)); ?>" data-ajax-popup="true" data-bs-toggle="tooltip" title="<?php echo e(__('Edit User')); ?>" data-size="lg" title="<?php echo e(__('Edit User Details')); ?>" data-title="<?php echo e(__('Edit User Details')); ?>" >Edit</a>
 						</td>
 					</tr>
 					<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -53,7 +53,19 @@ Route::get('/', function () {
     return redirect('dashboard');
 });
 
+Route::get('upload_members_list', function() {
+    return view('members.upload');
+});
+
+Route::post('upload_members', [MembersController::class,'upload_members']);
+Route::get('invite_members',[MembersController::class,'send_invitation']);
+
+Route::get('direct_attendence/{type}/{id}',[mEventsController::class,'direct_attendence']);
+Route::post('direct_attendence',[mEventsController::class,'record_direct_attendence']);
+
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('generate_qr/{type}/{id}', [CpdsController::class,'generate_qr']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -89,12 +101,14 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('core-values', function() {
         return view('members.general.core_values');
     });
-    
+
     Route::get('event_certificate/{event}',[mEventsController::class,'certificate']);
+    Route::get('cpd_certificate/{event}',[mCpdsController::class,'certificate']);
 });
 
 Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::resource('account_types', AccountTypesController::class);
+    Route::get('change_account_type/{type}/{user}', [MembersController::class,'change_account_type']);
     Route::resource('events', EventsController::class);
     Route::resource('cpds', CpdsController::class);
     Route::resource('jobs', JobsController::class);

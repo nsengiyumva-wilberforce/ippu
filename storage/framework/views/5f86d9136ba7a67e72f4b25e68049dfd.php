@@ -16,6 +16,7 @@
     <div class="card">
         <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between">
             <h5 class="card-title">Events</h5>
+            <a href="<?php echo e(route('events.create', [])); ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo app('translator')->get('Create new Event'); ?></a>
         </div>
         <div class="card-body">
             <table class="table table-striped dataTable table-responsive table-hover">
@@ -39,7 +40,7 @@
                         <td data-label="Member Rate"><?php echo e((($event->member_rate) ? number_format($event->member_rate) : '') ?: "Free"); ?></td>
 
                         <td data-label="Actions:" class="text-nowrap">
-                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show')): ?>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('show event')): ?>
                          <a href="<?php echo e(route('events.show', compact('event'))); ?>" type="button" class="btn btn-primary btn-sm me-1"><?php echo app('translator')->get('Show'); ?></a>
                          <?php endif; ?>
                          <div class="btn-group btn-group-sm">
@@ -70,7 +71,7 @@
     </div>
     <div class="text-center my-2">
         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create event')): ?>
-        <a href="<?php echo e(route('events.create', [])); ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo app('translator')->get('Create new Event'); ?></a>
+        
         <?php endif; ?>
     </div>
 </div>

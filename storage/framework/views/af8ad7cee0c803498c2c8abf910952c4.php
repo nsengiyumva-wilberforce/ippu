@@ -64,12 +64,15 @@
 					<div><?php echo e(($member->nok_address)?:"(blank)"); ?></div>
 				</div>
 			</div>
-			<div class="card-footer text-end">
+			<div class="card-footer d-flex flex-column flex-md-row align-items-md-center justify-content-between">
 
 				<?php if($member->status == "Inactive"): ?>
 				<a href="javascript:void(0);" class="btn btn-primary" title="<?php echo e(__('Change Account Status')); ?>" data-bs-toggle="tooltip" data-url="<?php echo e(url('admin/change_member_status/'.$member->id)); ?>" data-ajax-popup="true" data-size="lg">Activate Account</a>
 				<?php elseif($member->status == "Active"): ?>
-				<a href="javascript:void(0);" class="btn btn-danger" title="<?php echo e(__('Change Account Status')); ?>" data-bs-toggle="tooltip" data-url="<?php echo e(url('admin/change_member_status/'.$member->id)); ?>" data-ajax-popup="true" data-size="lg">Suspend Account</a>
+				<a href="javascript:void(0);" class="btn btn-warning btn-sm" title="<?php echo e(__('Change Account Status')); ?>" data-bs-toggle="tooltip" data-url="<?php echo e(url('admin/change_member_status/'.$member->id)); ?>" data-ajax-popup="true" data-size="lg">Suspend Account</a>
+				<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('make admin')): ?>
+				<a href="<?php echo e(url('admin/change_account_type/Admin/'.$member->id)); ?>" class="btn btn-danger btn-sm">Make Member Admin</a>
+				<?php endif; ?>
 				<?php else: ?>
 				<a href="javascript:void(0);" class="btn btn-primary" title="<?php echo e(__('Change Account Status')); ?>" data-bs-toggle="tooltip" data-url="<?php echo e(url('admin/change_member_status/'.$member->id)); ?>" data-ajax-popup="true" data-size="lg">Unsuspend Account</a> 
 				<?php endif; ?>

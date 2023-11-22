@@ -193,9 +193,19 @@
 
         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('communications')): ?>
         <li class="nav-item">
-            <a class="nav-link" href="<?php echo e(url('communications')); ?>" aria-expanded="false" aria-controls="sidebarUI">
-                <i class=" ri-message-fill"></i> <span data-key="t-base-ui">Communications</span>
+            <a href="#sidebarCommunication" class="nav-link menu-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCommunication">
+                 <i class=" ri-message-fill"></i> <span data-key="t-base-ui">Communications</span>
             </a>
+            <div class="collapse menu-dropdown" id="sidebarCommunication">
+                <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                        <a href="<?php echo e(url('communications')); ?>" class="nav-link" data-key="t-sweet-alerts">Mails</a>
+                    </li>
+                     <li class="nav-item">
+                        <a href="<?php echo e(url('communications')); ?>" class="nav-link" data-key="t-sweet-alerts">SMS</a>
+                    </li>
+                </ul>
+            </div>
         </li>
         <?php endif; ?>
 

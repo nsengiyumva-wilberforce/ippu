@@ -18,7 +18,10 @@
 						<td>{{ $user->name }}</td>
 						<td>{{ $user->email }}</td>
 						<td>
-							<a href="javascript:void(0)" data-url="{{ url('admin/edit_user/'.$user->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit User')}}" data-size="lg" title="{{__('Edit User Details')}}" data-title="{{__('Edit User Details')}}" >Edit</a>
+							@can('make admin')
+								<a href="{{ url('admin/change_account_type/Member/'.$user->id) }}" class="btn btn-danger btn-sm">Make Member</a>
+							@endcan
+							<a href="javascript:void(0)" class="btn btn-primary btn-sm ms-2" data-url="{{ url('admin/edit_user/'.$user->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit User')}}" data-size="lg" title="{{__('Edit User Details')}}" data-title="{{__('Edit User Details')}}" >Edit</a>
 						</td>
 					</tr>
 					@endforeach

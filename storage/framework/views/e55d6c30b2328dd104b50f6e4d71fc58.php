@@ -6,6 +6,8 @@
     <form method="POST" action="<?php echo e(url('update_profile')); ?>">
         <?php echo csrf_field(); ?>
         <div class="card-body row">
+            <h5 class="fs-15 mt-3 text-primary">Personal Details</h5>
+            <hr>
             <div class="col-md-12 mb-3">
                 <span>Name</span>
                 <input type="text" class="form-control" name="name" value="<?php echo e($user->name); ?>" required>
@@ -20,7 +22,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <span>DOB</span>
-                <input type="date" class="form-control" name="dob" value="<?php echo e($user->dob); ?>" required>
+                <input type="date" class="form-control" name="dob" max="<?php echo e(date('Y-m-d',strtotime("-18 year"))); ?>" value="<?php echo e($user->dob); ?>" required>
             </div>
             <div class="col-md-6 mb-3">
                 <span>Membership Number</span>
@@ -38,6 +40,8 @@
                 <span>Alt Phone no.</span>
                 <input type="text" class="form-control" name="alt_phone_no" value="<?php echo e($user->alt_phone_no); ?>">
             </div>
+            <h5 class="fs-15 mt-3 text-primary">Next Of Kin (NOK) Details</h5>
+            <hr>
             <div class="col-md-6 mb-3">
                 <span>NOK Name</span>
                 <input type="text" class="form-control" name="nok_name" value="<?php echo e($user->nok_name); ?>" required>

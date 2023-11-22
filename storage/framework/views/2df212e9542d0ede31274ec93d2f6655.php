@@ -77,6 +77,7 @@
                                 </div>
                             </div>
                             <a href="<?php echo e(asset('storage/attachments/'.$cpd->resource)); ?>" class="btn btn-warning btn-sm" download>Download Resource</a>
+                            <a href="<?php echo e(url('generate_qr/cpd/'.$cpd->id)); ?>" class="btn btn-danger btn-sm ms-4">Generate QR Code</a>
                         </div>
                         <div class="col-md-5">
                             <img class="card-img-top img-fluid image" src="<?php echo e(asset('storage/banners/'.$cpd->banner)); ?>" alt="<?php echo e($cpd->topic); ?>" onerror="this.onerror=null;this.src='https://ippu.or.ug/wp-content/uploads/2020/08/ppulogo.png';">

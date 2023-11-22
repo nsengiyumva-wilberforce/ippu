@@ -7,6 +7,8 @@
     <form method="POST" action="{{ url('update_profile') }}">
         @csrf
         <div class="card-body row">
+            <h5 class="fs-15 mt-3 text-primary">Personal Details</h5>
+            <hr>
             <div class="col-md-12 mb-3">
                 <span>Name</span>
                 <input type="text" class="form-control" name="name" value="{{ $user->name }}" required>
@@ -21,7 +23,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <span>DOB</span>
-                <input type="date" class="form-control" name="dob" value="{{ $user->dob }}" required>
+                <input type="date" class="form-control" name="dob" max="{{ date('Y-m-d',strtotime("-18 year")) }}" value="{{ $user->dob }}" required>
             </div>
             <div class="col-md-6 mb-3">
                 <span>Membership Number</span>
@@ -39,6 +41,8 @@
                 <span>Alt Phone no.</span>
                 <input type="text" class="form-control" name="alt_phone_no" value="{{ $user->alt_phone_no }}">
             </div>
+            <h5 class="fs-15 mt-3 text-primary">Next Of Kin (NOK) Details</h5>
+            <hr>
             <div class="col-md-6 mb-3">
                 <span>NOK Name</span>
                 <input type="text" class="form-control" name="nok_name" value="{{ $user->nok_name }}" required>
