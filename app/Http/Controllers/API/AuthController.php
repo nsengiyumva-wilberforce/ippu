@@ -82,8 +82,14 @@ class AuthController extends Controller
                 'message' => 'Account creation failed',
             ], 500);
         }
-        //send email to the user
-        Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
+        $emailSent = Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
+
+        // Check if sending the email was successful
+        if ($emailSent === 0) {
+            return response()->json([
+                'message' => 'Email sending failed',
+            ], 500);
+        }
 
         return response()->json([
             'message' => 'User created successfully',
