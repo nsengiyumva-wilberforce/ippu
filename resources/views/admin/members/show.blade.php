@@ -64,12 +64,15 @@
 					<div>{{ ($member->nok_address)?:"(blank)" }}</div>
 				</div>
 			</div>
-			<div class="card-footer text-end">
+			<div class="card-footer d-flex flex-column flex-md-row align-items-md-center justify-content-between">
 
 				@if($member->status == "Inactive")
 				<a href="javascript:void(0);" class="btn btn-primary" title="{{__('Change Account Status')}}" data-bs-toggle="tooltip" data-url="{{ url('admin/change_member_status/'.$member->id) }}" data-ajax-popup="true" data-size="lg">Activate Account</a>
 				@elseif($member->status == "Active")
-				<a href="javascript:void(0);" class="btn btn-danger" title="{{__('Change Account Status')}}" data-bs-toggle="tooltip" data-url="{{ url('admin/change_member_status/'.$member->id) }}" data-ajax-popup="true" data-size="lg">Suspend Account</a>
+				<a href="javascript:void(0);" class="btn btn-warning btn-sm" title="{{__('Change Account Status')}}" data-bs-toggle="tooltip" data-url="{{ url('admin/change_member_status/'.$member->id) }}" data-ajax-popup="true" data-size="lg">Suspend Account</a>
+				@can('make admin')
+				<a href="{{ url('admin/change_account_type/Admin/'.$member->id) }}" class="btn btn-danger btn-sm">Make Member Admin</a>
+				@endcan
 				@else
 				<a href="javascript:void(0);" class="btn btn-primary" title="{{__('Change Account Status')}}" data-bs-toggle="tooltip" data-url="{{ url('admin/change_member_status/'.$member->id) }}" data-ajax-popup="true" data-size="lg">Unsuspend Account</a> 
 				@endif

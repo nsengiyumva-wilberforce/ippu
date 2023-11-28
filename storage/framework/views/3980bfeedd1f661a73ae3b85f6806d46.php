@@ -39,11 +39,14 @@
 								<?php endif; ?>
 							</td>
 							<td>
+								<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('members')): ?>
 								<a href="<?php echo e(url('admin/members/'.$member->id)); ?>" class="btn btn-sm btn-primary">Show</a>
-
+								<?php endif; ?>
+								<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('approve members')): ?>
 								<?php if($member?->latestMembership?->status == "Pending"): ?>
 									
 									<a href="<?php echo e(url('admin/review_membership/'.$member->id)); ?>" class="btn btn-danger btn-sm">Review Application</a>
+								<?php endif; ?>
 								<?php endif; ?>
 							</td>
 						</tr>

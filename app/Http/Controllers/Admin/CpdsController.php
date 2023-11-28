@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Cpd;
+use App\Models\Cpd;use Dompdf\Dompdf;
+use Illuminate\Support\Facades\View;
+use Dompdf\Options;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Writer;
 
 class CpdsController extends Controller
 {
@@ -283,5 +287,35 @@ class CpdsController extends Controller
         } catch (\Throwable $e) {
             return redirect()->back()->with('error',$e->getMessage());
         }
+    }
+
+    public function generate_qr($type,$id)
+    {
+        $url = config('app.url')."/direct_attendence/".$type."/".$id;
+             
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+        $options->set('isRemoteEnabled', true);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+
+        $renderer = new ImageRenderer(
+            new \BaconQrCode\Renderer\RendererStyle\RendererStyle(100),
+            new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
+        );
+        $writer = new Writer($renderer);
+        $qrCode = $writer->writeString($url);
+
+
+        // $qrCode = QrCode::format('png')->size(200)->generate($data);
+
+        $dompdf = new Dompdf($options);
+        $view = View::make('members.attendence.qrcode', compact('qrCode'))->render();
+        
+        $dompdf->loadHtml($view);
+
+        // Render the HTML as PDF
+        $dompdf->render();
+        $dompdf->stream('attendence code.pdf');
     }
 }

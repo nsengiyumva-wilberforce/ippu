@@ -17,6 +17,7 @@
     <div class="card">
         <div class="card-header d-flex flex-column flex-md-row align-items-md-center justify-content-between">
             <h5 class="card-title">Events</h5>
+            <a href="{{ route('events.create', []) }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('Create new Event')</a>
         </div>
         <div class="card-body">
             <table class="table table-striped dataTable table-responsive table-hover">
@@ -40,7 +41,7 @@
                         <td data-label="Member Rate">{{ (($event->member_rate) ? number_format($event->member_rate) : '') ?: "Free" }}</td>
 
                         <td data-label="Actions:" class="text-nowrap">
-                            @can('show')
+                            @can('show event')
                          <a href="{{route('events.show', compact('event'))}}" type="button" class="btn btn-primary btn-sm me-1">@lang('Show')</a>
                          @endcan
                          <div class="btn-group btn-group-sm">
@@ -71,7 +72,7 @@
     </div>
     <div class="text-center my-2">
         @can('create event')
-        <a href="{{ route('events.create', []) }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('Create new Event')</a>
+        
         @endcan
     </div>
 </div>

@@ -102,6 +102,7 @@
                                 </div>
                             </div>
                             <a href="{{ asset('storage/attachments/'.$event->attachment_name) }}" class="btn btn-warning btn-sm" download>Download Resource</a>
+                             <a href="{{ url('generate_qr/event/'.$event->id) }}" class="btn btn-danger btn-sm ms-4">Generate QR Code</a>
                         </div>
                         <div class="col-md-5">
                             <img class="card-img-top img-fluid image" src="{{ asset('storage/banners/'.$event->banner_name) }}" alt="{{ $event->name }}" onerror="this.onerror=null;this.src='https://ippu.or.ug/wp-content/uploads/2020/08/ppulogo.png';">
@@ -121,9 +122,9 @@
                             <tbody>
                                 @foreach($event->pending_confimation as $attendence)
                                 <tr>
-                                    <td>{{ $attendence->user->name }}</td>
-                                    <td>{{ $attendence->user->phone_no }}</td>
-                                    <td>{{ $attendence->user->email }}</td>
+                                    <td>{{ $attendence?->user?->name }}</td>
+                                    <td>{{ $attendence?->user?->phone_no }}</td>
+                                    <td>{{ $attendence?->user?->email }}</td>
                                     <td>
                                          @can('approve event attendence')
                                         <a href="{{ url('admin/events/attendence/'.$attendence->id.'/Confirmed') }}" class="btn btn-sm btn-primary">
@@ -153,9 +154,9 @@
                             <tbody>
                                 @foreach($event->confirmed as $attendence)
                                 <tr>
-                                    <td>{{ $attendence->user->name }}</td>
-                                    <td>{{ $attendence->user->phone_no }}</td>
-                                    <td>{{ $attendence->user->email }}</td>
+                                    <td>{{ $attendence?->user?->name }}</td>
+                                    <td>{{ $attendence?->user?->phone_no }}</td>
+                                    <td>{{ $attendence?->user?->email }}</td>
                                     <td>
                                          @can('approve event attendence')
                                         <a href="{{ url('admin/events/attendence/'.$attendence->id.'/Attended') }}" class="btn btn-sm btn-primary">
@@ -180,9 +181,9 @@
                             <tbody>
                                 @foreach($event->attended_event as $attendence)
                                 <tr>
-                                    <td>{{ $attendence->user->name }}</td>
-                                    <td>{{ $attendence->user->phone_no }}</td>
-                                    <td>{{ $attendence->user->email }}</td>
+                                    <td>{{ $attendence?->user?->name }}</td>
+                                    <td>{{ $attendence?->user?->phone_no }}</td>
+                                    <td>{{ $attendence?->user?->email }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -71,6 +71,7 @@
                                 </div>
                             </div>
                             <a href="<?php echo e(asset('storage/attachments/'.$event->attachment_name)); ?>" class="btn btn-warning btn-sm" download>Download Resource</a>
+                             <a href="<?php echo e(url('generate_qr/event/'.$event->id)); ?>" class="btn btn-danger btn-sm ms-4">Generate QR Code</a>
                         </div>
                         <div class="col-md-5">
                             <img class="card-img-top img-fluid image" src="<?php echo e(asset('storage/banners/'.$event->banner_name)); ?>" alt="<?php echo e($event->name); ?>" onerror="this.onerror=null;this.src='https://ippu.or.ug/wp-content/uploads/2020/08/ppulogo.png';">
@@ -90,9 +91,9 @@
                             <tbody>
                                 <?php $__currentLoopData = $event->pending_confimation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attendence): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td><?php echo e($attendence->user->name); ?></td>
-                                    <td><?php echo e($attendence->user->phone_no); ?></td>
-                                    <td><?php echo e($attendence->user->email); ?></td>
+                                    <td><?php echo e($attendence?->user?->name); ?></td>
+                                    <td><?php echo e($attendence?->user?->phone_no); ?></td>
+                                    <td><?php echo e($attendence?->user?->email); ?></td>
                                     <td>
                                          <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('approve event attendence')): ?>
                                         <a href="<?php echo e(url('admin/events/attendence/'.$attendence->id.'/Confirmed')); ?>" class="btn btn-sm btn-primary">
@@ -122,9 +123,9 @@
                             <tbody>
                                 <?php $__currentLoopData = $event->confirmed; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attendence): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td><?php echo e($attendence->user->name); ?></td>
-                                    <td><?php echo e($attendence->user->phone_no); ?></td>
-                                    <td><?php echo e($attendence->user->email); ?></td>
+                                    <td><?php echo e($attendence?->user?->name); ?></td>
+                                    <td><?php echo e($attendence?->user?->phone_no); ?></td>
+                                    <td><?php echo e($attendence?->user?->email); ?></td>
                                     <td>
                                          <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('approve event attendence')): ?>
                                         <a href="<?php echo e(url('admin/events/attendence/'.$attendence->id.'/Attended')); ?>" class="btn btn-sm btn-primary">
@@ -149,9 +150,9 @@
                             <tbody>
                                 <?php $__currentLoopData = $event->attended_event; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attendence): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td><?php echo e($attendence->user->name); ?></td>
-                                    <td><?php echo e($attendence->user->phone_no); ?></td>
-                                    <td><?php echo e($attendence->user->email); ?></td>
+                                    <td><?php echo e($attendence?->user?->name); ?></td>
+                                    <td><?php echo e($attendence?->user?->phone_no); ?></td>
+                                    <td><?php echo e($attendence?->user?->email); ?></td>
                                 </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
