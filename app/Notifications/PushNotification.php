@@ -11,6 +11,13 @@ use NotificationChannels\Fcm\Resources\Notification as FcmNotification;
 class PushNotification extends Notification
 {
     use Queueable;
+    public string $imageLink;
+    public string $title;
+
+    public function __construct(string $imageLink, string $title){
+        $this->imageLink = 'https://ippu.org/api/cpds/'.$imageLink;
+        $this->postType = $title;
+    }
     public function via($notifiable)
     {
         return [FcmChannel::class];
@@ -19,9 +26,9 @@ class PushNotification extends Notification
     public function toFcm($notifiable): FcmMessage
     {
         return (new FcmMessage(notification: new FcmNotification(
-                title: 'An Event is happening soon!',
+                title: $this->title,
                 body: 'Tap here to see more details.',
-                image: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png'
+                image: $this->imageLink,
             )))
             ->data(['data1' => 'value', 'data2' => 'value2'])
             ->custom([

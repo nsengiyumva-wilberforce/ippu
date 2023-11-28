@@ -32,17 +32,17 @@ class UserFcmDeviceTokenController extends Controller
         ]);
     }
 
-    public function sendNotification(Request $request)
-    {
-        //get the user with id 1
-        $devices = UserFcmDeviceToken::all();
+    // public function sendNotification(Request $request)
+    // {
+    //     //get the user with id 1
+    //     $devices = UserFcmDeviceToken::all();
 
-        //send notification to users
-        Notification::send($devices, new PushNotification());
+    //     //send notification to users
+    //     Notification::send($devices, new PushNotification());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Notifications sent successfully.'
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Notifications sent successfully.'
+    //     ]);
+    // }
 }

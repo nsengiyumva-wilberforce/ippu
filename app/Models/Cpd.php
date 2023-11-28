@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\PushNotification;
+
 
 class Cpd extends Model
 {
@@ -59,9 +62,22 @@ class Cpd extends Model
         return $this->hasMany(Attendence::class)->where('status','Confirmed');
     }
 
-    public function attended_event()
+    protected static function boot()
     {
-        // hasMany(RelatedModel, foreignKeyOnRelatedModel = event_id, localKey = id)
-        return $this->hasMany(Attendence::class)->where('status','Attended');
+        parent::boot();
+
+        // Triggered when a new model is being created
+        static::creating(function ($model) {
+            $model->sendNotification();
+        });
+    }
+
+    public function sendNotification()
+    {
+        //get the user with id 1
+        $devices = UserFcmDeviceToken::all();
+
+        //send notification to users
+        Notification::send($devices, new PushNotification($this->banner));
     }
 }
