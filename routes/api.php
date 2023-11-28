@@ -57,3 +57,7 @@ Route::post('subscribe', [ProfileController::class, 'subscribe']);
 Route::get('communications/{userId}', [CommunicationController::class, 'index']);
 Route::post('mark-as-read', [CommunicationController::class, 'markAsRead']);
 
+//fcm device token routes
+Route::post('fcm-device-token', [ProfileController::class, 'store']);
+Route::post('send-notification', [ProfileController::class, 'sendNotification']);
+
