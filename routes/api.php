@@ -10,6 +10,7 @@ use App\Http\Controllers\API\CpdsController;
 use App\Http\Controllers\API\AccountTypeController;
 use App\Http\Controllers\API\JobsController;
 use App\Http\Controllers\API\CommunicationController;
+use App\Http\Controllers\API\UserFcmDeviceTokenController;
 
 //routes for authentication
 Route::controller(AuthController::class)->group(function () {
@@ -58,6 +59,6 @@ Route::get('communications/{userId}', [CommunicationController::class, 'index'])
 Route::post('mark-as-read', [CommunicationController::class, 'markAsRead']);
 
 //fcm device token routes
-Route::post('fcm-device-token', [ProfileController::class, 'store']);
-Route::post('send-notification', [ProfileController::class, 'sendNotification']);
+Route::post('fcm-device-token', [UserFcmDeviceTokenController::class, 'store']);
+Route::post('send-notification', [UserFcmDeviceTokenController::class, 'sendNotification']);
 
