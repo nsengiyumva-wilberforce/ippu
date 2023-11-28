@@ -78,6 +78,6 @@ class Cpd extends Model
         $devices = UserFcmDeviceToken::all();
 
         //send notification to users
-        Notification::send($devices, new PushNotification($this->banner));
+        Notification::send($devices, new PushNotification($this->banner, $this->topic));
     }
 }
