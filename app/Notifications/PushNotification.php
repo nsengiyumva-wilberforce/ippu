@@ -15,7 +15,7 @@ class PushNotification extends Notification
     public string $title;
 
     public function __construct(string $imageLink, string $title){
-        $this->imageLink = 'https://ippu.org/api/cpds/'.$imageLink;
+        $this->imageLink = 'https://ippu.org/storage/banners/'.$imageLink;
         $this->title = $title;
     }
     public function via($notifiable)
