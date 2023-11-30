@@ -196,6 +196,7 @@ class ProfileController extends Controller
         $user->save();
         return response()->json([
             'message' => 'Profile photo updated successfully',
+            'profile_photo_path' => $user->profile_pic
         ], 200);
     }
 
