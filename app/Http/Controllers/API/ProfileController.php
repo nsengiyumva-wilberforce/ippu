@@ -168,4 +168,35 @@ class ProfileController extends Controller
             'message' => 'User deleted successfully',
         ]);
     }
+
+    public function updateProfilePhoto(User $user)
+    {
+        // Check if the user exists
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        // Validate the request
+        request()->validate([
+            'profile_photo_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Get the image
+        $image = request()->file('profile_photo_path');
+
+        // Save the image
+        $imageName = time() . '.' . $image->extension();
+        $image->move(public_path('images'), $imageName);
+
+        // Update avatar field in the database with the full URL
+        $user->avatar = url('images/' . $imageName);
+
+        $user->save();
+        return response()->json([
+            'message' => 'Profile photo updated successfully',
+        ], 200);
+    }
+
 }

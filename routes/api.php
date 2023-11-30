@@ -52,6 +52,7 @@ Route::post('profile/verify-password-reset-email', [AuthController::class, 'veri
 Route::post('profile/resend-verification-code', [AuthController::class, 'resendVerificationCode']);
 Route::post('profile/reset-password-code', [AuthController::class, 'resetPasswordCode']);
 Route::post('profile/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('update-profile-photo/{user}', [ProfileController::class, 'updateProfilePhoto']);
 Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes
