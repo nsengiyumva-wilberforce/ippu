@@ -93,7 +93,7 @@ class ProfileController extends Controller
         $user->phone_no = $request->phone_no;
         $user->alt_phone_no = $request->alt_phone_no;
         $user->nok_name = $request->nok_name;
-        $user->nok_address = $request->nok_email;
+        $user->nok_address = $request->nok_address;
         $user->nok_phone_no = $request->nok_phone_no;
         $user->update($request->all());
 
