@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Communication;
+use AfricasTalking\SDK\AfricasTalking;
 
 class CommunicationsController extends Controller
 {
@@ -43,14 +44,29 @@ class CommunicationsController extends Controller
             'target' => 'required'
         ]);
 
-        $communication = new Communication;
-        $communication->title = $request->title;
-        $communication->target = $request->target;
-        $communication->message = $request->message;
-        $communication->user_id = \Auth::user()->id;
-        $communication->save();
+        try{
+            $communication = new Communication;
+            $communication->title = $request->title;
+            $communication->target = $request->target;
+            $communication->message = $request->message;
+            $communication->user_id = \Auth::user()->id;
+            $communication->save();
 
-        return redirect('communications')->with('success','Communication has been successfully published!');
+            $to = 'musisifred7@gmail.com';
+
+            $target = \App\Models\User::where('account_type_id',$request->target)->get();
+         
+            \Mail::send([], [], function ($message) use ($to, $communication, $target) {
+                $message->to($to)
+                    ->bbc($target)
+                    ->subject($communication->title)
+                    ->setBody($communication->message, 'text/plain');
+            });
+
+            return redirect('communications')->with('success','Communication has been successfully published!');
+        }catch(\Throwable $ex){
+            return redirect()->back()->withErrors(['error'=>$ex->getMessage()])->withInput();
+        }
     }
 
     /**
@@ -109,6 +125,38 @@ class CommunicationsController extends Controller
             return redirect()->back()->with('success','Communication has been deleted!');
         }catch(\Throwable $e){
             return redirect()->back()->with('error',$e->getMessage()); 
+        }
+    }
+
+    public function sms_view($value='')
+    {
+        $accountTypes = \App\Models\AccountType::all();
+        return view('communications.sms',compact('accountTypes'));
+    }
+
+    public function post_sms(Request $request)
+    {
+        $request->validate([
+            'message' => 'required',
+            'target' => 'required',
+        ]);
+        try{
+
+            $username = 'MUSISI';
+            $apiKey   = '3efc0562783b8617ef83bf427ab30afe9da377630c80278af38bc5c2ca358f5e';
+            $AT       = new AfricasTalking($username, $apiKey);
+
+            $sms      = $AT->sms();
+
+            $result   = $sms->send([
+                'to'      => '+256781014607',
+                'message' => $request->message,
+            ]);
+
+            return redirect()->back()->with('success','SMS have been sent!');
+
+        }catch(\Throwable $ex){
+            return redirect()->back()->withErrors(['error' => $ex->getMessage()])->withInput();
         }
     }
 }

@@ -1,6 +1,6 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page-title')
-    {{__('Proposal Edit')}}
+    {{__('Quotation Edit')}}
 @endsection
 @push('script-page')
     <script src="{{asset('js/jquery-ui.min.js')}}"></script>
@@ -134,7 +134,7 @@
                     var item = JSON.parse(data);
 
                     $.ajax({
-                        url: '{{route('proposal.items')}}',
+                        url: '{{url('admin/proposal/items')}}',
                         type: 'GET',
                         headers: {
                             'X-CSRF-TOKEN': jQuery('#token').val()
@@ -424,7 +424,7 @@
                 var id = $(el.find('.id')).val();
 
                 $.ajax({
-                    url: '{{route('proposal.product.destroy')}}',
+                    url: '{{url('admin/proposal/product/destroy')}}',
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': jQuery('#token').val()
@@ -456,13 +456,13 @@
     <li class="breadcrumb-item">{{__('Proposal Edit')}}</li> --}}
 
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-    <h4 class="mb-sm-0">Proposals</h4>
+    <h4 class="mb-sm-0">Quotation</h4>
 
     <div class="page-title-right">
         <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a href="{{url('dashboard')}}">{{__('Dashboard')}}</a></li>
-            <li class="breadcrumb-item"><a href="{{url('admin/proposals')}}">{{__('Proposals')}}</a></li>
-            <li class="breadcrumb-item">{{__('Proposal Edit')}}</li>
+            <li class="breadcrumb-item"><a href="{{url('admin/proposals')}}">{{__('Quotations')}}</a></li>
+            <li class="breadcrumb-item">{{__('Quotation Edit')}}</li>
         </ol>
     </div>
 
@@ -470,7 +470,7 @@
 @endsection
 @section('content')
     <div class="row">
-        {{ Form::model($proposal, array('route' => array('proposal.update', $proposal->id), 'method' => 'PUT','class'=>'w-100')) }}
+        {{ Form::model($proposal, array('url' => array('admin/proposal', $proposal->id), 'method' => 'PUT','class'=>'w-100')) }}
         <div class="col-12">
             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
             <div class="card">
@@ -479,7 +479,7 @@
                         <div class="col-md-6">
                             <div class="form-group" id="customer-box">
                                     {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}
-                                    {{ Form::select('customer_id', $customers,null, array('class' => 'form-control select ','id'=>'customer','data-url'=>route('proposal.customer'),'required'=>'required')) }}
+                                    {{ Form::select('customer_id', $customers,null, array('class' => 'form-control select ','id'=>'customer','data-url'=>url('admin/proposal/customer'),'required'=>'required')) }}
                             </div>
                             <div id="customer_detail" class="d-none">
                             </div>
@@ -571,7 +571,7 @@
                             <tr>
                                 {{ Form::hidden('id',null, array('class' => 'form-control id')) }}
                                 <td width="25%" class="form-group pt-0">
-                                    {{ Form::select('item', $product_services,null, array('class' => 'form-control select item','data-url'=>route('proposal.product'))) }}
+                                    {{ Form::select('item', $product_services,null, array('class' => 'form-control select item','data-url'=>url('admin/proposals/product'))) }}
                                 </td>
                                 <td>
                                     <div class="form-group price-input input-group search-form">
@@ -664,7 +664,7 @@
         </div>
 
         <div class="modal-footer">
-            <input type="button" value="{{__('Cancel')}}" onclick="location.href = '{{route("proposal.index")}}';" class="btn btn-light">
+            <input type="button" value="{{__('Cancel')}}" onclick="location.href = '{{url("admin/proposal")}}';" class="btn btn-light">
             <input type="submit" value="{{__('Update')}}" class="btn btn-primary">
         </div>
         {{ Form::close() }}

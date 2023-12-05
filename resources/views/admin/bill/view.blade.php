@@ -1,34 +1,14 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page-title')
     {{__('Bill Detail')}}
 @endsection
 @php
-    $settings = Utility::settings();
+    $settings = \App\Models\Utility::settings();
 @endphp
-@push('script-page')
-    <script>
-        $(document).on('click', '#shipping', function () {
-            var url = $(this).data('url');
-            var is_display = $("#shipping").is(":checked");
-            $.ajax({
-                url: url,
-                type: 'get',
-                data: {
-                    'is_display': is_display,
-                },
-                success: function (data) {
-                    // console.log(data);
-                }
-            });
-        })
 
-
-
-    </script>
-@endpush
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('bill.index')}}">{{__('Bill')}}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">{{__('Dashboard')}}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('admin/bills') }}">{{__('Bill')}}</a></li>
     <li class="breadcrumb-item">{{ Auth::user()->billNumberFormat($bill->bill_id) }}</li>
 @endsection
 
@@ -197,7 +177,7 @@
                                     <div class="col">
                                         <div class="float-end mt-3">
 
-                                        {!! DNS2D::getBarcodeHTML(route('bill.link.copy',\Illuminate\Support\Facades\Crypt::encrypt($bill->id)), "QRCODE",2,2) !!}
+                                        {{-- {!! DNS2D::getBarcodeHTML(route('bill.link.copy',\Illuminate\Support\Facades\Crypt::encrypt($bill->id)), "QRCODE",2,2) !!} --}}
                                         </div>
                                     </div>
                             </div>
@@ -489,4 +469,25 @@
             </div>
         </div>
     </div>
+@endsection
+@section('customjs')
+<script>
+        $(document).on('click', '#shipping', function () {
+            var url = $(this).data('url');
+            var is_display = $("#shipping").is(":checked");
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: {
+                    'is_display': is_display,
+                },
+                success: function (data) {
+                    // console.log(data);
+                }
+            });
+        })
+
+
+
+    </script>
 @endsection

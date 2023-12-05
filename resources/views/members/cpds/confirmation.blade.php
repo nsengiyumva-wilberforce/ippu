@@ -1,4 +1,4 @@
-<form method="POST" action="{{ url('attend_cpd') }}">
+<form method="POST" action="{{ url('attend_cpd') }}" enctype="multipart/form-data">
 	@csrf
 	<input type="hidden" name="cpd_id" value="{{ $event->id }}">
 	<div class="modal-body">
@@ -18,6 +18,8 @@
 			@endif
 		@endif
 		<img src="{{ asset('assets/images/payments.jpeg') }}" width="100%" />
+		<label class="mt-4">Payment Proof</label>
+		<input type="file" name="payment_proof" class="form-control">
 	</div>
 	<div class="modal-footer text-end">
 		<button type="submit" class="btn btn-primary">Confirm Attendence</button>

@@ -45,12 +45,13 @@
 		<div class="card-body">
 			<div class="text-end mt-2">
 				@if((($event->start_date >= date('Y-m-d')) || ($event->end_date <= date('Y-m-d'))) && is_null($event->attended))
-				<a href="#"  data-url="{{ url('attend_cpd/'.$event->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Attend CPD')}}" class="btn btn-primary">Attend</a>
+				<a href="#"  data-url="{{ url('attend_cpd/'.$event->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Attend CPD')}}" class="btn btn-primary" data-size="lg">Attend</a>
 				@elseif(!is_null($event->attended))
 				{{-- <span href="javascript:void(0)" class="btn btn-light btn-sm">
 					Attended
 				</span> --}}
 				@if($event->attended->status != "Pending")
+					<a href="{{ url('cpd_certificate/'.$event->id) }}" class="btn btn-primary btn-sm" target="_blank">Certificate</a>
 					<a href="{{ asset('storage/attachments/'.$event->resource_name) }}" class="btn btn-warning btn-sm" download>Download Resource</a>
 				@endif
 				@endif

@@ -108,6 +108,8 @@ Route::middleware(['auth','verified'])->group(function(){
 
 Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::resource('account_types', AccountTypesController::class);
+    Route::get('sms', [CommunicationsController::class,'sms_view']);
+    Route::post('sms', [CommunicationsController::class,'post_sms']);
     Route::get('change_account_type/{type}/{user}', [MembersController::class,'change_account_type']);
     Route::resource('events', EventsController::class);
     Route::resource('cpds', CpdsController::class);
@@ -145,15 +147,17 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::resource('vendors', VendorsController::class);
     Route::resource('proposals', ProposalsController::class);
     Route::get('proposals/create/{id}', [ProposalsController::class,'create']);
+    Route::get('proposal/items', [ProposalController::class, 'items']);
+    Route::post('proposal/product/destroy', [ProposalController::class, 'productDestroy']);
     Route::resource('taxes', TaxesController::class);
     Route::resource('product-category', ProductServiceCategoriesController::class);
     Route::resource('product-unit', ProductServiceUnitsController::class);
+    Route::post('proposal/customer', [ProposalController::class, 'customer']);
     Route::resource('custom-fields', CustomFieldsController::class);
     Route::resource('productservice', ProductServicesController::class);
     Route::get('productservice/{id}/detail', [ProductServicesController::class, 'warehouseDetail']);
     Route::resource('productstock', ProductStocksController::class);
     Route::post('proposals/product', [ProposalsController::class, 'product']);
-    Route::post('proposals/customer', [ProposalsController::class, 'customer']);
     Route::get('customer/proposal/{id}/', [ProposalsController::class, 'invoiceLink']);
     Route::resource('invoices', InvoicesController::class);
     Route::get('invoices/create/{id}', [InvoicesController::class,'create']);
@@ -165,8 +169,37 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::get('custom-credit-note', [CreditNotesController::class, 'customCreate']);
     Route::post('custom-credit-note', [CreditNotesController::class, 'customStore']);
     Route::resource('bills', BillsController::class);
+    Route::get('bill/create/{cid}', [BillsController::class, 'create']);
+
+    // Route::get('debit-note', [DebitNoteController::class, 'index'])->name('debit.note');
+    // Route::get('custom-debit-note', [DebitNoteController::class, 'customCreate'])->name('bill.custom.debit.note');
+    // Route::post('custom-debit-note', [DebitNoteController::class, 'customStore'])->name('bill.custom.debit.note');
+    // Route::get('debit-note/bill', [DebitNoteController::class, 'getbill'])->name('bill.get');
+    // Route::get('bill/{id}/debit-note', [DebitNoteController::class, 'create'])->name('bill.debit.note');
+    // Route::post('bill/{id}/debit-note', [DebitNoteController::class, 'store'])->name('bill.debit.note');
+    // Route::get('bill/{id}/debit-note/edit/{cn_id}', [DebitNoteController::class, 'edit'])->name('bill.edit.debit.note');
+    // Route::post('bill/{id}/debit-note/edit/{cn_id}', [DebitNoteController::class, 'update'])->name('bill.edit.debit.note');
+    // Route::delete('bill/{id}/debit-note/delete/{cn_id}', [DebitNoteController::class, 'destroy'])->name('bill.delete.debit.note');
+    //  Route::get('bill/{id}/duplicate', [BillController::class, 'duplicate'])->name('bill.duplicate');
+    // Route::get('bill/{id}/shipping/print', [BillController::class, 'shippingDisplay'])->name('bill.shipping.print');
+    // Route::get('bill/index', [BillController::class, 'index'])->name('bill.index');
+    // Route::post('bill/product/destroy', [BillController::class, 'productDestroy'])->name('bill.product.destroy');
+    Route::post('bill/product', [BillsController::class, 'product'])->name('bill.product');
+    Route::post('bill/vender', [BillsController::class, 'vender']);
+    // Route::get('bill/{id}/sent', [BillController::class, 'sent'])->name('bill.sent');
+    // Route::get('bill/{id}/resent', [BillController::class, 'resent'])->name('bill.resent');
+    // Route::get('bill/{id}/payment', [BillController::class, 'payment'])->name('bill.payment');
+    // Route::post('bill/{id}/payment', [BillController::class, 'createPayment'])->name('bill.payment');
+    // Route::post('bill/{id}/payment/{pid}/destroy', [BillController::class, 'paymentDestroy'])->name('bill.payment.destroy');
+    // Route::get('bill/items', [BillController::class, 'items'])->name('bill.items');
+    // Route::resource('bill', BillController::class);
+    // Route::get('bill/create/{cid}', [BillController::class, 'create'])->name('bill.create');
+
+
+
     Route::get('events/attendence/{attendence_id}/{status}', [EventsController::class,'attendence']);
     Route::get('cpds/attendence/{attendence_id}/{status}', [CpdsController::class,'attendence']);
+    Route::get('view_payment_proof/{name}', [CpdsController::class,'payment_proof']);
     Route::get('invoice/pdf/{id}', [InvoicesController::class, 'invoice'])->name('invoice.pdf');
 
     Route::get('approve_membership/{id}', [DashboardController::class,'approve']);

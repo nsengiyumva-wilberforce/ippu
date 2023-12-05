@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page-title')
-    {{__('Proposal Detail')}}
+    {{__('Quotation Detail')}}
 @endsection
 @php
     // $settings = Utility::settings();
@@ -33,13 +33,13 @@
 @section('breadcrumb')
     
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-    <h4 class="mb-sm-0">Proposals</h4>
+    <h4 class="mb-sm-0">Quotations</h4>
 
     <div class="page-title-right">
         <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a href="{{url('dashboard')}}">{{__('Dashboard')}}</a></li>
-            <li class="breadcrumb-item"><a href="{{url('admin/proposals')}}">{{__('Proposals')}}</a></li>
-            <li class="breadcrumb-item">{{__('Proposal Details')}}</li>
+            <li class="breadcrumb-item"><a href="{{url('admin/proposals')}}">{{__('Quotation')}}</a></li>
+            <li class="breadcrumb-item">{{__('Quotation Details')}}</li>
         </ol>
     </div>
 
@@ -153,7 +153,7 @@
                         <div class="invoice-print">
                             <div class="row invoice-title mt-2">
                                 <div class="col-xs-12 col-sm-12 col-nd-6 col-lg-6 col-12">
-                                    <h4>{{__('Proposal')}}</h4>
+                                    <h4>{{__('Quotation')}}</h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-nd-6 col-lg-6 col-12 text-end">
                                     <h4 class="invoice-number">{{ Auth::user()->proposalNumberFormat($proposal->proposal_id) }}</h4>
@@ -276,7 +276,7 @@
                                                 $taxesData=[];
                                             @endphp
 
-                                            @foreach($iteams as $key =>$iteam)
+                                            @foreach($proposal->items as $key =>$iteam)
                                                 @if(!empty($iteam->tax))
                                                     @php
                                                         // $taxes=App\Models\Utility::tax($iteam->tax);
@@ -305,7 +305,8 @@
                                                 @endif
                                                 <tr>
                                                     <td>{{$key+1}}</td>
-                                                    <td>{{!empty($iteam->product)?$iteam->product->name:''}}</td>
+                                                    <td>{{!empty($iteam->product)?$iteam->product->name:''}} 
+                                                    </td>
                                                     <td>{{$iteam->quantity}}</td>
                                                     <td>{{\Auth::user()->priceFormat($iteam->price)}}</td>
                                                     <td>{{\Auth::user()->priceFormat($iteam->discount)}}</td>
@@ -338,7 +339,7 @@
                                                 </tr>
                                             @endforeach
                                             <tfoot>
-                                            <tr>
+                                           {{--  <tr>
                                                 <td></td>
                                                 <td><b>{{__('Total')}}</b></td>
                                                 <td><b>{{$totalQuantity}}</b></td>
@@ -349,7 +350,7 @@
                                                 </td>
                                                 <td></td>
                                                 <td></td>
-                                            </tr>
+                                            </tr> --}}
                                             <tr>
                                                 <td colspan="6"></td>
                                                 <td class="text-end"><b>{{__('Sub Total')}}</b></td>

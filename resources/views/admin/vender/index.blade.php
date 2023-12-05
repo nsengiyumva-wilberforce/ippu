@@ -64,7 +64,7 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                     <th>{{ __('Contact') }}</th>
                                     <th>{{ __('Email') }}</th>
                                     <th>{{ __('Balance') }}</th>
-                                    <th>{{ __('Last Login At') }}</th>
+                                    {{-- <th>{{ __('Last Login At') }}</th> --}}
                                     <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>
@@ -74,10 +74,10 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                         <td class="Id">
                                             @can('show vender')
                                                 <a href="{{ url('vender.show', \Crypt::encrypt($Vender['id'])) }}" class="btn btn-outline-primary">
-                                                    {{ Auth::user()->venderNumberFormat($Vender['vender_id']) }}
+                                                    {{ sprintf('%04d',$Vender['vender_id']) }}
                                                 </a>
                                             @else
-                                                <a href="#" class="btn btn-outline-primary"> {{ Auth::user()->venderNumberFormat($Vender['vender_id']) }}
+                                                <a href="#" class="btn btn-outline-primary"> {{ sprintf('%04d',$Vender['vender_id']) }}
                                                 </a>
                                             @endcan
                                         </td>
@@ -85,9 +85,9 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                         <td>{{ $Vender['contact'] }}</td>
                                         <td>{{ $Vender['email'] }}</td>
                                         <td>{{ \Auth::user()->priceFormat($Vender['balance']) }}</td>
-                                        <td>
+                                        {{-- <td>
                                             {{ !empty($Vender->last_login_at) ? $Vender->last_login_at : '-' }}
-                                        </td>
+                                        </td> --}}
                                         <td class="Action">
                                             <span>
                                                 @if ($Vender['is_active'] == 0)

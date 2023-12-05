@@ -76,7 +76,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo e(url('admin/proposals')); ?>" class="nav-link"> Proposals
+                        <a href="<?php echo e(url('admin/proposals')); ?>" class="nav-link"> Quotations
                         </a>
                     </li>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('invoice')): ?>
@@ -199,10 +199,10 @@
             <div class="collapse menu-dropdown" id="sidebarCommunication">
                 <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                        <a href="<?php echo e(url('communications')); ?>" class="nav-link" data-key="t-sweet-alerts">Mails</a>
+                        <a href="<?php echo e(url('communications')); ?>" class="nav-link" data-key="t-sweet-alerts">General</a>
                     </li>
                      <li class="nav-item">
-                        <a href="<?php echo e(url('communications')); ?>" class="nav-link" data-key="t-sweet-alerts">SMS</a>
+                        <a href="<?php echo e(url('admin/sms')); ?>" class="nav-link" data-key="t-sweet-alerts">SMS</a>
                     </li>
                 </ul>
             </div>

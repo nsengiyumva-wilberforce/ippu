@@ -7,7 +7,7 @@
 @section('breadcrumb')
     {{-- <li class="breadcrumb-item"><a href="{{url('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item"><a href="{{url('vender.index')}}">{{__('Vendor')}}</a></li>
-    <li class="brea --}}dcrumb-item">{{$vendor['name']}}</li>
+    <li class="breadcrumb-item">{{$vendor['name']}}</li>--}}
 
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
     <h4 class="mb-sm-0">Vendors</h4>

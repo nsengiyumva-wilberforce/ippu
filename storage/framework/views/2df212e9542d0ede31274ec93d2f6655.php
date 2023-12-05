@@ -109,6 +109,10 @@
                                         <a href="<?php echo e(url('admin/cpds/attendence/'.$attendence->id.'/Attended')); ?>" class="btn btn-sm btn-danger">
                                             Confirm Attendence
                                         </a>
+
+                                        <?php if($attendence->payment_proof): ?>
+                                        <a href="javascript:void(0);" class="btn-sm btn btn-warning" data-url="<?php echo e(url('admin/view_payment_proof/'.$attendence->payment_proof)); ?>" data-ajax-popup="true" data-bs-toggle="tooltip" title="<?php echo e(__('Payment Proof')); ?>" class="btn btn-primary" data-size="lg">View Payment Proof</a>
+                                        <?php endif; ?>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

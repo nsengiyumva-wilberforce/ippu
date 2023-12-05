@@ -46,7 +46,7 @@
         </a> --}}
 
         {{-- @can('create bill') --}}
-            <a href="{{ url('admin/bills/create/0') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Create')}}">
+            <a href="{{ url('admin/bill/create/0') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Create')}}">
                 <i class="ri-add-fill"></i>
             </a>
         {{-- @endcan --}}

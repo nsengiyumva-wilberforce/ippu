@@ -318,4 +318,9 @@ class CpdsController extends Controller
         $dompdf->render();
         $dompdf->stream('attendence code.pdf');
     }
+
+    public function payment_proof($name)
+    {
+        return view('admin.cpds.payment_proof',compact('name'));
+    }
 }

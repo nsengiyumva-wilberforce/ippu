@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bill;
 use App\Models\Vender;
+use App\Models\CustomField;
+use App\Models\ProductServiceCategory;
+use App\Models\ProductService;
+use App\Models\BillProduct;
+use App\Models\BillPayment;
+use App\Models\Utility;
 
 class BillsController extends Controller
 {
@@ -17,7 +23,7 @@ class BillsController extends Controller
         // if(\Auth::user()->can('manage bill'))
         // {
 
-            $vender = Vender::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $vender = Vender::get()->pluck('name', 'id');
             $vender->prepend('Select Vendor', '');
 
             $status = Bill::$statues;
@@ -51,32 +57,33 @@ class BillsController extends Controller
     public function create($vendorId)
     {
 
-        if(\Auth::user()->can('create bill'))
-        {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'bill')->get();
-            $category     = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 2)->get()->pluck('name', 'id');
+        // if(\Auth::user()->can('create bill'))
+        // {
+            $customFields = CustomField::where('module', '=', 'bill')->get();
+            $category     = ProductServiceCategory::where('type', 2)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
 
             $bill_number = \Auth::user()->billNumberFormat($this->billNumber());
-            $venders     = Vender::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $venders     = Vender::get()->pluck('name', 'id');
             $venders->prepend('Select Vender', '');
 
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::get()->pluck('name', 'id');
             $product_services->prepend('--', '');
 
-            return view('bill.create', compact('venders', 'bill_number', 'product_services', 'category', 'customFields', 'vendorId'));
-        }
-        else
-        {
-            return response()->json(['error' => __('Permission denied.')], 401);
-        }
+            return view('admin.bill.create', compact('venders', 'bill_number', 'product_services', 'category', 'customFields', 'vendorId'));
+        // }
+        // else
+        // {
+        //     return response()->json(['error' => __('Permission denied.')], 401);
+        // }
     }
 
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create bill'))
-        {
+
+        // if(\Auth::user()->can('create bill'))
+        // {
             $validator = \Validator::make(
                 $request->all(), [
                                    'vender_id' => 'required',
@@ -92,6 +99,7 @@ class BillsController extends Controller
 
                 return redirect()->back()->with('error', $messages->first());
             }
+
             $bill            = new Bill();
             $bill->bill_id   = $this->billNumber();
             $bill->vender_id = $request->vender_id;;
@@ -112,7 +120,7 @@ class BillsController extends Controller
                 $billProduct->bill_id     = $bill->id;
                 $billProduct->product_id  = $products[$i]['item'];
                 $billProduct->quantity    = $products[$i]['quantity'];
-                $billProduct->tax         = $products[$i]['tax'];
+                $billProduct->tax         = ($products[$i]['tax']) ?:0;
 //                $billProduct->discount    = isset($products[$i]['discount']) ? $products[$i]['discount'] : 0;
                 $billProduct->discount    = $products[$i]['discount'];
                 $billProduct->price       = $products[$i]['price'];
@@ -156,12 +164,12 @@ class BillsController extends Controller
 
             activity()->performedOn($bill)->log('Created Bill with ID:'.$bill->id);
 
-            return redirect()->route('bill.index', $bill->id)->with('success', __('Bill successfully created.'));
-        }
-        else
-        {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
+            return redirect('admin/bills/'.$bill->id)->with('success', __('Bill successfully created.'));
+        // }
+        // else
+        // {
+        //     return redirect()->back()->with('error', __('Permission denied.'));
+        // }
     }
 
     function venderNumber()
@@ -175,16 +183,16 @@ class BillsController extends Controller
         return $latest->customer_id + 1;
     }
 
-    public function show($ids)
+    public function show($id)
     {
 
-        if(\Auth::user()->can('show bill'))
-        {
-            $id   = Crypt::decrypt($ids);
+        // if(\Auth::user()->can('show bill'))
+        // {
+            // $id   = Crypt::decrypt($ids);
             $bill = Bill::find($id);
 
-            if($bill->created_by == \Auth::user()->creatorId())
-            {
+            // if($bill->created_by == \Auth::user()->creatorId())
+            // {
 
                 $billPayment = BillPayment::where('bill_id', $bill->id)->first();
                 $vendor      = $bill->vender;
@@ -193,17 +201,17 @@ class BillsController extends Controller
                 $bill->customField = CustomField::getData($bill, 'bill');
                 $customFields      = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'bill')->get();
 
-                return view('bill.view', compact('bill', 'vendor', 'iteams', 'billPayment', 'customFields'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission denied.'));
-            }
-        }
-        else
-        {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
+                return view('admin.bill.view', compact('bill', 'vendor', 'iteams', 'billPayment', 'customFields'));
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission denied.'));
+            // }
+        // }
+        // else
+        // {
+        //     return redirect()->back()->with('error', __('Permission denied.'));
+        // }
     }
 
 
@@ -357,7 +365,7 @@ class BillsController extends Controller
 
     function billNumber()
     {
-        $latest = Bill::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Bill::latest()->first();
         if(!$latest)
         {
             return 1;
@@ -713,14 +721,13 @@ class BillsController extends Controller
     public function vender(Request $request)
     {
         $vender = Vender::where('id', '=', $request->id)->first();
-
-        return view('bill.vender_detail', compact('vender'));
+        return view('admin.bill.vender_detail', compact('vender'));
     }
 
 
     public function venderBillSend($bill_id)
     {
-        return view('vender.bill_send', compact('bill_id'));
+        return view('admin.vender.bill_send', compact('bill_id'));
     }
 
     public function venderBillSendMail(Request $request, $bill_id)

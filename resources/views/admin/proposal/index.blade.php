@@ -7,12 +7,12 @@
     <li class="breadcrumb-item">{{__('Proposal')}}</li> --}}
 
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-    <h4 class="mb-sm-0">Proposals</h4>
+    <h4 class="mb-sm-0">Quotations</h4>
 
     <div class="page-title-right">
         <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a href="{{url('dashboard')}}">{{__('Dashboard')}}</a></li>
-            <li class="breadcrumb-item">Proposals</li>
+            <li class="breadcrumb-item">Quotations</li>
         </ol>
     </div>
 
@@ -49,7 +49,7 @@
 
         {{-- @can('create proposal') --}}
             <a href="{{ url('admin/proposals/create',0) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Create')}}">
-                <i class="ri-add-fill"></i> Create Proposal
+                <i class="ri-add-fill"></i> Create Quotations
             </a>
         {{-- @endcan --}}
     </div>
@@ -111,7 +111,7 @@
                         <table class="table datatable">
                             <thead>
                             <tr>
-                                <th> {{__('Proposal')}}</th>
+                                <th> {{__('Quote No.')}}</th>
 {{--                                @if(!\Auth::guard('customer')->check())--}}
 {{--                                    <th> {{__('Customer')}}</th>--}}
 {{--                                @endif--}}
@@ -133,7 +133,7 @@
                             @foreach ($proposals as $proposal)
                                 <tr class="font-style">
                                     <td class="Id">
-                                        <a href="{{ url('admin/proposals',\Crypt::encrypt($proposal->id)) }}" class="btn btn-outline-primary">{{ AUth::user()->proposalNumberFormat($proposal->proposal_id) }}
+                                        <a href="{{ url('admin/proposals',\Crypt::encrypt($proposal->id)) }}" class="btn btn-outline-primary">{{ Auth::user()->proposalNumberFormat($proposal->proposal_id) }}
                                         </a>
                                     </td>
 
@@ -196,7 +196,7 @@
                                             {{-- @endcan --}}
                                             {{-- @can('edit proposal') --}}
                                                 <div class="action-btn bg-primary ms-2">
-                                                    <a href="{{ url('admin/proposals/'.\Crypt::encrypt($proposal->id.'/edit')) }}" class="mx-3 btn btn-sm  align-items-center" data-bs-toggle="tooltip" title="{{__('Edit')}}" title="{{__('Edit')}}">
+                                                    <a href="{{ url('admin/proposals/'.$proposal->id.'/edit') }}" class="mx-3 btn btn-sm  align-items-center" data-bs-toggle="tooltip" title="{{__('Edit')}}" title="{{__('Edit')}}">
                                                         <i class="las la-edit text-white"></i>
                                                     </a>
                                                 </div>

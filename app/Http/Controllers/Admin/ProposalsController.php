@@ -21,12 +21,12 @@ class ProposalsController extends Controller
         // if(\Auth::user()->can('manage proposal'))
         // {
 
-            $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customer = Customer::get()->pluck('name', 'id');
             $customer->prepend('All', '');
 
             $status = Proposal::$statues;
 
-            $query = Proposal::where('created_by', '=', \Auth::user()->creatorId());
+            $query = Proposal::query();
 
             if(!empty($request->customer))
             {
@@ -56,13 +56,13 @@ class ProposalsController extends Controller
     {
         // if(\Auth::user()->can('create proposal'))
         // {
-            $customFields    = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
+            $customFields    = CustomField::where('module', '=', 'proposal')->get();
             $proposal_number = \Auth::user()->proposalNumberFormat($this->proposalNumber());
             $customers       = Customer::get()->pluck('name', 'id');
             $customers->prepend('Select Customer', '');
-            $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
+            $category = ProductServiceCategory::where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::get()->pluck('name', 'id');
             $product_services->prepend('--', '');
 
             return view('admin.proposal.create', compact('customers', 'proposal_number', 'product_services', 'category', 'customFields', 'customerId'));
@@ -171,27 +171,27 @@ class ProposalsController extends Controller
         // }
     }
 
-    public function edit($ids)
+    public function edit($id)
     {
 
         // if(\Auth::user()->can('edit proposal'))
         // {
-            $id              = Crypt::decrypt($ids);
+            // $id              = Crypt::decrypt($ids);
             $proposal        = Proposal::find($id);
             $proposal_number = \Auth::user()->proposalNumberFormat($proposal->proposal_id);
-            $customers       = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $category        = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
+            $customers       = Customer::get()->pluck('name', 'id');
+            $category        = ProductServiceCategory::where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
-            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services = ProductService::get()->pluck('name', 'id');
             $proposal->customField = CustomField::getData($proposal, 'proposal');
-            $customFields          = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
+            $customFields          = CustomField::where('module', '=', 'proposal')->get();
 
             $items = [];
             foreach($proposal->items as $proposalItem)
             {
                 $itemAmount               = $proposalItem->quantity * $proposalItem->price;
                 $proposalItem->itemAmount = $itemAmount;
-                $proposalItem->taxes      = Utility::tax($proposalItem->tax);
+                $proposalItem->taxes      = \App\Models\Utility::tax($proposalItem->tax);
                 $items[]                  = $proposalItem;
             }
 
@@ -207,8 +207,8 @@ class ProposalsController extends Controller
     {
         if(\Auth::user()->can('edit proposal'))
         {
-            if($proposal->created_by == \Auth::user()->creatorId())
-            {
+            // if($proposal->created_by == \Auth::user()->creatorId())
+            // {
                 $validator = \Validator::make(
                     $request->all(), [
                                        'customer_id' => 'required',
@@ -257,11 +257,11 @@ class ProposalsController extends Controller
 
                 return redirect()->route('proposal.index', $proposal->id)->with('success', __('Proposal successfully updated.'));
 
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission denied.'));
+            // }
         }
         else
         {
@@ -271,7 +271,7 @@ class ProposalsController extends Controller
 
     function proposalNumber()
     {
-        $latest = Proposal::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        $latest = Proposal::latest()->first();
         if(!$latest)
         {
             return 1;
@@ -287,21 +287,21 @@ class ProposalsController extends Controller
             $id       = \Crypt::decrypt($ids);
             $proposal = Proposal::find($id);
 
-            if($proposal->created_by == \Auth::user()->creatorId())
-            {
+            // if($proposal->created_by == \Auth::user()->creatorId())
+            // {
                 $customer = $proposal->customer;
                 $iteams   = $proposal->items;
                 $status   = Proposal::$statues;
 
                 $proposal->customField = CustomField::getData($proposal, 'proposal');
-                $customFields          = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
+                $customFields          = CustomField::where('module', '=', 'proposal')->get();
 
                 return view('admin.proposal.view', compact('proposal', 'customer', 'iteams', 'status', 'customFields'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission denied.'));
+            // }
         // }
         // else
         // {
@@ -313,17 +313,17 @@ class ProposalsController extends Controller
     {
         if(\Auth::user()->can('delete proposal'))
         {
-            if($proposal->created_by == \Auth::user()->creatorId())
-            {
+            // if($proposal->created_by == \Auth::user()->creatorId())
+            // {
                 $proposal->delete();
                 ProposalProduct::where('proposal_id', '=', $proposal->id)->delete();
 
                 return redirect()->route('proposal.index')->with('success', __('Proposal successfully deleted.'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission denied.'));
+            // }
         }
         else
         {
@@ -353,7 +353,7 @@ class ProposalsController extends Controller
 
             $status = Proposal::$statues;
 
-            $query = Proposal::where('customer_id', '=', \Auth::user()->id)->where('status', '!=', '0')->where('created_by', \Auth::user()->creatorId());
+            $query = Proposal::where('status', '!=', '0')->where('created_by', \Auth::user()->creatorId());
 
             if(!empty($request->issue_date))
             {
@@ -381,17 +381,17 @@ class ProposalsController extends Controller
         {
             $proposal_id = \Crypt::decrypt($ids);
             $proposal    = Proposal::where('id', $proposal_id)->first();
-            if($proposal->created_by == \Auth::user()->creatorId())
-            {
+            // if($proposal->created_by == \Auth::user()->creatorId())
+            // {
                 $customer = $proposal->customer;
                 $iteams   = $proposal->items;
 
                 return view('proposal.view', compact('proposal', 'customer', 'iteams'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission denied.'));
+            // }
         }
         else
         {

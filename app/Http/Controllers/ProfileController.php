@@ -70,7 +70,7 @@ class ProfileController extends Controller
             'nok_name' => 'required',
             'nok_phone_no' => 'required'
         ]);
-        
+
         $user = User::find(\Auth::user()->id);
         $user->name = $request->name;
         $user->gender = $request->gender;
@@ -82,6 +82,24 @@ class ProfileController extends Controller
         $user->nok_name = $request->nok_name;
         $user->nok_address = $request->nok_email;
         $user->nok_phone_no = $request->nok_phone_no;
+
+        if ($request->hasFile('profile_pic')) {
+            $file = $request->file('profile_pic');
+            $extension = $file->getClientOriginalExtension();
+
+            $filename = time().rand(100,1000).'.'.$extension;
+
+            $storage = \Storage::disk('public')->putFileAs(
+                        'profiles/',
+                        $file,
+                        $filename);
+
+            if (!$storage) {
+                return response()->json(['message' => 'Unable to upload profile pic!']);
+            }else{
+                $user->profile_pic = $filename;
+            }
+        }
         $user->save();
 
         return redirect('profile')->with('success','Profile Details have been updated!');

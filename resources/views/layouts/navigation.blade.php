@@ -76,7 +76,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('admin/proposals') }}" class="nav-link"> Proposals
+                        <a href="{{ url('admin/proposals') }}" class="nav-link"> Quotations
                         </a>
                     </li>
                     @can('invoice')
@@ -365,10 +365,10 @@
             <div class="collapse menu-dropdown" id="sidebarCommunication">
                 <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                        <a href="{{ url('communications') }}" class="nav-link" data-key="t-sweet-alerts">Mails</a>
+                        <a href="{{ url('communications') }}" class="nav-link" data-key="t-sweet-alerts">General</a>
                     </li>
                      <li class="nav-item">
-                        <a href="{{ url('communications') }}" class="nav-link" data-key="t-sweet-alerts">SMS</a>
+                        <a href="{{ url('admin/sms') }}" class="nav-link" data-key="t-sweet-alerts">SMS</a>
                     </li>
                 </ul>
             </div>
