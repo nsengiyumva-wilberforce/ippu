@@ -16,7 +16,7 @@ use App\Http\Controllers\API\UserFcmDeviceTokenController;
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
-    Route::post('logout', 'logout');
+    Route::post('logout/{user}', 'logout');
 });
 Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
 Route::get('education-background/{userId}', [EducationBackgroundController::class, 'index']);
