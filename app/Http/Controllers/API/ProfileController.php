@@ -14,25 +14,29 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $resource = Auth::user();
-         // Check if the resource exists
-         if (!$resource) {
-            return response()->json(['message' => 'Resource not found'], 404);
+        // Retrieve the authenticated user
+        $user = Auth::user();
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
         }
 
         // Check if the user has a latest membership
-        if ($resource->latestMembership) {
-            // If a latest membership is found, set the subscription_status field
-            $resource->subscription_status = $resource->latestMembership->status;
-        } else {
-            // If the user has no subscription, set the subscription_status field to false
-            $resource->subscription_status = false;
-        }
+        $latestMembership = $user->latestMembership;
+
+        // Set the subscription status based on the presence of a latest membership
+        $subscriptionStatus = $latestMembership ? $latestMembership->status : false;
+
+        // Update the user's subscription_status field
+        $user->subscription_status = $subscriptionStatus;
+
         return response()->json([
-            'message' => 'Resource retrieved successfully',
-            'data' => $resource
+            'message' => 'User retrieved successfully',
+            'data' => $user
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

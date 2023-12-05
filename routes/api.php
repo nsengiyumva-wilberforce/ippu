@@ -44,7 +44,6 @@ Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'ce
 Route::apiResource('jobs', JobsController::class)->only(['index', 'show']);
 
 //profile routes
-Route::apiResource('profile', ProfileController::class)->only(['index', 'update', 'show']);
 Route::delete('profile/remove/{userId}', [ProfileController::class, 'delete_my_account']);
 Route::post('profile/verify-email', [AuthController::class, 'verifyEmail']);
 Route::post('profile/verify-password-reset-email', [AuthController::class, 'verifyPasswordResetEmail']);
@@ -63,6 +62,7 @@ Route::post('fcm-device-token', [UserFcmDeviceTokenController::class, 'store']);
 Route::post('send-notification', [UserFcmDeviceTokenController::class, 'sendNotification']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::apiResource('profile', ProfileController::class)->only(['index', 'update', 'show']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
