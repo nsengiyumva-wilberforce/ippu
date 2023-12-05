@@ -16,7 +16,6 @@ use App\Http\Controllers\API\UserFcmDeviceTokenController;
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
-    Route::post('logout', 'logout');
 });
 Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
 Route::get('education-background/{userId}', [EducationBackgroundController::class, 'index']);
@@ -62,4 +61,8 @@ Route::post('mark-as-read', [CommunicationController::class, 'markAsRead']);
 //fcm device token routes
 Route::post('fcm-device-token', [UserFcmDeviceTokenController::class, 'store']);
 Route::post('send-notification', [UserFcmDeviceTokenController::class, 'sendNotification']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
