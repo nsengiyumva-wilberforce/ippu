@@ -239,4 +239,37 @@ class MembersController extends Controller
 
          return json_encode(['code'=>$code,'message'=>$message]);
     }
+
+    public function update_member_details($member_id)
+    {
+        $member = \App\Models\User::find($member_id);
+
+        $account_types = \App\Models\AccountType::where('is_active',1)->get();
+
+        return view('admin.members.update', compact('member','account_types'));
+    }
+
+    public function post_member_details(Request $request)
+    {
+        $request->validate([
+            'member' => 'required',
+            'name' => 'required',
+            'account_type' => 'required',
+            'gender' => 'required',
+        ]);
+
+        try{
+            $member = \App\Models\User::find($request->member);
+            $member->name = $request->name;
+            $member->membership_number = $request->membership_number;
+            $member->account_type_id = $request->account_type;
+            $member->gender = $request->gender;
+            $member->email = $request->email;
+            $member->save();
+
+            return redirect()->back()->with('success','Member details have been updated!');
+        }catch(\Throwable $ex){
+            return redirect()->back()->withErrors(['error' => $ex->getMessage()])->withInput();
+        }
+    }
 }

@@ -77,6 +77,9 @@
 				<a href="javascript:void(0);" class="btn btn-primary" title="{{__('Change Account Status')}}" data-bs-toggle="tooltip" data-url="{{ url('admin/change_member_status/'.$member->id) }}" data-ajax-popup="true" data-size="lg">Unsuspend Account</a> 
 				@endif
 			</div>
+			<div>
+				<a href="javascript:void(0);" class="btn btn-danger" title="{{__('Update Member Details')}}" data-bs-toggle="tooltip" data-url="{{ url('admin/update_member_details/'.$member->id) }}" data-ajax-popup="true" data-size="md">Update Member Details</a> 
+			</div>
 		</div>
 	</div>
 	<div class="col-xl-8">
