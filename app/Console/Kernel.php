@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
             $today = Carbon::now();
             $users = User::where('dob', $today->format('Y-m-d'))->get();
             Notification::send($users, new BirthdayWish());
-        })->daily();
+        })->everyMinute();
     }
 
     /**
