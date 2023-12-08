@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
 
             Notification::send($users, new BirthdayWish());
 
-        })->everyMinute();
+        })->daily();
     }
 
     /**
