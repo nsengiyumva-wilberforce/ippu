@@ -19,8 +19,12 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
             $today = Carbon::now();
-            $users = User::where('dob', $today->format('Y-m-d'))->get();
+            $users = User::whereMonth('dob', $today->month)
+                          ->whereDay('dob', $today->day)
+                          ->get();
+
             Notification::send($users, new BirthdayWish());
+
         })->everyMinute();
     }
 
