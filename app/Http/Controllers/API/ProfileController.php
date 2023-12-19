@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
-use Illuminate\Database\QueryException;
 
 class ProfileController extends Controller
 {
@@ -215,27 +214,10 @@ class ProfileController extends Controller
         // Update avatar field in the database with the full URL
         $user->profile_pic = url('images/' . $imageName);
 
-        try {
-            // Update profile_pic field in the database
-            $update = $user->update(['profile_pic' => $user->profile_pic]);
-
-            // Check if update was successful
-            if (!$update) {
-                // Handle the case where the update was not successful
-                return response()->json([
-                    'message' => 'Failed to update profile photo',
-                ], 500);
-            }
-        } catch (QueryException $exception) {
-            // Handle the exception
-            return response()->json([
-                'message' => 'Error updating profile photo: ' . $exception->getMessage(),
-            ], 500);
-        }
-
+        $user->save();
         return response()->json([
             'message' => 'Profile photo updated successfully',
-            'profile_photo_path' => $user->profile_pic,
+            'profile_photo_path' => $user->profile_pic
         ], 200);
     }
 
