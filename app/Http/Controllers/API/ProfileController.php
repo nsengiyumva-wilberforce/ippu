@@ -211,13 +211,22 @@ class ProfileController extends Controller
         $imageName = time() . '.' . $image->extension();
         $image->move(public_path('images'), $imageName);
 
-        $user->update([
-            'profile_pic' => url('images/' . $imageName),
-        ]);
-        
+        // Update avatar field in the database with the full URL
+        $user->profile_pic = url('images/' . $imageName);
+
+        //update profile_pic field in the database
+        $update = $user->update(['profile_pic' => $user->profile_pic]);
+
+        //check if update was successful
+        if (!$update) {
+            return response()->json([
+                'message' => 'Profile photo update failed',
+            ], 500);
+        }
+
         return response()->json([
             'message' => 'Profile photo updated successfully',
-            'profile_photo_path' => $user->profile_pic
+            'profile_photo_path' => $user->profile_pic,
         ], 200);
     }
 
