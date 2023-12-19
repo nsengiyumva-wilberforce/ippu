@@ -214,7 +214,7 @@ class ProfileController extends Controller
         // Update avatar field in the database with the full URL
         $user->profile_pic = url('images/' . $imageName);
 
-        $user->save();
+        $user->update();
         return response()->json([
             'message' => 'Profile photo updated successfully',
             'profile_photo_path' => $user->profile_pic
