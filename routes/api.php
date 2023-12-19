@@ -50,7 +50,6 @@ Route::post('profile/verify-password-reset-email', [AuthController::class, 'veri
 Route::post('profile/resend-verification-code', [AuthController::class, 'resendVerificationCode']);
 Route::post('profile/reset-password-code', [AuthController::class, 'resetPasswordCode']);
 Route::post('profile/reset-password', [AuthController::class, 'resetPassword']);
-Route::post('update-profile-photo/{user}', [ProfileController::class, 'updateProfilePhoto']);
 Route::post('subscribe', [ProfileController::class, 'subscribe']);
 
 //communication routes
@@ -62,6 +61,7 @@ Route::post('fcm-device-token', [UserFcmDeviceTokenController::class, 'store']);
 Route::post('send-notification', [UserFcmDeviceTokenController::class, 'sendNotification']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('update-profile-photo', [ProfileController::class, 'updateProfilePhoto']);
     Route::apiResource('profile', ProfileController::class)->only(['index', 'update', 'show']);
     Route::post('logout', [AuthController::class, 'logout']);
 });

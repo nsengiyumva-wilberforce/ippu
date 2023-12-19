@@ -190,15 +190,10 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateProfilePhoto(User $user)
+    public function updateProfilePhoto()
     {
-        // Check if the user exists
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found',
-            ], 404);
-        }
-
+        //get the authenticated user
+        $user = Auth::user();
         // Validate the request
         request()->validate([
             'profile_photo_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
