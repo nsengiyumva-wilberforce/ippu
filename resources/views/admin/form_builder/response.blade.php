@@ -1,15 +1,10 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page-title')
     {{ $form->name.__("'s Response") }}
 @endsection
 @push('script-page')
 
 @endpush
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('form_builder.index')}}">{{__('Form Builder')}}</a></li>
-    <li class="breadcrumb-item">{{__('Response')}}</li>
-@endsection
 @section('breadcrumb')
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
     <h4 class="mb-sm-0">Form Builder</h4>

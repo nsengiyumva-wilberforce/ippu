@@ -2,33 +2,6 @@
     <?php echo e(__('Manage Form Builder')); ?>
 
 <?php $__env->stopSection(); ?>
-<?php $__env->startPush('script-page'); ?>
-    <script>
-        $(document).ready(function () {
-            $('.cp_link').on('click', function () {
-                var value = $(this).attr('data-link');
-                var $temp = $("<input>");
-                $("body").append($temp);
-                $temp.val(value).select();
-                document.execCommand("copy");
-                $temp.remove();
-                show_toastr('success', '<?php echo e(__('Link Copy on Clipboard')); ?>')
-            });
-        });
-
-        $(document).ready(function () {
-            $('.iframe_link').on('click', function () {
-                var value = $(this).attr('data-link');
-                var $temp = $("<input>");
-                $("body").append($temp);
-                $temp.val(value).select();
-                document.execCommand("copy");
-                $temp.remove();
-                show_toastr('success', '<?php echo e(__('Link Copy on Clipboard')); ?>')
-            });
-        });
-    </script>
-<?php $__env->stopPush(); ?>
 <?php $__env->startSection('breadcrumb'); ?>
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
     <h4 class="mb-sm-0">Form Builders</h4>
@@ -41,9 +14,6 @@
     </div>
 
 </div>
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('action-btn'); ?>
-   
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -62,9 +32,9 @@
                             <tr>
                                 <th><?php echo e(__('Name')); ?></th>
                                 <th><?php echo e(__('Response')); ?></th>
-                                <?php if(\Auth::user()->type=='company'): ?>
+                                
                                     <th class="text-end" width="200px"><?php echo e(__('Action')); ?></th>
-                                <?php endif; ?>
+                                
                             </tr>
                             </thead>
                             <tbody>
@@ -102,7 +72,7 @@
 
                                             
                                                 <div class="action-btn bg-warning ms-2">
-                                                    <a href="<?php echo e(url('form_response'.$form->id)); ?>" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="<?php echo e(__('View Response')); ?>"><i class="las la-eye text-white"></i></a>
+                                                    <a href="<?php echo e(url('admin/form_response/'.$form->id)); ?>" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="<?php echo e(__('View Response')); ?>"><i class="las la-eye text-white"></i></a>
                                                 </div>
                                             
                                             
@@ -133,6 +103,33 @@
             </div>
         </div>
     </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('customjs'); ?>
+<script>
+        $(document).ready(function () {
+            $('.cp_link').on('click', function () {
+                var value = $(this).attr('data-link');
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(value).select();
+                document.execCommand("copy");
+                $temp.remove();
+                toast("Link Copy on Clipboard","bg-success")
+            });
+        });
+
+        $(document).ready(function () {
+            $('.iframe_link').on('click', function () {
+                var value = $(this).attr('data-link');
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(value).select();
+                document.execCommand("copy");
+                $temp.remove();
+                toast("Link Copy on Clipboard","bg-success")
+            });
+        });
+    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/ippu.org/resources/views/admin/form_builder/index.blade.php ENDPATH**/ ?>

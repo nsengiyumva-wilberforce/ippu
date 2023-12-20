@@ -67,6 +67,9 @@ Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['aut
 
 Route::get('generate_qr/{type}/{id}', [CpdsController::class,'generate_qr']);
 
+Route::get('/form/{code}', [FormBuildersController::class, 'formView']);
+Route::post('/form_view_store', [FormBuildersController::class, 'formViewStore'])->name('form.view.store');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -136,9 +139,12 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::post('leads_json', [LeadsController::class, 'json']);
     Route::resource('form_builders', FormBuildersController::class);
     Route::get('form_field/{id}', [FormBuildersController::class, 'formFieldBind']);
+    Route::post('/form_field_store/{id}}', [FormBuildersController::class, 'bindStore'])->name('form.bind.store');
     Route::get('form_response/{id}', [FormBuildersController::class, 'viewResponse']);
     Route::get('form_builder/{id}/field', [FormBuildersController::class, 'fieldCreate']);
     Route::post('form_builder/{id}/field', [FormBuildersController::class, 'fieldStore']);
+    Route::get('/form_response/{id}', [FormBuildersController::class, 'viewResponse'])->name('form.response');
+    Route::get('/response/{id}', [FormBuildersController::class, 'responseDetail'])->name('response.detail');
     Route::get('members', [MembersController::class,'index']);
     Route::get('members/{id}', [MembersController::class,'show']);
     Route::get('change_member_status/{member}', [MembersController::class,'change_member_status']);
@@ -232,6 +238,7 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::get('cpds_report',[ReportsController::class,'cpds']);
     Route::get('events_report',[ReportsController::class,'events']);
     Route::get('payments_report',[ReportsController::class,'payments']);
+    Route::get('account_types_report', [ReportsController::class,'account_types']);
 
     Route::get('create_reminder/{type}', [DashboardController::class,'create_reminder']);
     Route::post('send_reminder', [DashboardController::class,'send_reminder']);

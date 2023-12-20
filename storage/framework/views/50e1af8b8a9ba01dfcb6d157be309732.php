@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('content'); ?>
 <div class="row">
 	<div class="col-md-8 col-lg-8 col-xl-8">
@@ -35,11 +36,11 @@
 			<div class="text-end mt-2">
 				<?php if((($event->start_date >= date('Y-m-d')) || ($event->end_date <= date('Y-m-d'))) && is_null($event->attended)): ?>
 				
-				<a href="#"  data-url="<?php echo e(url('attend_event/'.$event->id)); ?>" data-ajax-popup="true" data-bs-toggle="tooltip" title="<?php echo e(__('Attend Event')); ?>" class="btn btn-primary">Attend</a>
+				<a href="#"  data-url="<?php echo e(url('attend_event/'.$event->id)); ?>" data-ajax-popup="true" data-bs-toggle="tooltip" title="<?php echo e(__('Attend Event')); ?>" data-size="lg" class="btn btn-primary">Attend</a>
 				<?php elseif(!is_null($event->attended)): ?>
 				
 				<?php if($event->attended->status != "Pending"): ?>
-				<a href="<?php echo e(url('event_certificate/'.$event->id)); ?>" target="_blank">Certificate</a>
+				<a href="<?php echo e(url('event_certificate/'.$event->id)); ?>" class="btn btn-primary btn-sm" target="_blank">Certificate</a>
 					<a href="<?php echo e(asset('storage/attachments/'.$event->attachment_name)); ?>" class="btn btn-warning btn-sm" download>Download Resource</a>
 				<?php endif; ?>
 				<?php endif; ?>

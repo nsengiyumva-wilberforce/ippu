@@ -2,7 +2,7 @@
 @section('page-title')
     {{__('Quotation Edit')}}
 @endsection
-@push('script-page')
+@section('customjs')
     <script src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
     <script>
@@ -449,7 +449,7 @@
             $(".discount").change();
         });
     </script>
-@endpush
+@endsection
 @section('breadcrumb')
     {{-- <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('proposal.index')}}">{{__('Proposal')}}</a></li>
@@ -470,7 +470,7 @@
 @endsection
 @section('content')
     <div class="row">
-        {{ Form::model($proposal, array('url' => array('admin/proposal', $proposal->id), 'method' => 'PUT','class'=>'w-100')) }}
+        {{ Form::model($proposal, array('url' => array('admin/proposals', $proposal->id), 'method' => 'PUT','class'=>'w-100')) }}
         <div class="col-12">
             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
             <div class="card">

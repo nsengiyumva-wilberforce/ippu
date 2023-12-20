@@ -95,16 +95,6 @@ class ProfileController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'gender' => 'required',
-            'dob' => 'required',
-            'address' => 'required',
-            'phone_no' => 'required',
-            'nok_name' => 'required',
-            'nok_phone_no' => 'required'
-        ]);
-
         $user = User::find($id);
         $user->name = $request->name;
         $user->gender = $request->gender;

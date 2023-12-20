@@ -6,19 +6,14 @@
 
 @endpush
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{url('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{url('admin/form_builder')}}">{{__('Form Builder')}}</a></li>
-    <li class="breadcrumb-item">{{__('Add Field')}}</li>
-@endsection
-@section('breadcrumb')
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
     <h4 class="mb-sm-0">Form Builders</h4>
 
     <div class="page-title-right">
         <ol class="breadcrumb m-0">
-            <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ url('admin/form_builders') }}">Form Builders</a></li>
-            <li class="breadcrumb-item active">Add Field</li>
+            <li class="breadcrumb-item"><a href="{{url('dashboard')}}">{{__('Dashboard')}}</a></li>
+    <li class="breadcrumb-item"><a href="{{url('admin/form_builders')}}">{{__('Form Builder')}}</a></li>
+    <li class="breadcrumb-item">{{__('Add Field')}}</li>
         </ol>
     </div>
 

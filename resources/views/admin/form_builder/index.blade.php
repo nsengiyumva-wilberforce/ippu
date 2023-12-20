@@ -2,33 +2,6 @@
 @section('page-title')
     {{__('Manage Form Builder')}}
 @endsection
-@push('script-page')
-    <script>
-        $(document).ready(function () {
-            $('.cp_link').on('click', function () {
-                var value = $(this).attr('data-link');
-                var $temp = $("<input>");
-                $("body").append($temp);
-                $temp.val(value).select();
-                document.execCommand("copy");
-                $temp.remove();
-                show_toastr('success', '{{__('Link Copy on Clipboard')}}')
-            });
-        });
-
-        $(document).ready(function () {
-            $('.iframe_link').on('click', function () {
-                var value = $(this).attr('data-link');
-                var $temp = $("<input>");
-                $("body").append($temp);
-                $temp.val(value).select();
-                document.execCommand("copy");
-                $temp.remove();
-                show_toastr('success', '{{__('Link Copy on Clipboard')}}')
-            });
-        });
-    </script>
-@endpush
 @section('breadcrumb')
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
     <h4 class="mb-sm-0">Form Builders</h4>
@@ -41,9 +14,6 @@
     </div>
 
 </div>
-@endsection
-@section('action-btn')
-   
 @endsection
 
 @section('content')
@@ -62,9 +32,9 @@
                             <tr>
                                 <th>{{__('Name')}}</th>
                                 <th>{{__('Response')}}</th>
-                                @if(\Auth::user()->type=='company')
+                                {{-- @if(\Auth::user()->type=='company') --}}
                                     <th class="text-end" width="200px">{{__('Action')}}</th>
-                                @endif
+                                {{-- @endif --}}
                             </tr>
                             </thead>
                             <tbody>
@@ -101,7 +71,7 @@
 
                                             {{-- @can('view form response') --}}
                                                 <div class="action-btn bg-warning ms-2">
-                                                    <a href="{{url('form_response'.$form->id)}}" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="{{__('View Response')}}"><i class="las la-eye text-white"></i></a>
+                                                    <a href="{{url('admin/form_response/'.$form->id)}}" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="{{__('View Response')}}"><i class="las la-eye text-white"></i></a>
                                                 </div>
                                             {{-- @endcan --}}
                                             {{-- @can('edit form builder') --}}
@@ -130,4 +100,31 @@
             </div>
         </div>
     </div>
+@endsection
+@section('customjs')
+<script>
+        $(document).ready(function () {
+            $('.cp_link').on('click', function () {
+                var value = $(this).attr('data-link');
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(value).select();
+                document.execCommand("copy");
+                $temp.remove();
+                toast("Link Copy on Clipboard","bg-success")
+            });
+        });
+
+        $(document).ready(function () {
+            $('.iframe_link').on('click', function () {
+                var value = $(this).attr('data-link');
+                var $temp = $("<input>");
+                $("body").append($temp);
+                $temp.val(value).select();
+                document.execCommand("copy");
+                $temp.remove();
+                toast("Link Copy on Clipboard","bg-success")
+            });
+        });
+    </script>
 @endsection

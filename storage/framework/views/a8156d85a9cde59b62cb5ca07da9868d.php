@@ -6,19 +6,14 @@
 
 <?php $__env->stopPush(); ?>
 <?php $__env->startSection('breadcrumb'); ?>
-    <li class="breadcrumb-item"><a href="<?php echo e(url('dashboard')); ?>"><?php echo e(__('Dashboard')); ?></a></li>
-    <li class="breadcrumb-item"><a href="<?php echo e(url('admin/form_builder')); ?>"><?php echo e(__('Form Builder')); ?></a></li>
-    <li class="breadcrumb-item"><?php echo e(__('Add Field')); ?></li>
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('breadcrumb'); ?>
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
     <h4 class="mb-sm-0">Form Builders</h4>
 
     <div class="page-title-right">
         <ol class="breadcrumb m-0">
-            <li class="breadcrumb-item"><a href="<?php echo e(url('dashboard')); ?>">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="<?php echo e(url('admin/form_builders')); ?>">Form Builders</a></li>
-            <li class="breadcrumb-item active">Add Field</li>
+            <li class="breadcrumb-item"><a href="<?php echo e(url('dashboard')); ?>"><?php echo e(__('Dashboard')); ?></a></li>
+    <li class="breadcrumb-item"><a href="<?php echo e(url('admin/form_builders')); ?>"><?php echo e(__('Form Builder')); ?></a></li>
+    <li class="breadcrumb-item"><?php echo e(__('Add Field')); ?></li>
         </ol>
     </div>
 

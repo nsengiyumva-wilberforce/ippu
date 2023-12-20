@@ -35,13 +35,13 @@
 			<div class="text-end mt-2">
 				@if((($event->start_date >= date('Y-m-d')) || ($event->end_date <= date('Y-m-d'))) && is_null($event->attended))
 				{{-- <a href="{{ url('attend_event/'.$event->id) }}" class="btn btn-primary">Attend</a> --}}
-				<a href="#"  data-url="{{ url('attend_event/'.$event->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Attend Event')}}" class="btn btn-primary">Attend</a>
+				<a href="#"  data-url="{{ url('attend_event/'.$event->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Attend Event')}}" data-size="lg" class="btn btn-primary">Attend</a>
 				@elseif(!is_null($event->attended))
 				{{-- <span href="javascript:void(0)" class="btn btn-light btn-sm">
 					Attended
 				</span> --}}
 				@if($event->attended->status != "Pending")
-				<a href="{{ url('event_certificate/'.$event->id) }}" target="_blank">Certificate</a>
+				<a href="{{ url('event_certificate/'.$event->id) }}" class="btn btn-primary btn-sm" target="_blank">Certificate</a>
 					<a href="{{ asset('storage/attachments/'.$event->attachment_name) }}" class="btn btn-warning btn-sm" download>Download Resource</a>
 				@endif
 				@endif

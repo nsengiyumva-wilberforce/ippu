@@ -31,7 +31,7 @@
                         <div class="col-md-6">
                             <div class="form-group" id="customer-box">
                                 {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}
-                                {{ Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>url('admin/proposals/customer'),'required'=>'required')) }}
+                                {{ Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>url('admin/proposal/customer'),'required'=>'required')) }}
                             </div>
 
                             <div id="customer_detail" class="d-none">

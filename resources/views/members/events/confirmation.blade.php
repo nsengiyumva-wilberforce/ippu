@@ -2,7 +2,7 @@
 	@csrf
 	<input type="hidden" name="event_id" value="{{ $event->id }}">
 	<div class="modal-body">
-		@if((\Auth::user()->latestMembership->expiry_date >= date('Y-m-d')))
+		@if((\Auth::user()?->latestMembership?->expiry_date >= date('Y-m-d')))
 			@if($event->member_rate > 0)
 				This event is will cost you {{ number_format($event->member_rate) }}<br>
 				Payment Instructions
@@ -11,7 +11,7 @@
 			@endif
 		@else
 			@if($event->rate > 0)
-				This event is will cost you {{ number_format($event->member_rate) }}<br>
+				This event is will cost you {{ ($event?->member_rate) }}<br>
 				Payment Instructions
 			@else
 				Event Instructions

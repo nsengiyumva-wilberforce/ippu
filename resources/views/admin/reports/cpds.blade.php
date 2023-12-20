@@ -14,13 +14,20 @@
 @endsection
 @section('content')
 <form class="row mb-3">
-	<div class="col-md-4">
-		<div class="form-group">
+	<div class="col-md-8 row">
+		<div class="form-group col-md-6">
 			<select class="form-control" name="cpd">
 				<option value="*" {{ (is_null(request('cpd'))?'': ((request('cpd') == '*') ? 'selected' : ''))  }}>All CPDs</option>
 				@foreach($cpds as $cpd)
 					<option value="{{ $cpd->id }}" {{ (is_null(request('cpd'))?'': ((request('cpd') == $cpd->id) ? 'selected' : ''))  }}>{{ $cpd->topic }}</option>
 				@endforeach
+			</select>
+		</div>
+		<div class="form-group col-md-6">
+			<select class="form-control" name="status">
+				<option value="">Status</option>
+				<option value="Attended" {{ (is_null(request('status'))?'': ((request('status') == "Attended") ? 'selected' : ''))  }}>Attended</option>
+				<option value="Pending" {{ (is_null(request('status'))?'': ((request('status') == "Pending") ? 'selected' : ''))  }}>Pending</option>
 			</select>
 		</div>
 	</div>

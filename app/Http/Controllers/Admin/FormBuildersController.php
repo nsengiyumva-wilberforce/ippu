@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\FormBuilder;
 use App\Models\FormField;
+use App\Models\FormFieldResponse;
+use App\Models\User;
+use App\Models\Pipeline;
+use App\Models\FormResponse;
 use Auth;
 
 class FormBuildersController extends Controller
@@ -68,14 +72,14 @@ class FormBuildersController extends Controller
      */
     public function show(FormBuilder $formBuilder)
     {
-         if($formBuilder->created_by == \Auth::user()->id)
-            {
+         // if($formBuilder->created_by == \Auth::user()->id)
+         //    {
                 return view('admin.form_builder.show', compact('formBuilder'));
-            }
-            else
-            {
-                return response()->json(['error' => __('Permission Denied.')], 401);
-            }
+            // }
+            // else
+            // {
+            //     return response()->json(['error' => __('Permission Denied.')], 401);
+            // }
     }
 
     /**
@@ -83,14 +87,14 @@ class FormBuildersController extends Controller
      */
     public function edit(FormBuilder $formBuilder)
     {
-        if($formBuilder->created_by == Auth::user()->id)
-            {
+        // if($formBuilder->created_by == Auth::user()->id)
+        //     {
                 return view('admin.form_builder.edit', compact('formBuilder'));
-            }
-            else
-            {
-                return response()->json(['error' => __('Permission Denied.')], 401);
-            }
+            // }
+            // else
+            // {
+            //     return response()->json(['error' => __('Permission Denied.')], 401);
+            // }
     }
 
     /**
@@ -101,8 +105,8 @@ class FormBuildersController extends Controller
         $usr = \Auth::user();
         // if($usr->can('edit form builder'))
         // {
-            if($formBuilder->created_by == $usr->id)
-            {
+            // if($formBuilder->created_by == $usr->id)
+            // {
                 $validator = \Validator::make(
                     $request->all(), [
                                        'name' => 'required',
@@ -124,11 +128,11 @@ class FormBuildersController extends Controller
                 activity()->performedOn($formBuilder)->log('updated form builder:'.$formBuilder->name);
 
                 return redirect()->back()->with('success', __('Form successfully updated.'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission Denied.'));
+            // }
         // }
         // else
         // {
@@ -151,24 +155,24 @@ class FormBuildersController extends Controller
         // {
             $form = FormBuilder::find($form_id);
 
-            if($form->created_by == $usr->id)
-            {
+            // if($form->created_by == $usr->id)
+            // {
                 $types = $form->form_field->pluck('name', 'id');
 
                 $formField = FormFieldResponse::where('form_id', '=', $form_id)->first();
 
                 // Get Users
-                $users = User::where('created_by', '=', $usr->id)->where('type', '!=', 'client')->get()->pluck('name', 'id');
+                $users = User::get()->pluck('name', 'id');
 
                 // Pipelines
                 $pipelines = Pipeline::where('created_by', '=', $usr->id)->get()->pluck('name', 'id');
 
                 return view('admin.form_builder.form_field', compact('form', 'types', 'formField', 'users', 'pipelines'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission Denied.'));
+            // }
         // }
         // else
         // {
@@ -182,14 +186,14 @@ class FormBuildersController extends Controller
         // if(Auth::user()->can('view form response'))
         // {
             $form = FormBuilder::find($form_id);
-            if($form->created_by == \Auth::user()->id)
-            {
-                return view('form_builder.response', compact('form'));
-            }
-            else
-            {
-                return response()->json(['error' => __('Permission Denied . ')], 401);
-            }
+            // if($form->created_by == \Auth::user()->id)
+            // {
+                return view('admin.form_builder.response', compact('form'));
+            // }
+            // else
+            // {
+            //     return response()->json(['error' => __('Permission Denied . ')], 401);
+            // }
         // }
         // else
         // {
@@ -204,16 +208,16 @@ class FormBuildersController extends Controller
         // {
             $formResponse = FormResponse::find($response_id);
             $form         = FormBuilder::find($formResponse->form_id);
-            if($form->created_by == \Auth::user()->id)
-            {
+            // if($form->created_by == \Auth::user()->id)
+            // {
                 $response = json_decode($formResponse->response, true);
 
                 return view('form_builder.response_detail', compact('response'));
-            }
-            else
-            {
-                return response()->json(['error' => __('Permission Denied . ')], 401);
-            }
+            // }
+            // else
+            // {
+            //     return response()->json(['error' => __('Permission Denied . ')], 401);
+            // }
         // }
         // else
         // {
@@ -235,11 +239,11 @@ class FormBuildersController extends Controller
                 {
                     $objFields = $form->form_field;
 
-                    return view('form_builder.form_view', compact('objFields', 'code', 'form'));
+                    return view('admin.form_builder.form_view', compact('objFields', 'code', 'form'));
                 }
                 else
                 {
-                    return view('form_builder.form_view', compact('code', 'form'));
+                    return view('admin.form_builder.form_view', compact('code', 'form'));
                 }
             }
             else
@@ -335,14 +339,14 @@ class FormBuildersController extends Controller
     {
 
         $usr = Auth::user();
-        if($usr->type == 'company')
-        {
+        // if($usr->type == 'company')
+        // {
             $form                 = FormBuilder::find($id);
             $form->is_lead_active = $request->is_lead_active;
             $form->save();
 
-            if($form->created_by == $usr->creatorId())
-            {
+            // if($form->created_by == $usr->creatorId())
+            // {
                 if($form->is_lead_active == 1)
                 {
                     $validator = \Validator::make(
@@ -397,16 +401,16 @@ class FormBuildersController extends Controller
                 }
 
                 return redirect()->back()->with('success', __('Setting saved successfully!'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
-        }
-        else
-        {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission Denied.'));
+            // }
+        // }
+        // else
+        // {
+        //     return redirect()->back()->with('error', __('Permission denied.'));
+        // }
     }
 
     // Field curd
@@ -416,16 +420,16 @@ class FormBuildersController extends Controller
         // if($usr->can('create form field'))
         // {
             $formbuilder = FormBuilder::find($id);
-            if($formbuilder->created_by == $usr->id)
-            {
+            // if($formbuilder->created_by == $usr->id)
+            // {
                 $types = FormBuilder::$fieldTypes;
 
                 return view('admin.form_builder.field_create', compact('types', 'formbuilder'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission Denied.'));
+            // }
         // }
         // else
         // {
@@ -440,8 +444,8 @@ class FormBuildersController extends Controller
         // {
         \DB::beginTransaction();
             $formbuilder = FormBuilder::find($id);
-            if($formbuilder->created_by == $usr->id)
-            {
+            // if($formbuilder->created_by == $usr->id)
+            // {
                 $names = $request->name;
                 $types = $request->type;
 
@@ -462,11 +466,11 @@ class FormBuildersController extends Controller
                 }
                 \DB::commit();
                 return redirect()->back()->with('success', __('Field successfully created.'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission Denied.'));
+            // }
         // }
         // else
         // {
@@ -477,11 +481,11 @@ class FormBuildersController extends Controller
     public function fieldEdit($id, $field_id)
     {
         $usr = \Auth::user();
-        if($usr->can('edit form field'))
-        {
+        // if($usr->can('edit form field'))
+        // {
             $form = FormBuilder::find($id);
-            if($form->created_by == $usr->creatorId())
-            {
+            // if($form->created_by == $usr->creatorId())
+            // {
                 $form_field = FormField::find($field_id);
 
                 if(!empty($form_field))
@@ -494,26 +498,26 @@ class FormBuildersController extends Controller
                 {
                     return redirect()->back()->with('error', __('Field not found.'));
                 }
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
-        }
-        else
-        {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission Denied.'));
+            // }
+        // }
+        // else
+        // {
+        //     return redirect()->back()->with('error', __('Permission denied.'));
+        // }
     }
 
     public function fieldUpdate($id, $field_id, Request $request)
     {
         $usr = \Auth::user();
-        if($usr->can('edit form field'))
-        {
+        // if($usr->can('edit form field'))
+        // {
             $form = FormBuilder::find($id);
-            if($form->created_by == $usr->creatorId())
-            {
+            // if($form->created_by == $usr->creatorId())
+            // {
                 $validator = \Validator::make(
                     $request->all(), [
                                        'name' => 'required',
@@ -535,16 +539,16 @@ class FormBuildersController extends Controller
                 );
 
                 return redirect()->back()->with('success', __('Form successfully updated.'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
-        }
-        else
-        {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Permission Denied.'));
+            // }
+        // }
+        // else
+        // {
+        //     return redirect()->back()->with('error', __('Permission denied.'));
+        // }
     }
 
 }

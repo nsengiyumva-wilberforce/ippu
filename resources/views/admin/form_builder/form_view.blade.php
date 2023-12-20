@@ -1,13 +1,13 @@
 @php
     $logo=asset(Storage::url('uploads/logo/'));
-    $company_favicon=Utility::getValByName('company_favicon');
-    $favicon=Utility::getValByName('company_favicon');
+    $company_favicon=\App\Models\Utility::getValByName('company_favicon');
+    $favicon=\App\Models\Utility::getValByName('company_favicon');
 @endphp
 
 <html lang="en">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
 <head>
-    <title>{{(Utility::getValByName('title_text')) ? Utility::getValByName('title_text') : config('app.name', 'ERPGO')}} - Form Builder</title>
+    <title>{{(\App\Models\Utility::getValByName('title_text')) ? \App\Models\Utility::getValByName('title_text') : config('app.name', 'IPPU')}} - Form Builder</title>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/customizer.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" id="main-style-link">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
 </head>
 
@@ -46,10 +48,8 @@
             <div class="w-100">
                 <div class="row justify-content-center">
                     <div class="col-sm-8 col-lg-5">
-                        <div class="row justify-content-center mb-3">
-                            <a class="navbar-brand" href="#">
-                                <img src="{{asset(Storage::url('uploads/logo/logo-dark.png'))}}" class="navbar-brand-img big-logo">
-                            </a>
+                        <div class="text-center mb-3">
+                            <h5 class="fs-22 fw-18">IPPU</h5>
                         </div>
                         <div class="card shadow zindex-100 mb-0">
                             @if($form->is_active == 1)
@@ -105,7 +105,7 @@
             </div>
         </div>
     </div>
-    @include('partials.admin.footer')
+    {{-- @include('partials.admin.footer') --}}
 </body>
 
 </html>

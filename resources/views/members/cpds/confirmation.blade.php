@@ -2,16 +2,16 @@
 	@csrf
 	<input type="hidden" name="cpd_id" value="{{ $event->id }}">
 	<div class="modal-body">
-		@if((\Auth::user()->latestMembership->expiry_date >= date('Y-m-d')))
-			@if($event->member_rate > 0)
-				This CPD is will cost you {{ number_format($event->member_rate) }}<br>
+		@if((\Auth::user()?->latestMembership?->expiry_date >= date('Y-m-d')))
+			@if($event?->member_rate > 0)
+				This CPD is will cost you {{ ($event->member_rate) }}<br>
 				Payment Instructions
 			@else
 				CPD Instructions
 			@endif
 		@else
-			@if($event->rate > 0)
-				This CPD is will cost you {{ number_format($event->member_rate) }}<br>
+			@if($event?->rate > 0)
+				This CPD is will cost you {{ ($event?->member_rate) }}<br>
 				Payment Instructions
 			@else
 				CPD Instructions

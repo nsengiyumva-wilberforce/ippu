@@ -9,6 +9,7 @@ use App\Models\Attendence;
 use App\Models\Cpd;
 use App\Models\Event;
 use App\Models\Payment;
+use App\Models\AccountType;
 
 class ReportsController extends Controller
 {
@@ -50,11 +51,17 @@ class ReportsController extends Controller
         $attendences = [];
 
         if ($request->cpd) {
+            $attendences = Attendence::query()->cpds();
             if ($request->cpd == "*") {
-                $attendences = Attendence::cpds()->with('cpd','user','cpd_payment')->get();
+                $attendences->with('cpd','user','cpd_payment')->get();
             }else{
-                $attendences = Attendence::cpds()->where('cpd_id',$request->cpd)->with('cpd','user','cpd_payment')->get();
+                $attendences->where('cpd_id',$request->cpd)->with('cpd','user','cpd_payment');
             }
+            if ($request->status) {
+                $attendences->where('status',$request->status);
+            }
+
+            $attendences = $attendences->get();
         }
 
         return view('admin.reports.cpds',compact('cpds','attendences'));
@@ -66,11 +73,18 @@ class ReportsController extends Controller
         $attendences = [];
 
         if ($request->cpd) {
+            $attendences = Attendence::query()->events();
             if ($request->cpd == "*") {
-                $attendences = Attendence::events()->with('event','user','event_payment')->get();
+                $attendences->with('event','user','event_payment')->get();
             }else{
-                $attendences = Attendence::events()->where('event_id',$request->cpd)->with('cpd','user','event_payment')->get();
+                $attendences->where('event_id',$request->cpd)->with('cpd','user','event_payment');
             }
+
+            if ($request->status) {
+                $attendences->where('status',$request->status);
+            }
+
+            $attendences = $attendences->get();
         }
 
         return view('admin.reports.events',compact('cpds','attendences'));
@@ -93,5 +107,12 @@ class ReportsController extends Controller
         }
 
         return view('admin.reports.payments',compact('payments'));
+    }
+
+    public function account_types(Request $request)
+    {
+        $account_types = AccountType::withCount('users')->get();
+
+        return view('admin.reports.account_types',compact('account_types'));
     }
 }

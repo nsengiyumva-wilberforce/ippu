@@ -396,11 +396,10 @@
                     <li class="nav-item">
                         <a href="{{ url('admin/points_report') }}" class="nav-link" data-key="t-tour">Points</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a href="advance-ui-swiper.html" class="nav-link" data-key="t-swiper-slider">Swiper
-                        Slider</a>
-                    </li>
                     <li class="nav-item">
+                        <a href="{{ url('admin/account_types_report') }}" class="nav-link" data-key="t-swiper-slider">Account Types</a>
+                    </li>
+                    {{-- <li class="nav-item">
                         <a href="advance-ui-ratings.html" class="nav-link" data-key="t-ratings">Ratings</a>
                     </li>
                     <li class="nav-item">
