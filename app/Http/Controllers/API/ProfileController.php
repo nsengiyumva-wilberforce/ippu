@@ -127,26 +127,20 @@ class ProfileController extends Controller
     {
 
         try {
+            // get the logged in user
+            $user = Auth::user();
             $membership = new \App\Models\Membership;
-            $membership->user_id = $request->user_id;
             $membership->status = "Pending";
+            $membership->user_id = $user->id;
             $membership->save();
 
-            // Retrieve the user's name from the database based on the user ID
-            $user = User::find($request->user_id);
+            
 
             if (!$user) {
                 return response()->json(['error' => 'User not found'], 404);
             }
 
-            // Authenticate the retrieved user
-            auth()->login($user);
-
-
             \Mail::to(Auth::user())->send(new \App\Mail\ApplicationReview($membership));
-
-            auth()->logout();
-
 
             return response()->json([
                 'success' => true,
@@ -154,9 +148,10 @@ class ProfileController extends Controller
             ]);
 
         } catch (\Throwable $e) {
+            print_r($e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Application failed'
+                'error' => 'Application failed'
             ]);
         }
 
