@@ -8,6 +8,7 @@ use App\Models\AccountType;
 use App\Models\User;
 use App\Models\Cpd;
 use App\Models\Event;
+use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
@@ -199,5 +200,21 @@ class DashboardController extends Controller
         }
 
         return redirect()->back()->with('success','Reminder has been sent!');
+    }
+
+    public function upload(Request $request): JsonResponse
+    {
+        if ($request->hasFile('upload')) {
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = time() . '.' . $extension;
+
+            $request->file('upload')->move(public_path('media'), $fileName);
+
+            $url = asset('media/' . $fileName);
+
+            return response()->json(['fileName' => $fileName, 'uploaded'=> 1, 'url' => $url]);
+        } else {
+            return response()->json(['uploaded' => 0, 'error' => ['message' => 'Upload file not found.']]);
+        }
     }
 }

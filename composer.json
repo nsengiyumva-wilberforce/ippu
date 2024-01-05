@@ -10,6 +10,7 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^3.2",
         "kreait/laravel-firebase": "^5.4",
         "laravel-notification-channels/fcm": "^4.0",
         "laravel/framework": "^10.10",

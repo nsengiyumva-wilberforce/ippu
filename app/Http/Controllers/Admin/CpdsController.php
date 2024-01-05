@@ -8,6 +8,7 @@ use App\Models\Cpd;use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
 use Dompdf\Options;
 use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Writer;
 
 class CpdsController extends Controller
@@ -289,35 +290,35 @@ class CpdsController extends Controller
         }
     }
 
-    public function generate_qr($type,$id)
-    {
-        $url = config('app.url')."/direct_attendence/".$type."/".$id;
-             
-        $options = new Options();
-        $options->set('defaultFont', 'Courier');
-        $options->set('isRemoteEnabled', true);
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('isPhpEnabled', true);
+public function generate_qr($type, $id)
+{
+    $url = config('app.url') . "/direct_attendence/" . $type . "/" . $id;
 
-        $renderer = new ImageRenderer(
-            new \BaconQrCode\Renderer\RendererStyle\RendererStyle(100),
-            new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
-        );
-        $writer = new Writer($renderer);
-        $qrCode = $writer->writeString($url);
+    // Create options for QR code generation
+    $options = new Options();
+    $options->set('defaultFont', 'Courier');
+    $options->set('isRemoteEnabled', true);
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
 
+    // Create renderer for PNG image output
+    $renderer = new ImageRenderer(
+        new \BaconQrCode\Renderer\RendererStyle\RendererStyle(100),
+        new ImagickImageBackEnd()
+    );
 
-        // $qrCode = QrCode::format('png')->size(200)->generate($data);
+    // Create writer to generate QR code
+    $writer = new Writer($renderer);
 
-        $dompdf = new Dompdf($options);
-        $view = View::make('members.attendence.qrcode', compact('qrCode'))->render();
-        
-        $dompdf->loadHtml($view);
+    // Generate the QR code as a PNG image
+    $qrCode = $writer->writeString($url);
 
-        // Render the HTML as PDF
-        $dompdf->render();
-        $dompdf->stream('attendence code.pdf');
-    }
+    // Prompt the user to save the image
+    header('Content-Disposition: attachment; filename="qr_code.png"');
+    header('Content-Type: image/png');
+    echo $qrCode;
+}
+
 
     public function payment_proof($name)
     {

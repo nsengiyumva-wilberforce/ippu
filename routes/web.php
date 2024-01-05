@@ -105,8 +105,8 @@ Route::middleware(['auth','verified'])->group(function(){
         return view('members.general.core_values');
     });
 
-    Route::get('event_certificate/{event}',[mEventsController::class,'certificate']);
-    Route::get('cpd_certificate/{event}',[mCpdsController::class,'certificate']);
+    Route::get('event_certificate/{event}',[mEventsController::class,'generate_certificate']);
+    Route::get('cpd_certificate/{event}',[mCpdsController::class,'generate_certificate']);
 });
 
 Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
@@ -241,6 +241,7 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::get('account_types_report', [ReportsController::class,'account_types']);
 
     Route::get('create_reminder/{type}', [DashboardController::class,'create_reminder']);
+    Route::post('ckeditor/upload', [DashboardController::class,'upload'])->name('ckeditor.upload');
     Route::post('send_reminder', [DashboardController::class,'send_reminder']);
     Route::get('users',[UsersController::class,'users']);
     Route::get('edit_user/{user}',[UsersController::class,'edit']);

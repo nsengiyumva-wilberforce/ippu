@@ -2,6 +2,7 @@
 <html><head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giving Tuesday Email Template</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400&amp;display=swap" em-class="em-font-Mulish-Regular"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400&amp;display=swap" em-class="em-font-Mulish-Regular">
   <style type="text/css">
 .em-font-Mulish-Medium,.em-font-Mulish-Regular {
     font-family: Mulish,sans-serif!important;
@@ -93,9 +94,6 @@
 .em-font-Mulish-Bold,.em-font-Mulish-ExtraBold {
     font-family: Mulish,sans-serif!important;
     font-weight: 700!important;
-}
-.em-font-Mulish-ExtraBold {
-    font-weight: 800!important;
 }
 @media only screen and (max-device-width:660px),only screen and (max-width:660px) {
     .em-mob-width-100perc {
@@ -219,76 +217,28 @@
     <![endif]-->
   </td>
 </tr><tr em="block" class="em-structure">
-                                    <td align="center" style="padding: 30px 40px;" class="em-mob-padding_left-20 em-mob-padding_right-20">
+                                    <td align="center" style="padding: 31px 40px 30px;" class="em-mob-padding_left-20 em-mob-padding_right-20">
                                         <table align="center" border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
                                             <tr>
                                                 <td width="187" valign="top" class="em-mob-wrap em-mob-width-100perc">
-                                                    <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"><tr><td>
-                                                      @if($membership->status == "Pending")
-                                                        <img src="https://cdn.useblocks.io/19494/240105_1492_G2vSDAt.jpg" border="0" alt="" style="display: block;">
-                                                      @elseif($membership->status == "Approved")
-                                                        <img src="https://cdn.useblocks.io/19494/240105_1492_vRsofBk.jpg" border="0" alt="" style="display: block;">
-                                                      @else
-                                                        <img src="https://cdn.useblocks.io/19494/240105_1492_vRsofBk.jpg" border="0" alt="" style="display: block;">
-                                                      @endif
-
-
-
+<table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom"><tr><td>
+  <img src="https://cdn.useblocks.io/19494/240105_1492_JBUsryI.jpg" width="188" border="0" alt="" style="display: block; width: 100%; max-width: 188px;">
 </td></tr></table>
-                                                </td>
+</td>
                                             </tr>
                                         </table>
                                     </td>
 </tr><tr em="block" class="em-structure">
-            <td align="center" style="padding: 24px 30px; background-color: #ffffff;" class="em-mob-padding_left-20 em-mob-padding_right-20" bgcolor="#FFFFFF">
+            <td align="center" style="padding: 24px 40px; background-color: #ffffff;" class="em-mob-padding_left-20 em-mob-padding_right-20" bgcolor="#FFFFFF">
               <table border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
                 <tr>
-                  <td width="740" valign="top" class="em-mob-wrap em-mob-width-100perc">
+                  <td width="720" valign="top" class="em-mob-wrap em-mob-width-100perc">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
-                        <td style="padding-right: 0px; padding-left: 0px;">
-                          <div class="em-font-Mulish-ExtraBold" style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 28px; line-height: 34px; color: #000000;" align="center"><strong>Acknowledgment Of Receipt Membership Application</strong></div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr><tr em="block" class="em-structure">
-            <td align="center" style="padding: 24px; background-color: #ffffff;" class="em-mob-padding_left-20 em-mob-padding_right-20" bgcolor="#FFFFFF">
-              <table border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
-                <tr>
-                  <td width="752" valign="top" class="em-mob-wrap em-mob-width-100perc">
-                    <table cellpadding="0" cellspacing="0" border="0" em="atom">
-                      <tr>
-                        <td bgcolor="#E6F7FF" style="background-color: #e6f7ff; padding: 5px 2px;">
-                          <div class="em-font-Mulish-Regular" style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1890ff;" align="left">Dear {{ $membership->member->name }},
-                            @if($membership->status == "Pending")
-<br><br>
-Trust this message finds you well.
-<br><br>
-Thank you for choosing the IPPU Membership App! We would like to inform you that your application is in good hands; our team is currently reviewing it. Rest assured, your privacy is our top priority, and we treat your information with utmost confidentiality per our privacy policy.
-<br><br>
-We understand the significance of your application and are diligently working to ensure a thorough review. We appreciate your patience. If you have urgent inquiries or additional info to share, feel free to reach out.
-<br><br>
-Looking forward to the possibility of collaborating with you.
-<br><br>
-@elseif($membership->status == "Approved")
-Great news! Your IPPU membership application has been approved. <br>Welcome aboard! We look forward to your active participation.
-<br><br>
-@else
-Your IPPU membership application has been rejected.
-<br><br>
-Reason: “{{ $membership->comment }}”
-<br><br>
+                        <td>
+                          <div class="em-font-Mulish-Regular" style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #595959;" align="center"><br>Dear <?php echo e($user->name); ?>
 
-@endif
-[Secretary name]
-<br>Best,
-<br>[Your Name]
-<br>[Your Title]
-<br>[Contact Information]</div>
+                            <br><?php echo $request->message; ?></div>
                         </td>
                       </tr>
                     </table>
@@ -300,7 +250,7 @@ Reason: “{{ $membership->comment }}”
             <td align="center" style="padding: 24px 40px; background-color: #ffffff;" class="em-mob-padding_left-20 em-mob-padding_right-20" bgcolor="#FFFFFF">
               <table border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
                 <tr>
-                  <td width="334" valign="middle" class="em-mob-wrap em-mob-width-100perc">
+                  <td width="280" valign="middle" class="em-mob-wrap em-mob-width-100perc">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
                         <td style="padding-bottom: 24px;">
@@ -310,7 +260,7 @@ Reason: “{{ $membership->comment }}”
                     </table>
                   </td>
                   <td width="20" class="em-mob-wrap">&nbsp;</td>
-                  <td width="334" valign="middle" class="em-mob-wrap em-mob-width-100perc">
+                  <td width="280" valign="middle" class="em-mob-wrap em-mob-width-100perc">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
                         <td align="right" style="padding-bottom: 24px;" class="em-mob-text_align-left">
@@ -333,7 +283,7 @@ Reason: “{{ $membership->comment }}”
               </table>
               <table border="0" cellspacing="0" cellpadding="0" class="em-mob-width-100perc">
                 <tr>
-                  <td width="334" valign="top" class="em-mob-wrap em-mob-width-100perc">
+                  <td width="280" valign="top" class="em-mob-wrap em-mob-width-100perc">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
                         <td style="padding-bottom: 2px;">
@@ -344,7 +294,7 @@ Reason: “{{ $membership->comment }}”
                     
                   </td>
                   <td width="20" class="em-mob-wrap">&nbsp;</td>
-                  <td width="334" valign="top" class="em-mob-wrap em-mob-width-100perc">
+                  <td width="280" valign="top" class="em-mob-wrap em-mob-width-100perc">
                     <table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
                         <td style="padding-bottom: 2px;">
@@ -376,4 +326,4 @@ Reason: “{{ $membership->comment }}”
         </td></tr></table>
         <![endif]-->
 
-</body></html>
+</body></html><?php /**PATH /var/www/ippu.org/resources/views/mails/reminder.blade.php ENDPATH**/ ?>

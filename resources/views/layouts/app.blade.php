@@ -1757,8 +1757,12 @@
 <script src="{{ asset('assets/js/app.js') }}"></script>
 {{-- <script src="http://malsup.github.io/jquery.blockUI.js"> --}}
     <script type="text/javascript">
-        ClassicEditor
-        .create( document.querySelector( '.ckeditor' ) )
+               ClassicEditor
+        .create( document.querySelector( '.ckeditor' ), {
+            ckfinder: {
+                uploadUrl: '{{route('ckeditor.upload').'?_token='.csrf_token()}}',
+            }
+        } )
         .catch( error => {
             console.error( error );
         } );

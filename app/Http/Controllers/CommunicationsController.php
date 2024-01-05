@@ -52,13 +52,13 @@ class CommunicationsController extends Controller
             $communication->user_id = \Auth::user()->id;
             $communication->save();
 
-            $to = 'musisifred7@gmail.com';
+            $to = 'nsengiyumvawilberforce@gmail.com';
 
             $target = \App\Models\User::where('account_type_id',$request->target)->get();
          
             \Mail::send([], [], function ($message) use ($to, $communication, $target) {
                 $message->to($to)
-                    ->bbc($target)
+                    ->bcc($target)
                     ->subject($communication->title)
                     ->setBody($communication->message, 'text/plain');
             });

@@ -1151,8 +1151,12 @@
 <script src="<?php echo e(asset('assets/js/app.js')); ?>"></script>
 
     <script type="text/javascript">
-        ClassicEditor
-        .create( document.querySelector( '.ckeditor' ) )
+               ClassicEditor
+        .create( document.querySelector( '.ckeditor' ), {
+            ckfinder: {
+                uploadUrl: '<?php echo e(route('ckeditor.upload').'?_token='.csrf_token()); ?>',
+            }
+        } )
         .catch( error => {
             console.error( error );
         } );
