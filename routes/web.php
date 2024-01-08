@@ -109,10 +109,18 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('cpd_certificate/{event}',[mCpdsController::class,'generate_certificate']);
 });
 
+Route::get('get-newsletters', [CommunicationsController::class,'newsletter_view']);
+
 Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::resource('account_types', AccountTypesController::class);
     Route::get('sms', [CommunicationsController::class,'sms_view']);
     Route::post('sms', [CommunicationsController::class,'post_sms']);
+    Route::get('newsletter', [CommunicationsController::class,'newsletter_view']);
+    Route::post('newsletter', [CommunicationsController::class,'post_newsletter']);
+    Route::get('newsletter/{newsletter}', [CommunicationsController::class,'newsletter_details']);
+    Route::get('download_newsletter/{newsletter}', [CommunicationsController::class,'download_newsletter_file']);
+    Route::delete('delete_newsletter/{newsletter}', [CommunicationsController::class,'delete_newsletter']);
+    Route::put('update_newsletter/{newsletter}', [CommunicationsController::class,'update_newsletter'])->name('newsletters.update');
     Route::get('change_account_type/{type}/{user}', [MembersController::class,'change_account_type']);
     Route::resource('events', EventsController::class);
     Route::resource('cpds', CpdsController::class);

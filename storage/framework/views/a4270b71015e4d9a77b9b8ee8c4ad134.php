@@ -204,6 +204,9 @@
                      <li class="nav-item">
                         <a href="<?php echo e(url('admin/sms')); ?>" class="nav-link" data-key="t-sweet-alerts">SMS</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?php echo e(url('admin/newsletter')); ?>" class="nav-link" data-key="t-sweet-alerts">Newsletter</a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -337,6 +340,12 @@
             <a class="nav-link" href="<?php echo e(url('communications')); ?>" aria-expanded="false" aria-controls="sidebarUI">
                 <i class=" ri-message-fill"></i> <span data-key="t-base-ui">Communications</span>
             </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo e(url('get-newsletters')); ?>" aria-expanded="false" aria-controls="sidebarUI">
+                    <i class=" ri-message-fill"></i> <span data-key="t-base-ui">Newsletter</span>
+                </a>
         </li>
 
         <li class="nav-item">

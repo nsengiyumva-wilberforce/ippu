@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Communication;
 use AfricasTalking\SDK\AfricasTalking;
+use App\Models\Newsletter;
 
 class CommunicationsController extends Controller
 {
@@ -157,6 +158,160 @@ class CommunicationsController extends Controller
 
         }catch(\Throwable $ex){
             return redirect()->back()->withErrors(['error' => $ex->getMessage()])->withInput();
+        }
+    }
+
+    public function newsletter_view()
+    {
+        $communications = \App\Models\Newsletter::all();
+        return view('communications.newsletter', compact('communications'));
+    }
+
+    public function post_newsletter(Request $request)
+    {
+        //check if request has file attached
+        if ($request->hasFile('newsletter_file')) {
+            //validate file
+            $request->validate([
+                'newsletter_file' => 'required|mimes:pdf|max:10000',
+            ]);
+
+            //get the file
+            $newsletterFile = $request->file('newsletter_file');
+
+            try {
+                //generate the file name from time and random number
+                $fileNameToStore = time() . rand(100, 1000) . '.' . $request->file('newsletter_file')->extension();
+                //upload the file to the public folder
+                $newsletterFile->move(public_path('newsletters'), $fileNameToStore);
+                //check if file was uploaded successfully
+                if (!$newsletterFile) {
+                    return response()->json(['error' => 'File not uploaded!']);
+                }
+                $newsletter = new \App\Models\Newsletter;
+                $newsletter->title = $request->title;
+                $newsletter->sub_title = $request->sub_title;
+                $newsletter->description = $request->description;
+                $newsletter->newsletter_file_url = $fileNameToStore;
+                $newsletter->save();
+
+                return response()->json(['success' => 'Newsletter has been successfully published!']);
+            } catch (\Throwable $ex) {
+                return response()->json(['error' => $ex->getMessage()]);
+            }
+        } else {
+            return response()->json(['error' => 'No file attached!']);
+        }
+    }
+
+    public function newsletter_details(Newsletter $newsletter)
+    {
+        //check if the $newsletter is not null
+        if (!$newsletter) {
+            return redirect()->back()->with('error', 'Newsletter not found!');
+        }
+
+        return view('communications.newsletter_details', compact('newsletter'));
+    }
+    public function download_newsletter_file(Newsletter $newsletter)
+    {
+        //check if the $newsletter is not null
+        if (!$newsletter) {
+            return redirect()->back()->with('error', 'Newsletter not found!');
+        }
+
+        //get the file path
+        $filePath = public_path('newsletters/' . $newsletter->newsletter_file_url);
+
+        //check if the file exists
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found!');
+        }
+
+        //download the file
+        return response()->download($filePath);
+    }
+
+    public function delete_newsletter(Newsletter $newsletter)
+    {
+        //check if the $newsletter is not null
+        if (!$newsletter) {
+            return redirect()->back()->with('error', 'Newsletter not found!');
+        }
+
+        //get the file path
+        $filePath = public_path('newsletters/' . $newsletter->newsletter_file_url);
+
+        //check if the file exists
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found!');
+        }
+
+        //delete the file
+        unlink($filePath);
+
+        //delete the newsletter
+        $newsletter->delete();
+
+        //redirect to newsletter url not redirect back
+        return redirect('admin/newsletter')->with('success', 'Newsletter has been deleted!');
+    }
+    public function update_newsletter(Request $request, Newsletter $newsletter)
+    {
+        //check if the $newsletter is not null
+        if (!$newsletter) {
+            return redirect()->back()->with('error', 'Newsletter not found!');
+        }
+
+        //validate the request
+        $request->validate([
+            'title' => 'required',
+            'sub_title' => 'required',
+            'description' => 'required',
+        ]);
+
+        //check if the request has file attached
+        if ($request->hasFile('newsletter_file')) {
+            //validate file
+            $request->validate([
+                'newsletter_file' => 'required|mimes:pdf|max:10000',
+            ]);
+
+            //get the file
+            $newsletterFile = $request->file('newsletter_file');
+
+            try {
+                //generate the file name from time and random number
+                $fileNameToStore = time() . rand(100, 1000) . '.' . $request->file('newsletter_file')->extension();
+                //upload the file to the public folder
+                $newsletterFile->move(public_path('newsletters'), $fileNameToStore);
+                //check if file was uploaded successfully
+                if (!$newsletterFile) {
+                    return redirect()->back()->with('error', 'File not uploaded!');
+                }
+
+                //delete the old file
+                unlink(public_path('newsletters/' . $newsletter->newsletter_file_url));
+
+                //update the newsletter
+                $newsletter->title = $request->title;
+                $newsletter->sub_title = $request->sub_title;
+                $newsletter->description = $request->description;
+                $newsletter->newsletter_file_url = $fileNameToStore;
+                $newsletter->save();
+
+                return response()->json(['success' => 'Newsletter has been successfully updated!']);
+            } catch (\Throwable $ex) {
+                return response()->json(['error' => $ex->getMessage()]);
+            }
+        } else {
+            //update the newsletter
+            $newsletter->title = $request->title;
+            $newsletter->sub_title = $request->sub_title;
+            $newsletter->description = $request->description;
+            $newsletter->save();
+
+            return response()->json(['success' => 'Newsletter has been successfully updated!']);
         }
     }
 }
