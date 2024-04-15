@@ -304,7 +304,7 @@
                     </table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
                         <td>
-                          <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #595959;" align="right" class="em-font-Mulish-Regular em-mob-text_align-left">ippu.uganda@mail.com | +256 414 311 850</div>
+                          <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #595959;" align="right" class="em-font-Mulish-Regular em-mob-text_align-left">ippu.uganda@gmail.com | +256 414 311 850</div>
                         </td>
                       </tr>
                     </table>

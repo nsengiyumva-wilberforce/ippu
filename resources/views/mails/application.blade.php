@@ -284,11 +284,9 @@ Reason: “{{ $membership->comment }}”
 <br><br>
 
 @endif
-[Secretary name]
-<br>Best,
-<br>[Your Name]
-<br>[Your Title]
-<br>[Contact Information]</div>
+<br>Best Regards,
+<br>IPPU Team
+<br>info@ippu.org</div>
                         </td>
                       </tr>
                     </table>
@@ -319,7 +317,7 @@ Reason: “{{ $membership->comment }}”
                               <td style="padding: 0 4px;" em="atom">
                                 <a href="https://www.facebook.com/www.ippu.or.ug/" target="_blank"><img src="https://cdn.useblocks.io/1865/230705_18_o1RmlFe.png" width="24" border="0" alt="" style="display: block; width: 100%; max-width: 24px;"></a>
                               </td>
-                              
+
                               <td style="padding: 0 4px;" em="atom">
                                 <a href="https://twitter.com/UgProcurement" target="_blank"><img src="https://cdn.useblocks.io/1865/231011_17_anZmzDt.png" width="24" border="0" alt="" style="display: block; width: 100%; max-width: 24px;"></a>
                               </td>
@@ -341,7 +339,7 @@ Reason: “{{ $membership->comment }}”
                         </td>
                       </tr>
                     </table>
-                    
+
                   </td>
                   <td width="20" class="em-mob-wrap">&nbsp;</td>
                   <td width="334" valign="top" class="em-mob-wrap em-mob-width-100perc">

@@ -18,6 +18,14 @@
                 {{$communication->description}}
               </p>
 				<a href="{{ url('/admin/newsletter/'.$communication->id) }}" class="btn btn-primary">Newsletter Details</a>
+                 @if(\Auth::user()->user_type == "Admin")
+                {{-- send newsletter --}}
+                <form action="{{ url('/admin/send_newsletter/' . $communication->id) }}" method="POST" style="display: inline;"
+                    class="m-0 p-0">
+                    @csrf
+                    <button type="submit" class="btn btn-success">Send Newsletter</button>
+                </form>
+                @endif
             </div>
           </div>
 	</div>

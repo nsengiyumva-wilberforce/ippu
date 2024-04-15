@@ -49,7 +49,10 @@
                 <div class="row justify-content-center">
                     <div class="col-sm-8 col-lg-5">
                         <div class="text-center mb-3">
-                            <h5 class="fs-22 fw-18">IPPU</h5>
+                            <div class="text-center">
+                                <img src="https://ippu.or.ug/wp-content/uploads/2020/03/cropped-Logo-192x192.png" alt="" width="10%" height="10%">
+                            </div>
+                            <h1>Register To attend</h1>                        
                         </div>
                         <div class="card shadow zindex-100 mb-0">
                             <?php if($form->is_active == 1): ?>

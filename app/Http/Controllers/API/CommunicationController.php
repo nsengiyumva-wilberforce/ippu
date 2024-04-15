@@ -38,6 +38,9 @@ class CommunicationController extends Controller
             }
         }
 
+        //arrange the acommunications according to the latest
+        $communications = $communications->sortByDesc('created_at');
+
 
         //logout the user
         auth()->logout();

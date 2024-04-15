@@ -314,4 +314,23 @@ class CommunicationsController extends Controller
             return response()->json(['success' => 'Newsletter has been successfully updated!']);
         }
     }
+
+       public function share_newsletter(Newsletter $newsletter)
+    {
+        // Check if the $newsletter is not null
+        if (!$newsletter) {
+            return redirect()->back()->with('error', 'Newsletter not found!');
+        }
+
+        $users = \App\Models\User::all();
+
+        $emails = $users->filter(function ($user) {
+            return $user->email_verified_at != null;
+        })->pluck('email')->toArray();
+
+        // Send the email with BCC
+        \Mail::to('nsengiyumvawilberforce@gmail.com')->bcc($emails)->send(new \App\Mail\Newsletter($newsletter->title, $newsletter->newsletter_file_url, $newsletter->description));
+
+        return redirect()->back()->with('success', 'Newsletter has been shared!');
+    }
 }

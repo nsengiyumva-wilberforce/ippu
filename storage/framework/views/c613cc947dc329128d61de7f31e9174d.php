@@ -25,7 +25,11 @@
 				</div>
 				<div class="mb-3">
 					<h6 class="text-bold-700">Membership Number</h6>
-					<div><?php echo e(($member->membership_number) ? $member->membership_number : 'Not Provided'); ?></div>
+					<div><?php echo e(($member->membership_number) ? $member->membership_number : '-'); ?></div>
+				</div>
+				<div class="mb-3">
+					<h6 class="text-bold-700">Organisation</h6>
+					<div><?php echo e(($member->organisation) ? $member->organisation : '-'); ?></div>
 				</div>
 				<div class="mb-3">
 					<h6 class="text-bold-700">Contacts</h6>
@@ -63,6 +67,35 @@
 					<h6 class="text-bold-700">NOK Email</h6>
 					<div><?php echo e(($member->nok_address)?:"(blank)"); ?></div>
 				</div>
+
+				                    
+                <?php if($member->latestMembership != null): ?>
+                        <div class="mb-3">
+                            <h6 class="text-bold-700">Membership Certificate</h6>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="<?php echo e(url('membership_certificate')); ?>" class="ms-auto"><u>Download
+                                                Membership Certificate</u></a>
+                                    </li>
+                                    <li>
+                                        <form action="<?php echo e(route('email_membership_certificate')); ?>" method="POST">
+                                            <?php echo csrf_field(); ?>
+                                            <input type="hidden" name="member_id" value="<?php echo e($member->id); ?>">
+                                            <button type="submit" class="btn btn-submit" style=".btn-submit { background-color: transparent;border: none;padding: 0;text-decoration: underline;cursor: cursor }"><u>Email Membership Certificate</u></button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="mb-3">
+                            <h6 class="text-bold-700">Membership Certificate</h6>
+                            <div>
+                                <span class="badge bg-danger">Not Running Subscription</span>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 			</div>
 			<div class="card-footer d-flex flex-column flex-md-row align-items-md-center justify-content-between">
 

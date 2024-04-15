@@ -268,7 +268,7 @@
                               <td style="padding: 0 4px;" em="atom">
                                 <a href="https://www.facebook.com/www.ippu.or.ug/" target="_blank"><img src="https://cdn.useblocks.io/1865/230705_18_o1RmlFe.png" width="24" border="0" alt="" style="display: block; width: 100%; max-width: 24px;"></a>
                               </td>
-                              
+
                               <td style="padding: 0 4px;" em="atom">
                                 <a href="https://twitter.com/UgProcurement" target="_blank"><img src="https://cdn.useblocks.io/1865/231011_17_anZmzDt.png" width="24" border="0" alt="" style="display: block; width: 100%; max-width: 24px;"></a>
                               </td>
@@ -290,7 +290,7 @@
                         </td>
                       </tr>
                     </table>
-                    
+
                   </td>
                   <td width="20" class="em-mob-wrap">&nbsp;</td>
                   <td width="280" valign="top" class="em-mob-wrap em-mob-width-100perc">
@@ -303,7 +303,7 @@
                     </table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
                         <td>
-                          <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #595959;" align="right" class="em-font-Mulish-Regular em-mob-text_align-left">ippu.uganda@gmail.com | +256 414 311 850</div>
+                          <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #595959;" align="right" class="em-font-Mulish-Regular em-mob-text_align-left">info@ippu.org | +256 414 311 850</div>
                         </td>
                       </tr>
                     </table>

@@ -2,16 +2,27 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h5 class="card-title">Edit Profile</h5>
+                <div class="d-flex flex-row justify-content-center">
+            <h5 class="card-title">Edit Profile</h5>
+            {{-- add a download membership certificate button --}}
+            @if($user->latestMembership!=null)
+            <a href="{{ url('membership_certificate') }}" class="btn btn-outline-primary ms-auto">Download Membership Certificate</a>
+            @endif        
+        </div>
     </div>
     <form method="POST" class="needs-validation" action="{{ url('update_profile') }}" enctype="multipart/form-data" novalidate>
         @csrf
         <div class="card-body row">
             <h5 class="fs-15 mt-3 text-primary">Personal Details</h5>
             <hr>
-            <div class="col-md-12 mb-3">
+            <div class="mb-3 col-md-6">
                 <span>Name</span>
                 <input type="text" class="form-control" name="name" value="{{ $user->name }}" required>
+                <div class="invalid-feedback">* Required</div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <span>Organisation</span>
+                <input type="text" class="form-control" name="organisation" value="{{ $user->organisation }}">
                 <div class="invalid-feedback">* Required</div>
             </div>
             <div class="col-md-6 mb-3">
@@ -50,6 +61,11 @@
              <div class="col-md-4 mb-3">
                 <span>Profile Pic</span>
                 <input type="file" class="form-control" name="profile_pic">
+            </div>
+             <div class="col-md-6 mb-3">
+                <span>Curriculum Vitae</span>
+                <input type="file" class="form-control" name="nok_phone_no" value="{{ $user->nok_phone_no }}" >
+                <div class="invalid-feedback">* Required</div>
             </div>
             <h5 class="fs-15 mt-3 text-primary">Next Of Kin (NOK) Details</h5>
             <hr>

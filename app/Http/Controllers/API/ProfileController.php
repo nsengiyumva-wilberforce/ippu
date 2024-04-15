@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
-
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Carbon\Carbon;
 class ProfileController extends Controller
 {
     /**
@@ -30,6 +32,9 @@ class ProfileController extends Controller
 
         // Update the user's subscription_status field
         $user->subscription_status = $subscriptionStatus;
+
+        //set profile photo url in profile_pic field
+        $user->profile_pic = url('storage/profiles/' . $user->profile_pic);
 
         return response()->json([
             'message' => 'User retrieved successfully',
@@ -184,21 +189,191 @@ class ProfileController extends Controller
             'profile_photo_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Get the image
-        $image = request()->file('profile_photo_path');
+        $file = request()->file('profile_photo_path');
+        $extension = $file->getClientOriginalExtension();
 
-        // Save the image
-        $imageName = time() . '.' . $image->extension();
-        $image->move(public_path('images'), $imageName);
+        $filename = time().rand(100,1000).'.'.$extension;
 
-        // Update avatar field in the database with the full URL
-        $user->profile_pic = url('images/' . $imageName);
+        $storage = \Storage::disk('public')->putFileAs(
+                    'profiles/',
+                    $file,
+                    $filename);
+
+        if (!$storage) {
+            return response()->json(['message' => 'Unable to upload profile pic!']);
+        }else{
+            $user->profile_pic = $filename;
+            //get the image url
+            $imageUrl = url('storage/profiles/' . $filename);
+        }
 
         $user->save();
         return response()->json([
             'message' => 'Profile photo updated successfully',
-            'profile_photo_path' => $user->profile_pic
+            'profile_photo_path' => $imageUrl
         ], 200);
+    }
+    public function generate_membership_certificate()
+    {
+        $manager = new ImageManager(new Driver());
+
+        $image = $manager->read(public_path('images/membership_certificate_template.jpeg'));
+
+        $user = auth()->user();
+
+        //get this year's 01/01
+        $yearStart = Carbon::now()->startOfYear()->format('dS F, Y');
+
+        //get this year's 31/12
+        $yearEnd = Carbon::now()->endOfYear()->format('dS F, Y');
+
+        $membershipProcessingDate = $yearStart;
+
+        //add 12 months to the processing date to get expiry date
+        $expiryDate = $yearEnd;
+
+        $image->text(strtoupper($user->name), 700, 550, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('Membership number ', 500, 650, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text($user->membership_number ?? "N/A", 770, 650, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('is a registered', 620, 720, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text(strtoupper($user->account_type->name), 500, 790, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('member of', 680, 790, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('The Institute of Procurement Professionals of Uganda', 560, 860, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text("(IPPU)", 990, 860, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+
+        $image->text('from today ', 400, 930, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text($membershipProcessingDate, 620, 930, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('until ', 400, 1000, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text($expiryDate, 600, 1070, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('and agrees to abide by regulations and ', 600, 1140, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('Ethical code of conduct ', 580, 1210, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->toPng();
+
+        $filePath = public_path('images/certificate-generated' . $user->id . '.png');
+
+        //get the image url
+        $imageUrl = url('images/certificate-generated' . $user->id . '.png');
+        //save the image to the public folder
+        $image->save($filePath);
+
+        return response([
+            'message' => 'Certificate generated successfully',
+            'data' => [
+                'certificate' => $imageUrl,
+            ]
+        ]);
     }
 
 }

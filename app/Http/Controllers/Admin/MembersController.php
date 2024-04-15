@@ -13,7 +13,9 @@ class MembersController extends Controller
     {
         $members = User::where('user_type','Member')->get();
 
-        return view('admin.members.index',compact('members'));
+        $account_types = \App\Models\AccountType::all();
+
+        return view('admin.members.index',compact('members','account_types'));
     }
 
     public function show($id)
@@ -259,17 +261,40 @@ class MembersController extends Controller
         ]);
 
         try{
-            $member = \App\Models\User::find($request->member);
+            $member = User::find($request->member);
             $member->name = $request->name;
             $member->membership_number = $request->membership_number;
             $member->account_type_id = $request->account_type;
             $member->gender = $request->gender;
             $member->email = $request->email;
+            $member->organisation = $request->organisation;
             $member->save();
 
             return redirect()->back()->with('success','Member details have been updated!');
         }catch(\Throwable $ex){
             return redirect()->back()->withErrors(['error' => $ex->getMessage()])->withInput();
         }
+    }
+
+    public function delete($id)
+    {
+        try{
+            $member = User::find($id);
+
+            if ($member) {
+                $member->delete();
+                return redirect()->back()->with('success','Member has been deleted successfully!');
+            }else{
+                return redirect()->back()->withErrors(['error' => "Member Does not exist"])->withInput();
+            }
+        }catch(\Throwable $ex){
+            return redirect()->back()->withErrors(['error' => $ex->getMessage()])->withInput();
+        }
+    }
+
+    public function new($id)
+    {
+        $member = User::find($id);
+        return view('admin.members.new',compact('member'));;
     }
 }

@@ -32,7 +32,11 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/@simonwep/pickr/themes/nano.min.css') }}" />
     <!--datatable responsive css-->
     <link rel="stylesheet" href="{{ asset('assets/libs/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css') }}" />
+    
+    <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('assets/libs/datatables/buttons/2.2.2/css/buttons.dataTables.min.css') }}">
+
+    @yield('customcss')
 
     <style>
         .navbar-menu .navbar-nav .nav-link{
@@ -524,9 +528,9 @@
                 <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                         <i class='bx bx-bell fs-22'></i>
-                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">0<span class="visually-hidden">unread messages</span></span>
+                        <span class="position-absolute topbar-badge unread_notifications fs-10 translate-middle badge rounded-pill bg-danger">0<span class="visually-hidden">unread messages</span></span>
                     </button>
-                   {{--  <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+                   <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
 
                         <div class="dropdown-head bg-primary bg-pattern rounded-top">
                             <div class="p-3">
@@ -535,12 +539,12 @@
                                         <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
                                     </div>
                                     <div class="col-auto dropdown-tabs">
-                                        <span class="badge badge-soft-light fs-13"> 4 New</span>
+                                        <span class="badge badge-soft-light fs-13"> <span class="unread_notifications"></span> New</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="px-2 pt-2">
+                            {{-- <div class="px-2 pt-2">
                                 <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
                                     <li class="nav-item waves-effect waves-light">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
@@ -558,14 +562,14 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> --}}
 
                         </div>
 
                         <div class="tab-content position-relative" id="notificationItemsTabContent">
                             <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
-                                <div data-simplebar style="max-height: 300px;" class="pe-2">
-                                    <div class="text-reset notification-item d-block dropdown-item position-relative">
+                                <div data-simplebar style="max-height: 300px;" class="pe-2 show_notifications">
+                                    {{-- <div class="text-reset notification-item d-block dropdown-item position-relative">
                                         <div class="d-flex">
                                             <div class="avatar-xs me-3">
                                                 <span class="avatar-title bg-soft-info text-info rounded-circle fs-16">
@@ -662,7 +666,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="my-3 text-center view-all">
                                         <button type="button" class="btn btn-soft-success waves-effect waves-light">View
@@ -782,7 +786,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
 
                 <div class="dropdown ms-sm-3 header-item topbar-user">
@@ -1754,6 +1758,8 @@
 <script src="{{ asset('assets/libs/@simonwep/pickr/pickr.min.js') }}"></script>
 <script src="{{ asset('assets/js/pages/form-pickers.init.js') }}"></script>
 
+<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+
 <script src="{{ asset('assets/js/app.js') }}"></script>
 {{-- <script src="http://malsup.github.io/jquery.blockUI.js"> --}}
     <script type="text/javascript">
@@ -1773,6 +1779,28 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            getReminders();
+
+            $(".btn-delete").click(function(){
+                var form = $(this).attr("delete-item-form");
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: !0,
+                    confirmButtonClass: "btn btn-danger w-xs mt-2",
+                    cancelButtonClass: "btn btn-primary w-xs mt-2 me-2",
+                    confirmButtonText: "Yes, delete it!",
+                    buttonsStyling: !1,
+                    showCloseButton: !0,
+                    reverseButtons: true
+                }).then(function(t) {
+                    if (t.isConfirmed) {
+                        $("#"+form).submit()
+                    }
+                })
+            })
 
             $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true"], div[data-ajax-popup="true"]', function () {
 
@@ -2046,6 +2074,21 @@
             } else {
                 $('#taskProgress').addClass('bg-success');
             }
+        }
+
+        function getReminders(){
+            $.ajax({
+                url: '{{ url('admin/reminders') }}/?status=unread&response=json',
+                type: 'get',
+                dataType:'json',
+                success: function(data){
+                    $(".unread_notifications").html(data.count);
+                    // for(var i=0; i<100; i++){
+                        
+                    // }
+                    
+                }
+            })
         }
     </script>
     @yield('customjs')

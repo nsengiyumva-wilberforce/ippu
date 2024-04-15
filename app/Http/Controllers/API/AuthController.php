@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
-
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -48,10 +48,17 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required'],
             'account_type_id' => ['required'],
         ]);
+
+        //check if the validation failed due to email already existing
+        if (User::where('email', $request->email)->first()) {
+            return response()->json([
+                'message' => 'Email already exists',
+            ], 409);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -61,13 +68,22 @@ class AuthController extends Controller
             'user_type' => 'Member',
         ]);
 
+        $notification = new \App\Models\MemberReminder;
+        $notification->title = "A new user has signed up to IPPU";
+        $notification->member_id = $user->id;
+        $notification->reminder_date = date('Y-m-d');
+        $notification->status = "Unread";
+        $notification->save();
+
         //first check if user creation was successful
         if (!$user) {
             return response()->json([
-                'message' => 'Account creation failed',
+                'message' => 'Account creation failed, try again',
             ], 500);
         }
 
+        //send a verification code to the user
+        try{
         //generate random code
         $code = rand(100000, 999999);
 
@@ -82,9 +98,10 @@ class AuthController extends Controller
                 'message' => 'Account creation failed',
             ], 500);
         }
+
         $emailSent = Mail::to($user->email)->send(new VerifyEmail($code, $user->name));
 
-        // Check if sending the email was successful
+        // Check if sending the email was successful/failed
         if ($emailSent === 0) {
             return response()->json([
                 'message' => 'Email sending failed',
@@ -95,7 +112,21 @@ class AuthController extends Controller
             'message' => 'User created successfully',
             'user' => $user
         ]);
+
+    } catch (\Exception $e) {
+        //check if the user was created and send email failed
+        if ($user) {
+            return response()->json([
+                'message' => 'User created successfully, email verification code sending failed, continue to login',
+                'user' => $user
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Account creation failed',
+            ], 500);
+        }
     }
+}
 
     public function logout()
     {
@@ -293,5 +324,108 @@ class AuthController extends Controller
                 'message' => 'Code verified successfully',
             ], 200);
         }
+
+    public function VerifyPhoneNumber(Request $request)
+    {
+        $phone_number = str_replace('+256', '0', $request->phone_number);
+        $real_phone_number = str_replace(' ', '', $request->phone_number);
+
+        try {
+            //check either of the phone numbers
+            $user = User::where('phone_no', $phone_number)->orWhere('phone_no', $real_phone_number)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Phone number not found',
+                ], 404);
+            }
+
+            return response()->json(['status' => true, 'message' => 'Phone number exists, sending the code soon!'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while verifying the phone number, try again',
+            ], 500);
+        }
+    }
+    public function PhoneLogin(Request $request)
+    {
+        $phone_number = str_replace('+256', '0', $request->phone_number);
+        $real_phone_number = str_replace(' ', '', $request->phone_number);
+
+        try {
+            //check either of the phone numbers
+            $user = User::where('phone_no', $phone_number)->orWhere('phone_no', $real_phone_number)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Phone number not found',
+                ], 404);
+            }
+
+            auth()->login($user);
+
+            return response()->json([
+                'user' => $user,
+                'authorization' => [
+                    'token' => $user->createToken('ApiToken')->plainTextToken,
+                    'type' => 'bearer',
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while loging in, try again',
+            ], 500);
+        }
+    }
+
+    public function loginByGoogle(Request $request)
+    {
+        try {
+            $googleUser = Socialite::driver('google')->userFromToken($request->token);
+            $user = User::where('email', $googleUser->getEmail())->first();
+            if(!$user){
+                //download the profile picture and save it to the server
+                $profilePic = file_get_contents($googleUser->getAvatar());
+                //generate a random filename
+                $filename = time().'_'.rand(1000, 9999).'.png';
+
+                $storage = \Storage::disk('public')->put(
+                    'profiles/'.$filename,
+                    $profilePic
+                );
+
+                if(!$storage){
+                    return response()->json([
+                        'message' => 'Failed to save profile picture',
+                    ], 500);
+                }
+                //create a new user
+                $user = User::create([
+                    'name' => $googleUser->getName(),
+                    'email' => $googleUser->getEmail(),
+                    'profile_pic' => $filename,
+                    'account_type_id' => 1,
+                    'password' => Hash::make('password'),
+                ]);
+            }
+
+            Auth::login($user);
+
+            //get the auth token to use for subsequent requests
+
+            return response()->json([
+                'user' => $user,
+                'authorization' => [
+                    'token' => $user->createToken('ApiToken')->plainTextToken,
+                    'type' => 'bearer',
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 }

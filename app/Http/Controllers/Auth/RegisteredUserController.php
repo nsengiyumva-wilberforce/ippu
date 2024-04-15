@@ -46,6 +46,13 @@ class RegisteredUserController extends Controller
             'user_type' => 'Member',
         ]);
 
+        $notification = new \App\Models\MemberReminder;
+        $notification->title = "A new user has signed up to IPPU";
+        $notification->member_id = $user->id;
+        $notification->reminder_date = date('Y-m-d');
+        $notification->status = "Unread";
+        $notification->save();
+
         event(new Registered($user));
 
         Auth::login($user);

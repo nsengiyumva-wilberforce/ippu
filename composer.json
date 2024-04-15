@@ -15,6 +15,7 @@
         "laravel-notification-channels/fcm": "^4.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
+        "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "laravelcollective/html": "^6.4",
         "milon/barcode": "^10.0",

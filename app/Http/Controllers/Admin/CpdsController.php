@@ -88,6 +88,8 @@ class CpdsController extends Controller
 
                 if (!$storage) {
                     return redirect()->back()->with('error','Unable to upload banner');
+                    // print \Storage::disk('public')->getError();  // Uncomment this line
+
                 }
 
                 $cpd->banner = $filename;
@@ -187,7 +189,9 @@ class CpdsController extends Controller
                 );
 
                 if (!$storage) {
-                    return redirect()->back()->with('error','Unable to upload banners');
+                    //return redirect()->back()->with('error','Unable to upload banners');
+                    dd('Unable to upload banner: ' . $e->getMessage());
+
                 }
 
                 if (\Storage::disk('public')->exists('banners/'.$cpd->resource)) {
@@ -323,5 +327,53 @@ public function generate_qr($type, $id)
     public function payment_proof($name)
     {
         return view('admin.cpds.payment_proof',compact('name'));
+    }
+
+    public function calender()
+    {
+        return view('calender.index');
+    }
+
+    public function getcalender(Request $request)
+    {
+
+        $events = array(
+            array(
+                'title' => 'Event 1 343',
+                'start' => '2024-02-12'
+            ),
+            array(
+                'title' => 'Event 2',
+                'start' => '2024-02-15',
+                'end' => '2024-02-17'
+            )
+            // Add more events as needed
+        );
+
+        $events = [];
+
+        $cpds = Cpd::all();
+
+        foreach ($cpds as $cpd) {
+            array_push($events, [
+                'title' => $cpd->topic,
+                'start' => $cpd->start_date,
+                'end' => $cpd->end_date,
+                'className' => 'bg-primary',
+            ]);
+        }
+
+        $eve = \App\Models\Event::all();
+
+        foreach($eve as $event){
+            array_push($events, [
+                'title' => $event->name,
+                'start' => $event->start_date,
+                'end' => $event->end_date,
+                'className' => 'bg-warning',
+            ]);
+        }
+        header('Content-Type: application/json');
+        echo json_encode($events);
     }
 }

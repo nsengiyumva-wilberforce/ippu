@@ -12,6 +12,11 @@ use App\Models\Pipeline;
 use App\Models\FormResponse;
 use Auth;
 
+use Dompdf\Options;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Writer;
+
 class FormBuildersController extends Controller
 {
     /**
@@ -550,5 +555,35 @@ class FormBuildersController extends Controller
         //     return redirect()->back()->with('error', __('Permission denied.'));
         // }
     }
+
+            public function generate_form_qr(Request $request)
+        {
+            $url = $request->url;
+            //decode the url
+            $url = urldecode($url);
+            // Create options for QR code generation
+            $options = new Options();
+            $options->set('defaultFont', 'Courier');
+            $options->set('isRemoteEnabled', true);
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('isPhpEnabled', true);
+
+            // Create renderer for PNG image output
+            $renderer = new ImageRenderer(
+                new \BaconQrCode\Renderer\RendererStyle\RendererStyle(100),
+                new ImagickImageBackEnd()
+            );
+
+            // Create writer to generate QR code
+            $writer = new Writer($renderer);
+
+            // Generate the QR code as a PNG image
+            $qrCode = $writer->writeString($url);
+
+            // Prompt the user to save the image
+            header('Content-Disposition: attachment; filename="qr_code.png"');
+            header('Content-Type: image/png');
+            echo $qrCode;
+        }
 
 }

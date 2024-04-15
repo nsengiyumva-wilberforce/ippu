@@ -22,6 +22,10 @@
 				<option value="Female" <?php echo e(($member->gender == "Female") ? 'selected' : ''); ?>>Female</option>
 			</select>
 		</div>
+		<div class="form-group mb-3">
+			<label>Organisation</label>
+			<input type="text" class="form-control" name="organisation" value="<?php echo e($member->organisation); ?>">
+		</div>
 	<div class="form-group">
 		<label>Account Type</label>
 		<select class="form-control form-select" name="account_type">

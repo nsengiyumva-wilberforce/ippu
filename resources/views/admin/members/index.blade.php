@@ -14,12 +14,24 @@
 <div class="card">
 	{{-- <div class="card-header"></div> --}}
 	<div class="card-body">
-		<div class="table-responsive">
-			<table class="table table-striped table-hover dataTable">
+		<div class="row mb-3">
+			<div class="col-md-3">
+				<label for="tinTypeFilter">Filter by Member Type</label>
+			    <select id="tinTypeFilter" class="form-control form-select">
+			        <option value="">All</option>
+			        @foreach($account_types as $account_type)
+			        <option value="{{ $account_type->name }}">{{ $account_type->name }}</option>
+			        @endforeach
+			    </select>
+			</div>
+		</div>
+		<div class="table-responsive mt-3">
+			<table class="table table-striped table-hover" id="members_table">
 				<thead>
 					<th>Membership No.</th>
 					<th>Name</th>
 					<th>Type</th>
+					<th>Organisation</th>
 					<th>Contacts</th>
 					<th>Status</th>
 					<th>Actions</th>
@@ -30,6 +42,7 @@
 							<td>{{ $member->membership_number }}</td>
 							<td>{{ $member->name }}</td>
 							<td>{{ $member?->account_type?->name }}</td>
+							<th>{{ $member?->organisation }}</th>
 							<td>{{ $member->phone_no }}</td>
 							<td>
 								@if($member?->subscribed == 1)
@@ -43,10 +56,25 @@
 								<a href="{{ url('admin/members/'.$member->id) }}" class="btn btn-sm btn-primary">Show</a>
 								@endcan
 								@can('approve members')
-								@if($member?->latestMembership?->status == "Pending")
-									{{-- <a href="{{ url('admin/approve_membership/'.$member->id) }}" class="btn btn-warning btn-sm">Approve</a> --}}
-									<a href="{{ url('admin/review_membership/'.$member->id) }}" class="btn btn-danger btn-sm">Review Application</a>
-								@endif
+								<div class="btn-group btn-group-sm">
+			                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
+			                            <ul class="dropdown-menu">
+										@if($member?->latestMembership?->status == "Pending")
+											{{-- <a href="{{ url('admin/approve_membership/'.$member->id) }}" class="btn btn-warning btn-sm">Approve</a> --}}				
+			                                <li>
+			                                	<a class="dropdown-item" href="{{ url('admin/review_membership/'.$member->id) }}">Review Application</a>
+			                                </li>
+										@endif
+											<li>
+				                                <button class="dropdown-item btn-danger btn-delete" delete-item-form="delete-member">Delete</button>
+				                                <form id="delete-member" action="{{ route('delete-member',$member->id) }}" method="POST" style="display: none;" class="m-0 p-0">
+			                                    	@csrf
+			                                     	@method('DELETE')
+			                                     	 {{-- <button type="submit" class="dropdown-item">@lang('Delete')</button> --}}
+			                                    </form>
+			                                </li>
+			                            </ul>
+			                        </div>
 								@endcan
 							</td>
 						</tr>
@@ -56,4 +84,15 @@
 		</div>
 	</div>
 </div>
+@endsection
+@section('customjs')
+<script type="text/javascript">
+	$(document).ready(function () {
+        var table = $('#members_table').DataTable();
+
+        $('#tinTypeFilter').on('change', function () {
+                table.column(2).search($(this).val()).draw();
+            });
+        });
+</script>
 @endsection

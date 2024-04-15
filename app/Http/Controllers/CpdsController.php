@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cpd;
 use App\Models\Attendence;
+use Carbon\Carbon;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class CpdsController extends Controller
 {
@@ -101,77 +104,89 @@ class CpdsController extends Controller
         return view('members.cpds.certificate',compact('event'));
     }
 
-      public function generate_certificate($event){
+    public function generate_certificate($event){
         $manager = new ImageManager(new Driver());
         //read the image from the public folder
-        $image = $manager->read(public_path('images/certificate-template.jpeg'));
+        $image = $manager->read(public_path('images/cpd-certificate-template.jpg'));
 
-        $event = Cpd::find($event);
         $user = auth()->user();
 
+        $event = Cpd::find($event);
 
-        $image->text('PRESENTED TO', 420, 250, function ($font) {
+        $image->text($event->code, 173, 27, function ($font) {
             $font->filename(public_path('fonts/Roboto-Bold.ttf'));
-            $font->color('#405189');
-            $font->size(12);
-            $font->align('center');
-            $font->valign('middle');
-        });
-
-        $image->text($user->name, 420, 300, function ($font) {
-            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
-            $font->color('#b01735');
+            $font->color('#000000');
             $font->size(20);
             $font->align('center');
             $font->valign('middle');
             $font->lineHeight(1.6);
         });
 
-        $image->text('FOR ATTENDING THE', 420, 340, function ($font) {
-            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
-            $font->color('#405189');
-            $font->size(12);
+        $image->text($user->name, 780, 550, function ($font) {
+            $font->filename(public_path('fonts/GreatVibes-Regular.ttf'));
+            $font->color('#1F45FC');
+            $font->size(45);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('Attended a Continuing Professional Development(CPD) activity', 760, 620, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#000000');
+            $font->size(20);
             $font->align('center');
             $font->valign('middle');
             $font->lineHeight(1.6);
         });
 
        //add event name
-        $image->text($event->name, 420, 370, function ($font) {
-            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
-            $font->color('#008000');
-            $font->size(22);
+        $image->text('"'.$event->topic.'"', 730, 690, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#000000');
+            $font->size(20);
             $font->align('center');
             $font->valign('middle');
             $font->lineHeight(1.6);
         });
 
 
+        $startDate = Carbon::parse($event->start_date);
+        $endDate = Carbon::parse($event->end_date);
 
-        $image->text('Organized by the Institute of Procurement Professionals of Uganda on 12th - 14th October 2023 at', 420, 400, function ($font) {
+        if ($startDate->month === $endDate->month) {
+            $x=720;
+            // Dates are in the same month
+            $formattedRange = $startDate->format('jS') . ' - ' . $endDate->format('jS F Y');
+        } else {
+            $x=780;
+            // Dates are in different months
+            $formattedRange = $startDate->format('jS F Y') . ' - ' . $endDate->format('jS F Y');
+        }
+
+
+        $image->text('on ', 600, 760, function ($font) {
             $font->filename(public_path('fonts/Roboto-Regular.ttf'));
-            $font->color('#405189');
-            $font->size(12);
+            $font->color('#000000');
+            $font->size(20);
             $font->align('center');
             $font->valign('middle');
             $font->lineHeight(1.6);
         });
 
-        //add event date
-        $image->text('Africana Hotel, Kampala', 420, 430, function ($font) {
+        $image->text($formattedRange, $x, 760, function ($font) {
             $font->filename(public_path('fonts/Roboto-Bold.ttf'));
-            $font->color('#405189');
-            $font->size(12);
+            $font->color('#000000');
+            $font->size(20);
             $font->align('center');
             $font->valign('middle');
-            $font->lineHeight(1.6);                                                                          
+            $font->lineHeight(1.6);
         });
 
-        //add membership number
-        $image->text('MembershipNumber: '.$user->membership_number??"None", 450, 483, function ($font) {
+        $image->text($event->hours."CPD HOURS", 1400, 945, function ($font) {
             $font->filename(public_path('fonts/Roboto-Bold.ttf'));
-            $font->color('#405189');
-            $font->size(12);
+            $font->color('#000000');
+            $font->size(17);
             $font->align('center');
             $font->valign('middle');
             $font->lineHeight(1.6);

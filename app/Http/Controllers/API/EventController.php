@@ -8,6 +8,9 @@ use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class EventController extends Controller
 {
@@ -120,11 +123,15 @@ class EventController extends Controller
             $query->where('user_id', $userId)->where('type', 'Event');
         })->get();
 
+        //get the first element of attended_events property and get status attribute of it, create a status property for events and assign the value of the status attribute to it
+        foreach ($events as $event) {
+            $event->status = $event->attendedEvents->first()->status;
+        }
+
         return response()->json([
             'data' => $events,
         ]);
     }
-
 
     public function confirm_attendence(Request $request)
     {
@@ -147,36 +154,100 @@ class EventController extends Controller
         }
     }
 
-    public function certificate($userId, $eventId)
+   public function generate_certificate($event)
     {
-        $event = Event::find($eventId);
+        $manager = new ImageManager(new Driver());
+        //read the image from the public folder
+        $image = $manager->read(public_path('images/certificate-template.jpeg'));
 
-        if (!$event) {
-            return response()->json(['error' => 'Event not found'], 404);
+        $event = Event::find($event);
+        $user = auth()->user();
+
+
+        $image->text('PRESENTED TO', 420, 250, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(12);
+            $font->align('center');
+            $font->valign('middle');
+        });
+
+        $image->text($user->name, 420, 300, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#b01735');
+            $font->size(20);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text('FOR ATTENDING THE', 420, 340, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(12);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        //add event name
+        $image->text($event->name, 420, 370, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#008000');
+            $font->size(22);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+
+        $startDate = Carbon::parse($event->start_date);
+        $endDate = Carbon::parse($event->end_date);
+
+        if ($startDate->month === $endDate->month) {
+            $x=420;
+            // Dates are in the same month
+            $formattedRange = $startDate->format('jS') . ' - ' . $endDate->format('jS F Y');
+        } else {
+            $x=480;
+            // Dates are in different months
+            $formattedRange = $startDate->format('jS F Y') . ' - ' . $endDate->format('jS F Y');
         }
 
-        // Get the user ID from the request (you might want to validate this)
-        // $userId = $request->input('user_id');
 
-        // Retrieve the user's name from the database based on the user ID
-        $user = User::find($userId);
+        $image->text('Organized by the Institute of Procurement Professionals of Uganda on '.$formattedRange, $x, 400, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Regular.ttf'));
+            $font->color('#405189');
+            $font->size(12);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
 
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+        //add membership number
+        $image->text('MembershipNumber: ' . $user->membership_number ?? "N/A", 450, 483, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#405189');
+            $font->size(12);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
 
-        // Authenticate the retrieved user
-        auth()->login($user);
+        $image->toPng();
 
-        //get the name of the logged in user
-        $name = auth()->user()->name;
+        $filePath = public_path('images/certificate-generated' . $user->id . '.png');
 
-        // Convert $event to an array
-        $data = [
-            'event' => $event,
-            'name' => $name,
-        ];
-        
-        return view('members.events.certificate', $data);
+        //get the image url
+        $imageUrl = url('images/certificate-generated' . $user->id . '.png');
+        //save the image to the public folder
+        $image->save($filePath);
+
+        return response([
+            'message' => 'Certificate generated successfully',
+            'data' => [
+                'certificate' => $imageUrl,
+            ]
+        ]);
     }
 }

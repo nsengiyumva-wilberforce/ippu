@@ -66,6 +66,7 @@ Route::post('direct_attendence',[mEventsController::class,'record_direct_attende
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('generate_qr/{type}/{id}', [CpdsController::class,'generate_qr']);
+Route::get('generate_form_qr', [FormBuildersController::class,'generate_form_qr']);
 
 Route::get('/form/{code}', [FormBuildersController::class, 'formView']);
 Route::post('/form_view_store', [FormBuildersController::class, 'formViewStore'])->name('form.view.store');
@@ -107,11 +108,16 @@ Route::middleware(['auth','verified'])->group(function(){
 
     Route::get('event_certificate/{event}',[mEventsController::class,'generate_certificate']);
     Route::get('cpd_certificate/{event}',[mCpdsController::class,'generate_certificate']);
+    Route::get('membership_certificate',[ProfileController::class,'generate_membership_certificate']);
+    Route::post('email_membership_certificate',[ProfileController::class,'email_membership_certificate'])->name('email_membership_certificate');
+
 });
 
 Route::get('get-newsletters', [CommunicationsController::class,'newsletter_view']);
 
 Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
+    Route::resource('reminders', \App\Http\Controllers\RemindersController::class);
+    Route::POST('read_notification', [\App\Http\Controllers\RemindersController::class,'markReminder']);
     Route::resource('account_types', AccountTypesController::class);
     Route::get('sms', [CommunicationsController::class,'sms_view']);
     Route::post('sms', [CommunicationsController::class,'post_sms']);
@@ -121,6 +127,7 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::get('download_newsletter/{newsletter}', [CommunicationsController::class,'download_newsletter_file']);
     Route::delete('delete_newsletter/{newsletter}', [CommunicationsController::class,'delete_newsletter']);
     Route::put('update_newsletter/{newsletter}', [CommunicationsController::class,'update_newsletter'])->name('newsletters.update');
+    Route::post('send_newsletter/{newsletter}', [CommunicationsController::class,'share_newsletter']);
     Route::get('change_account_type/{type}/{user}', [MembersController::class,'change_account_type']);
     Route::resource('events', EventsController::class);
     Route::resource('cpds', CpdsController::class);
@@ -155,6 +162,7 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::get('/response/{id}', [FormBuildersController::class, 'responseDetail'])->name('response.detail');
     Route::get('members', [MembersController::class,'index']);
     Route::get('members/{id}', [MembersController::class,'show']);
+    Route::delete('delete-member/{member}', [MembersController::class,'delete'])->name('delete-member');
     Route::get('change_member_status/{member}', [MembersController::class,'change_member_status']);
     Route::get('update_member_details/{member_id}',[MembersController::class,'update_member_details']);
     Route::post('update_member_details',[MembersController::class,'post_member_details']);
@@ -254,5 +262,10 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::get('users',[UsersController::class,'users']);
     Route::get('edit_user/{user}',[UsersController::class,'edit']);
     Route::POST('assign_permission',[UsersController::class,'assign_permission']);
+
+    Route::get('calender', [CpdsController::class,'calender']);
+    Route::post('calender', [CpdsController::class,'getcalender']);
+
+    Route::get('new_member_details/{id}', [MembersController::class,'new']);
 });
 require __DIR__.'/auth.php';

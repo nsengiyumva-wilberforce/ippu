@@ -139,7 +139,7 @@
                                         </div>
 
                                         <div class="mt-4">
-                                            <form class="needs-validation" method="POST" novalidate action="{{ url('register') }}">
+                                            <form class="needs-validation row" method="POST" novalidate action="{{ url('register') }}">
                                                 @csrf
                                                 @if ($errors->any())
                                                 @foreach ($errors->all() as $error)
@@ -164,7 +164,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="mb-3">
+                                                <div class="mb-3 col-md-6">
                                                     <label class="form-label" for="password-input">Password</label>
                                                     <div class="position-relative auth-pass-inputgroup">
                                                         <input type="password" name="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="Enter password" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
@@ -175,7 +175,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="mb-3">
+                                                <div class="mb-3 col-md-6">
                                                     <label class="form-label" for="password-repeat">Confirm Password</label>
                                                     <div class="position-relative auth-pass-inputgroup">
                                                         <input type="password" name="password_confirmation" class="form-control pe-5 password-input" onpaste="return false" placeholder="Enter password" id="password-repeat" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
@@ -183,6 +183,13 @@
                                                         <div class="invalid-feedback">
                                                             Please enter password
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="useremail" class="form-label">Organisation</label>
+                                                    <input type="text" name="organization" class="form-control" id="useremail" placeholder="Enter Organisation name" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter organisation name
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">

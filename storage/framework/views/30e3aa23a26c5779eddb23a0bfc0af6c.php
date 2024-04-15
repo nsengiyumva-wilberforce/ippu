@@ -31,7 +31,7 @@
                             <div class="form-group" id="customer-box">
                                 <?php echo e(Form::label('customer_id', __('Customer'),['class'=>'form-label'])); ?>
 
-                                <?php echo e(Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>url('admin/proposals/customer'),'required'=>'required'))); ?>
+                                <?php echo e(Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>url('admin/proposal/customer'),'required'=>'required'))); ?>
 
                             </div>
 

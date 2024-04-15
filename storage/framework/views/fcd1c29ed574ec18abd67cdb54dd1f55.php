@@ -18,6 +18,14 @@
 
               </p>
 				<a href="<?php echo e(url('/admin/newsletter/'.$communication->id)); ?>" class="btn btn-primary">Newsletter Details</a>
+                 <?php if(\Auth::user()->user_type == "Admin"): ?>
+                
+                <form action="<?php echo e(url('/admin/send_newsletter/' . $communication->id)); ?>" method="POST" style="display: inline;"
+                    class="m-0 p-0">
+                    <?php echo csrf_field(); ?>
+                    <button type="submit" class="btn btn-success">Send Newsletter</button>
+                </form>
+                <?php endif; ?>
             </div>
           </div>
 	</div>

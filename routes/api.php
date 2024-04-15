@@ -16,6 +16,9 @@ use App\Http\Controllers\API\UserFcmDeviceTokenController;
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
+    Route::post('check-phone-number', 'VerifyPhoneNumber');
+    Route::post('phone-number-login', 'PhoneLogin');
+    Route::post('login-by-google', 'loginByGoogle');
 });
 Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
 Route::get('education-background/{userId}', [EducationBackgroundController::class, 'index']);
@@ -28,7 +31,6 @@ Route::post('work-experience', [WorkExperienceController::class, 'store']);
 //cpds routes
 Route::get('cpds/{userId}', [CpdsController::class, 'index']);
 Route::get('upcoming-cpds/{userId}', [CpdsController::class, 'upcoming']);
-Route::get('attended-cpds/{id}', [CpdsController::class, 'attended']);
 Route::post('cpds/attend', [CpdsController::class, 'confirm_attendence']);
 Route::get('cpds/certificate/{userId}/{cpdId}', [CpdsController::class, 'certificate']);
 
@@ -37,7 +39,6 @@ Route::get('upcoming-events/{userId}', [EventController::class, 'upcoming']);
 Route::get('attended-events/{id}', [EventController::class, 'attended']);
 Route::get('events/{userId}', [EventController::class, 'index']);
 Route::post('attend-event', [EventController::class, 'confirm_attendence']);
-Route::get('events/certificate/{userId}/{eventId}', [EventController::class, 'certificate']);
 
 
 //jobs routes
@@ -64,5 +65,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('profile', ProfileController::class)->only(['index', 'update', 'show']);
     Route::post('subscribe', [ProfileController::class, 'subscribe']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('membership-certificate', [ProfileController::class, 'generate_membership_certificate']);
+    
+    Route::get('events/certificate/{event}', [EventController::class, 'generate_certificate']);
+    Route::get('cpds/certificate/{event}', [CpdsController::class, 'generate_certificate']);
+    Route::get('attended-cpds', [CpdsController::class, 'attended']);
 });
 

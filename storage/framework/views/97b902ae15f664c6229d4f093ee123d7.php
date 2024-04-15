@@ -266,27 +266,16 @@
                           <div class="em-font-Mulish-Regular" style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1890ff;" align="left">Dear <?php echo e($membership->member->name); ?>,
                             <?php if($membership->status == "Pending"): ?>
 <br><br>
-I hope this email finds you well. I am writing to inform you that your application for membership with IPPU has been received and is currently undergoing review. We appreciate your interest and the time you have taken to submit your application.
+Trust this message finds you well.
 <br><br>
-Our dedicated membership committee is diligently assessing each application to ensure that all requirements and qualifications are met. We understand the importance of building a strong and diverse community, and we are committed to carefully evaluating each applicant's qualifications and fit within our organization.
+Thank you for choosing the IPPU Membership App! We would like to inform you that your application is in good hands; our team is currently reviewing it. Rest assured, your privacy is our top priority, and we treat your information with utmost confidentiality per our privacy policy.
 <br><br>
-The review process typically takes [time frame], during which our committee will be thoroughly examining your application, considering your experience, qualifications, and the alignment of your goals with those of our organization. We understand that waiting for a decision can be an anxious time, and we assure you that we are working diligently to provide a timely response.<br><br>
-Rest assured that we hold all applications in strict confidence. Your personal information and the contents of your application will only be shared with the relevant members of our committee who are involved in the evaluation process.
+We understand the significance of your application and are diligently working to ensure a thorough review. We appreciate your patience. If you have urgent inquiries or additional info to share, feel free to reach out.
 <br><br>
-Once the review process is complete, we will notify you of our decision via email. If your application is successful, we will provide you with further details on the next steps, including membership dues, benefits, and any additional requirements.
-<br><br>
-We appreciate your patience throughout this process and thank you for considering IPPU. We are excited to have the opportunity to review your application and potentially welcome you as a valuable member of our community.
-<br><br>
-If you have any questions or need further clarification, please feel free to contact our membership department at [contact information]. We will be happy to assist you.
-Thank you once again for your interest in joining IPPU. We appreciate your support and enthusiasm.
-Best regards,
+Looking forward to the possibility of collaborating with you.
 <br><br>
 <?php elseif($membership->status == "Approved"): ?>
-Your IPPU membership application has been successfully approved.
-<br><br>
-You now have access to IPPU’s premium services, promotions and much more. 
-<br><br>
-Your membership registration is valid from <?php echo e(date('jS \of F Y')); ?> to <?php echo e(date('jS \of F Y', strtotime('+1 years'))); ?>.
+Great news! Your IPPU membership application has been approved. <br>Welcome aboard! We look forward to your active participation.
 <br><br>
 <?php else: ?>
 Your IPPU membership application has been rejected.
@@ -295,10 +284,9 @@ Reason: “<?php echo e($membership->comment); ?>”
 <br><br>
 
 <?php endif; ?>
-[Secretary name]
-<br><br>General Secretary
-<br><br>IPPU
-<br><br>[Contact Information]</div>
+<br>Best Regards,
+<br>IPPU Team
+<br>info@ippu.org</div>
                         </td>
                       </tr>
                     </table>
@@ -329,7 +317,7 @@ Reason: “<?php echo e($membership->comment); ?>”
                               <td style="padding: 0 4px;" em="atom">
                                 <a href="https://www.facebook.com/www.ippu.or.ug/" target="_blank"><img src="https://cdn.useblocks.io/1865/230705_18_o1RmlFe.png" width="24" border="0" alt="" style="display: block; width: 100%; max-width: 24px;"></a>
                               </td>
-                              
+
                               <td style="padding: 0 4px;" em="atom">
                                 <a href="https://twitter.com/UgProcurement" target="_blank"><img src="https://cdn.useblocks.io/1865/231011_17_anZmzDt.png" width="24" border="0" alt="" style="display: block; width: 100%; max-width: 24px;"></a>
                               </td>
@@ -351,7 +339,7 @@ Reason: “<?php echo e($membership->comment); ?>”
                         </td>
                       </tr>
                     </table>
-                    
+
                   </td>
                   <td width="20" class="em-mob-wrap">&nbsp;</td>
                   <td width="334" valign="top" class="em-mob-wrap em-mob-width-100perc">
@@ -364,7 +352,7 @@ Reason: “<?php echo e($membership->comment); ?>”
                     </table><table cellpadding="0" cellspacing="0" border="0" width="100%" em="atom">
                       <tr>
                         <td>
-                          <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #595959;" align="right" class="em-font-Mulish-Regular em-mob-text_align-left">ippu.uganda@mail.com | +256 414 311 850</div>
+                          <div style="font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #595959;" align="right" class="em-font-Mulish-Regular em-mob-text_align-left">ippu.uganda@gmail.com | +256 414 311 850</div>
                         </td>
                       </tr>
                     </table>

@@ -45,7 +45,13 @@
                                 <h3 class="mt-4 fw-semibold">Record Attendence</h3>
                                     <p class="text-muted mb-2 fs-14"><?php echo e($data->name); ?></p>
                                     <h5 class="text-warning fw-semibold"><?php echo e($data->points); ?> Points</h5>
-                                
+                                        <?php if(session('error')): ?>
+                                        <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show" role="alert">
+                                            <i class = "uil uil-exclamation-octagon me-2"></i>
+                                            <?php echo e(session('error')); ?>
+
+                                        </div>
+                                    <?php endif; ?>
                                 <?php if($data->end_date == "Future"): ?>
                                 <form action="<?php echo e(url('direct_attendence')); ?>" method="POST">
                                     <?php echo csrf_field(); ?>

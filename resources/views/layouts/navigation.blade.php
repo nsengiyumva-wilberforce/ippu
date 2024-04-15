@@ -11,6 +11,16 @@
         </li> <!-- end Dashboard Menu -->
         @if(Auth::user()->user_type == "Admin")
         <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/reminders/?status=Unread') }}">
+                <i class="bx bx-bell"></i> <span data-key="t-members">Notifications</span> <span class="badge badge-pill bg-danger unread_notifications" data-key="t-hot">0</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/calender') }}">
+                <i class=" ri-calendar-line"></i> <span data-key="t-members">Calender</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#sidebarEvents" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEvents">
                 <i class="ri-apps-2-line"></i> <span data-key="t-apps">Events</span>
             </a>
@@ -38,7 +48,7 @@
             </a>
         </li>
         @endcan
-
+    
         <li class="nav-item">
             <a class="nav-link menu-link" href="#sidebarCPDs" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
                 <i class="ri-layout-3-line"></i> <span data-key="t-layouts">CPDs</span>

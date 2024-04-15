@@ -25,7 +25,11 @@
 				</div>
 				<div class="mb-3">
 					<h6 class="text-bold-700">Membership Number</h6>
-					<div>{{ ($member->membership_number) ? $member->membership_number : 'Not Provided'}}</div>
+					<div>{{ ($member->membership_number) ? $member->membership_number : '-'}}</div>
+				</div>
+				<div class="mb-3">
+					<h6 class="text-bold-700">Organisation</h6>
+					<div>{{ ($member->organisation) ? $member->organisation : '-'}}</div>
 				</div>
 				<div class="mb-3">
 					<h6 class="text-bold-700">Contacts</h6>
@@ -63,6 +67,35 @@
 					<h6 class="text-bold-700">NOK Email</h6>
 					<div>{{ ($member->nok_address)?:"(blank)" }}</div>
 				</div>
+
+				                    {{-- download membership certificate --}}
+                @if ($member->latestMembership != null)
+                        <div class="mb-3">
+                            <h6 class="text-bold-700">Membership Certificate</h6>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="{{ url('membership_certificate') }}" class="ms-auto"><u>Download
+                                                Membership Certificate</u></a>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('email_membership_certificate') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="member_id" value="{{ $member->id }}">
+                                            <button type="submit" class="btn btn-submit" style=".btn-submit { background-color: transparent;border: none;padding: 0;text-decoration: underline;cursor: cursor }"><u>Email Membership Certificate</u></button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    @else
+                        <div class="mb-3">
+                            <h6 class="text-bold-700">Membership Certificate</h6>
+                            <div>
+                                <span class="badge bg-danger">Not Running Subscription</span>
+                            </div>
+                        </div>
+                    @endif
 			</div>
 			<div class="card-footer d-flex flex-column flex-md-row align-items-md-center justify-content-between">
 

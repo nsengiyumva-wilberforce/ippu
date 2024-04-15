@@ -53,6 +53,10 @@
                                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center cp_link" data-link="<iframe src='<?php echo e(url('/form/'.$form->code)); ?>' title='<?php echo e($form->name); ?>'></iframe>" data-bs-toggle="tooltip" title="<?php echo e(__('Click to copy iframe link')); ?>"><i class="ti ti-frame text-white"></i></a>
                                             </div>
 
+                                            <div class="action-btn bg-success ms-2">
+                                                <a href="<?php echo e(url('generate_form_qr?url='.url('/form/'.$form->code))); ?>" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="<?php echo e(__('Generate the qr code')); ?>"><i class="las la-qrcode"></i></a>
+                                            </div>
+
                                             <div class="action-btn bg-secondary ms-2">
                                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="<?php echo e(url('admin/form_field',$form->id)); ?>" data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title="<?php echo e(__('Convert into Lead Setting')); ?>" data-title="<?php echo e(__('Convert into Lead Setting')); ?>">
                                                     <i class="las la-exchange-alt text-white"></i>
@@ -129,6 +133,7 @@
                 toast("Link Copy on Clipboard","bg-success")
             });
         });
+
     </script>
 <?php $__env->stopSection(); ?>
 

@@ -52,6 +52,10 @@
                                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center cp_link" data-link="<iframe src='{{url('/form/'.$form->code)}}' title='{{ $form->name }}'></iframe>" data-bs-toggle="tooltip" title="{{__('Click to copy iframe link')}}"><i class="ti ti-frame text-white"></i></a>
                                             </div>
 
+                                            <div class="action-btn bg-success ms-2">
+                                                <a href="{{ url('generate_form_qr?url='.url('/form/'.$form->code)) }}" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="{{__('Generate the qr code')}}"><i class="las la-qrcode"></i></a>
+                                            </div>
+
                                             <div class="action-btn bg-secondary ms-2">
                                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ url('admin/form_field',$form->id) }}" data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title="{{__('Convert into Lead Setting')}}" data-title="{{__('Convert into Lead Setting')}}">
                                                     <i class="las la-exchange-alt text-white"></i>
@@ -126,5 +130,6 @@
                 toast("Link Copy on Clipboard","bg-success")
             });
         });
+
     </script>
 @endsection
