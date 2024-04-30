@@ -22,7 +22,8 @@
         "munafio/chatify": "^1.6",
         "spatie/laravel-activitylog": "^4.7",
         "spatie/laravel-permission": "^5.10",
-        "spatie/simple-excel": "^3.2"
+        "spatie/simple-excel": "^3.2",
+        "teampanfu/laravel-hcaptcha": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",

@@ -217,7 +217,7 @@ class FormBuildersController extends Controller
             // {
                 $response = json_decode($formResponse->response, true);
 
-                return view('form_builder.response_detail', compact('response'));
+                return view('admin.form_builder.response_detail', compact('response'));
             // }
             // else
             // {

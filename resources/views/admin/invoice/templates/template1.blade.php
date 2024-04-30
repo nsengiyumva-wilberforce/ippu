@@ -176,7 +176,7 @@
             <tbody>
             <tr>
                 <td>
-                    <img class="invoice-logo" src="{{$img}}" alt="">
+                    <img class="invoice-logo" src="https://ippu.or.ug/wp-content/uploads/2020/08/ppulogo.png" alt="">
                 </td>
                 <td class="text-right">
                     <h3 style="text-transform: uppercase; font-size: 40px; font-weight: bold;">{{__('INVOICE')}}</h3>
