@@ -428,4 +428,37 @@ class AuthController extends Controller
         }
     }
 
+        public function loginByApple(Request $request)
+    {
+        try {
+            $user = User::where('email', $request->email)->first();
+            if(!$user){
+                //create a new user
+                $user = User::create([
+                    'name' => $request->fullName,
+                    'email' => $request->email,
+                    'account_type_id' => 1,
+                    'password' => Hash::make('password'),
+                ]);
+            }
+
+            Auth::login($user);
+
+            //get the auth token to use for subsequent requests
+
+            return response()->json([
+                'user' => $user,
+                'authorization' => [
+                    'token' => $user->createToken('ApiToken')->plainTextToken,
+                    'type' => 'bearer',
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

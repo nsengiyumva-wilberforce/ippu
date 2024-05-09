@@ -19,6 +19,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('check-phone-number', 'VerifyPhoneNumber');
     Route::post('phone-number-login', 'PhoneLogin');
     Route::post('login-by-google', 'loginByGoogle');
+    Route::post('login-by-apple', 'loginByApple');
 });
 Route::apiResource('account-types', AccountTypeController::class)->only(['index', 'show']);
 Route::get('education-background/{userId}', [EducationBackgroundController::class, 'index']);
