@@ -1,9 +1,15 @@
 @extends('layouts.app')
+
+   
 @section('page-title')
     {{__('Manage Form Builder')}}
 @endsection
+
+
+
 @section('breadcrumb')
 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+
     <h4 class="mb-sm-0">Form Builders</h4>
 
     <div class="page-title-right">
@@ -11,19 +17,22 @@
             <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active">Form Builders</li>
         </ol>
-    </div>
-
+    </div>     
 </div>
 @endsection
 
 @section('content')
+
     <div class="row">
          <div class="text-end mb-3">
         <a href="#" data-size="md" data-url="{{ url('admin/form_builders/create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Form')}}" class="btn btn-sm btn-primary">
             <i class="ri-add-fill"></i> Create New Form
         </a>
     </div>
+       
         <div class="col-xl-12">
+
+       
             <div class="card">
                 <div class="card-body table-border-style">
                     <div class="table-responsive">
@@ -53,7 +62,7 @@
                                             </div>
 
                                             <div class="action-btn bg-success ms-2">
-                                                <a href="{{ url('generate_form_qr?url='.url('/form/'.$form->code)) }}" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="{{__('Generate the qr code')}}"><i class="las la-qrcode"></i></a>
+                                                <a href="{{ url('generate_form_qr?form_id='.$form->id.'&url='.url('/form/'.$form->code)) }}" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="{{__('Generate the qr code')}}"><i class="las la-qrcode"></i></a>
                                             </div>
 
                                             <div class="action-btn bg-secondary ms-2">
@@ -95,6 +104,8 @@
                                         </td>
                                     {{-- @endif --}}
                                 </tr>
+                               
+   
                             @endforeach
 
                             </tbody>
