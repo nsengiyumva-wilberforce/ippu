@@ -53,7 +53,7 @@
                                             </div>
 
                                             <div class="action-btn bg-success ms-2">
-                                                <a href="{{ url('generate_form_qr?url='.url('/form/'.$form->code)) }}" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="{{__('Generate the qr code')}}"><i class="las la-qrcode"></i></a>
+                                                <a href="{{ url('generate_form_qr?form_id='.$form->id.'&url='.url('/form/'.$form->code)) }}" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" title="{{__('Generate the qr code')}}"><i class="las la-qrcode"></i></a>
                                             </div>
 
                                             <div class="action-btn bg-secondary ms-2">

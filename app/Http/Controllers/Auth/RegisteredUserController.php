@@ -48,6 +48,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'account_type_id' => $request->account_type,
             'user_type' => 'Member',
+            'dark_mode' => 1,
         ]);
 
         $notification = new \App\Models\MemberReminder;

@@ -556,11 +556,19 @@ class FormBuildersController extends Controller
         // }
     }
 
-            public function generate_form_qr(Request $request)
+            public function generate_form_qr(Request $request, formField $formField)
         {
+          
+            $formField = FormField::where('form_id', $request->form_id)->get();
+
+            if($formField -> isNotEmpty()){
+            //dd($formField, $id );
             $url = $request->url;
+
+            
             //decode the url
             $url = urldecode($url);
+           
             // Create options for QR code generation
             $options = new Options();
             $options->set('defaultFont', 'Courier');
@@ -584,6 +592,12 @@ class FormBuildersController extends Controller
             header('Content-Disposition: attachment; filename="qr_code.png"');
             header('Content-Type: image/png');
             echo $qrCode;
+            } else{
+                 //echo"missing some fields....";
+                // dd($formField, $id);
+                return redirect()->back()->with('error',' Missing fields detected, please add fields.');
+                
+            }
         }
 
 }
