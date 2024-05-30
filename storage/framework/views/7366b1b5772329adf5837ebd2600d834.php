@@ -4,7 +4,7 @@
 <?php if((!\Auth::user()->latestMembership)): ?>
 <div class="card p-1">
 	<div class="card-body text-center">
-		Please subcribe to the membership package to activate account. <a href="<?php echo e(url('subscribe')); ?>" class="btn btn-warning">Subscribe Now</a>
+		Please subcribe to the membership package to activate account. <a href="#" class="btn btn-warning" id="subscribe">Subscribe Now</a>
 	</div>
 </div>
 <?php else: ?>
@@ -145,5 +145,24 @@
     </div><!-- end col -->
 </div> 
 
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('customjs'); ?>
+    <script>
+        $(document).ready(function() {
+            $('#subscribe').on('click', function() {
+                makePayment();
+            });
+        });
+
+        function makePayment() {
+            $.get("<?php echo e(url('pay')); ?>", function(data, status) {
+                if(status=='success'){
+                    $('#paymentFrame').attr('src', data['link']);
+                    $('#paymentModal').modal('show');
+                }
+            });
+        }
+    </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/ippu.org/resources/views/members/dashboard.blade.php ENDPATH**/ ?>

@@ -4,7 +4,7 @@
 @if((!\Auth::user()->latestMembership))
 <div class="card p-1">
 	<div class="card-body text-center">
-		Please subcribe to the membership package to activate account. <a href="{{ url('subscribe') }}" class="btn btn-warning">Subscribe Now</a>
+		Please subcribe to the membership package to activate account. <a href="#" class="btn btn-warning" id="subscribe">Subscribe Now</a>
 	</div>
 </div>
 @else
@@ -186,4 +186,23 @@
         <a href="{{ url('profile') }}" class="btn btn-primary">Edit Profile</a>
     </div>
 </div> --}}
+@endsection
+
+@section('customjs')
+    <script>
+        $(document).ready(function() {
+            $('#subscribe').on('click', function() {
+                makePayment();
+            });
+        });
+
+        function makePayment() {
+            $.get("{{ url('pay') }}", function(data, status) {
+                if(status=='success'){
+                    $('#paymentFrame').attr('src', data['link']);
+                    $('#paymentModal').modal('show');
+                }
+            });
+        }
+    </script>
 @endsection

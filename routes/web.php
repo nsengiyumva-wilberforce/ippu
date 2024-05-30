@@ -97,6 +97,8 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::POST('attend_cpd', [mCpdsController::class,'confirm_attendence']);
     Route::get('attended_cpds', [mCpdsController::class,'attended']);
     Route::get('subscribe',[DashboardController::class,'subscribe']);
+    Route::get('pay', [DashboardController::class, 'pay']);
+    Route::get('redirect_url', [DashboardController::class, 'redirect_url']);
     Route::get('cpd_details/{id}', [mCpdsController::class,'details']);
     Route::resource('jobs', mJobsController::class);
     Route::get('who-we-are', function() {
