@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\BillsController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\CommunicationsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\FlutterwaveWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,16 +90,21 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('event_details/{id}', [mEventsController::class,'details']);
     Route::get('upcoming_events', [mEventsController::class,'upcoming']);
     Route::get('attend_event/{id}', [mEventsController::class,'attend']);
-    Route::POST('attend_event', [mEventsController::class,'confirm_attendence']);
+    Route::get('attend_event/{id}', [mEventsController::class, 'pay']);
     Route::get('attended_events', [mEventsController::class,'attended']);
     Route::get('all_cpds', [mCpdsController::class,'index']);
     Route::get('upcoming_cpds', [mCpdsController::class,'upcoming']);
-    Route::get('attend_cpd/{id}', [mCpdsController::class,'attend']);
+    Route::get('attend_cpd/{id}', [mCpdsController::class, 'pay']);
     Route::POST('attend_cpd', [mCpdsController::class,'confirm_attendence']);
     Route::get('attended_cpds', [mCpdsController::class,'attended']);
     Route::get('subscribe',[DashboardController::class,'subscribe']);
     Route::get('pay', [DashboardController::class, 'pay']);
     Route::get('redirect_url', [DashboardController::class, 'redirect_url']);
+<<<<<<< HEAD
+=======
+    Route::get('redirect_url_events', [mEventsController::class, 'redirect_url']);
+    Route::get('redirect_url_cpds', [mCpdsController::class, 'redirect_url']);
+>>>>>>> f27a0f114a0bd5ff509f9cad1e59d545aae2c794
     Route::get('cpd_details/{id}', [mCpdsController::class,'details']);
     Route::resource('jobs', mJobsController::class);
     Route::get('who-we-are', function() {
@@ -145,6 +151,7 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::post('deals_change_pipeline', [DealsController::class,'changePipeline']);
     Route::resource('pipelines', PipelinesController::class);
     Route::resource('stages', StagesController::class);
+    Route::get('transactions', [FlutterwaveWebhookController::class, 'index']);
     Route::POST('stages_order',[StagesController::class,'order']);
     Route::resource('lead_stages', LeadStagesController::class);
     Route::POST('lead_stages_order',[LeadStagesController::class,'order']);

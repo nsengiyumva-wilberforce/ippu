@@ -15,6 +15,12 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Cpd;
 use Illuminate\Support\Facades\Session;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Str;
+use Symfony\Component\Mailer\Exception\TransportException;
+use Auth;
+
 
 
 class EventsController extends Controller
@@ -38,6 +44,77 @@ class EventsController extends Controller
        
         $event = Event::find($id);
         return view('members.events.confirmation',compact('event'));
+    }
+
+    public function redirect_url()
+    {
+        $payment_details = request()->all();
+        try {
+            if ($payment_details['status'] == 'successful') {
+                $register_attendance = $this->confirm_attendence(request());
+                if ($register_attendance) {
+                    return view('members.dashboard')->with('success', 'registration successful!');
+                } else {
+                    return view('members.dashboard')->with('error', 'registration failed!');
+                }
+            }
+        } catch (TransportException $exception) {
+            return view('members.dashboard')->with('error', $exception->getMessage());
+        }
+    }
+
+    public function pay($id = '')
+    {
+        try {
+            $client = new Client();
+            $event = Event::find($id);
+
+            $response = $client->post('https://api.flutterwave.com/v3/payments', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . env('FLW_SECRET_KEY'),
+                ],
+                'json' => [
+                    'tx_ref' => Str::uuid(),
+                    'amount' => $event->rate,
+                    'currency' => 'UGX',
+                    'redirect_url' => url('redirect_url_events').'?event_id='.$event->id,
+                    'meta' => [
+                        'consumer_id' => auth()->user()->id,
+                        "full_name" => auth()->user()->name,
+                        "email" => auth()->user()->email,
+                        "being_payment_for" => "Attendance of Event",
+                        "event_id" => $event->id,
+                        "event_topic" => $event->name,
+                        "flw_app_id" => env('FLW_APP_ID'),
+                    ],
+                    'customer' => [
+                        'email' => auth()->user()->email,
+                        'phonenumber' => auth()->user()->phone_no,
+                        'name' => auth()->user()->name,
+                    ],
+                    'customizations' => [
+                        'title' => 'IPP Membership APP',
+                        'logo' => 'https://ippu.or.ug/wp-content/uploads/2020/03/cropped-Logo-192x192.png',
+                    ],
+                ],
+            ]);
+
+            $responseBody = json_decode($response->getBody(), true);
+            //check if the request was successful
+            if ($responseBody['status'] == 'success') {
+                return redirect()->away($responseBody['data']['link']);
+            } else {
+                return redirect()->back()->with('error', 'Payment request failed!');
+            }
+
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $responseBody = json_decode($e->getResponse()->getBody(), true);
+                return redirect()->back()->with('error', $responseBody['message']);
+            } else {
+                return redirect()->back()->with('error', 'Payment request failed!');
+            }
+        }
     }
 
     public function confirm_attendence(Request $request)

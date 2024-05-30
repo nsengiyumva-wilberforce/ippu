@@ -97,7 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function latestMembership()
     {
         // hasOne(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
-        return $this->hasOne(Membership::class)->latestOfMany();
+        return $this->hasOne(Membership::class, )->latestOfMany();
     }
 
     /**

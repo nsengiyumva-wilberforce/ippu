@@ -9,9 +9,9 @@ use App\Models\User;
 use App\Models\Cpd;
 use App\Models\Event;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -66,6 +66,7 @@ class DashboardController extends Controller
         
     }
 
+<<<<<<< HEAD
         public function redirect_url()
     {
         $response = request()->all();
@@ -76,6 +77,26 @@ class DashboardController extends Controller
     }
 
     public function pay()
+=======
+    public function redirect_url()
+    {
+        $payment_details = request()->all();
+
+        if ($payment_details['status'] == 'successful') {
+            $membership = new \App\Models\Membership;
+            $membership->user_id = \Auth::user()->id;
+            $membership->status = "Pending";
+            $membership->save();
+
+            \Mail::to(Auth::user())->send(new \App\Mail\ApplicationReview($membership));
+            return view('members.dashboard')->with('success', 'Payment was successful!');
+        }
+
+        return view('members.dashboard')->with('success', 'Payment was not successful!');
+    }
+
+       public function pay()
+>>>>>>> f27a0f114a0bd5ff509f9cad1e59d545aae2c794
     {
         try {
             $client = new Client();
@@ -111,7 +132,11 @@ class DashboardController extends Controller
             $responseBody = json_decode($response->getBody(), true);
             //check if the request was successful
             if ($responseBody['status'] == 'success') {
+<<<<<<< HEAD
                 return response()->json(['success' => true, 'link' => $responseBody['data']['link']]);
+=======
+                return redirect()->to($responseBody['data']['link']);
+>>>>>>> f27a0f114a0bd5ff509f9cad1e59d545aae2c794
             } else {
                 return response()->json(['success' => false, "Payment request failed!"]);
             }
@@ -221,6 +246,7 @@ class DashboardController extends Controller
             
             $membership->comment = $request->comment;
             $membership->processed_by = Auth::user()->id;
+            $membership->expiry_date = date('Y-12-31');
             $membership->processed_date = date('Y-m-d');
             $membership->save();
 

@@ -8,6 +8,11 @@ use App\Models\Attendence;
 use Carbon\Carbon;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Symfony\Component\Mailer\Exception\TransportException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Str;
+use Auth;
 
 class CpdsController extends Controller
 {
@@ -46,6 +51,75 @@ class CpdsController extends Controller
         // }catch(\Throwable $e){
         //     return redirect()->back()->with('error',$e->getMessage());
         // }
+    }
+
+     public function redirect_url()
+    {
+        $payment_details = request()->all();
+        try {
+            if ($payment_details['status'] == 'successful') {
+                $this->confirm_attendence(request());
+            }
+        } catch (TransportException $exception) {
+            return view('members.dashboard')->with('error', 'Email could not be sent!');
+        }
+
+        return view('members.dashboard')->with('success', 'Payment was not successful!');
+
+    }
+
+    public function pay($id = '')
+    {
+        try {
+            $client = new Client();
+            $cpd = Cpd::find($id);
+
+            $response = $client->post('https://api.flutterwave.com/v3/payments', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . env('FLW_SECRET_KEY'),
+                ],
+                'json' => [
+                    'tx_ref' => Str::uuid(),
+                    'amount' => $cpd->normal_rate,
+                    'currency' => 'UGX',
+                    'redirect_url' => url('redirect_url_cpds').'?cpd_id='.$cpd->id,
+                    'meta' => [
+                        'consumer_id' => auth()->user()->id,
+                        "full_name" => auth()->user()->name,
+                        "email" => auth()->user()->email,
+                        "being_payment_for" => "Attendance of CPD",
+                        "cpd_id" => $cpd->id,
+                        "cpd_topic" => $cpd->topic,
+                        "flw_app_id" => env('FLW_APP_ID'),
+                    ],
+                    'customer' => [
+                        'email' => auth()->user()->email,
+                        'phonenumber' => auth()->user()->phone_no,
+                        'name' => auth()->user()->name,
+                    ],
+                    'customizations' => [
+                        'title' => 'IPP Membership APP',
+                        'logo' => 'https://ippu.or.ug/wp-content/uploads/2020/03/cropped-Logo-192x192.png',
+                    ],
+                ],
+            ]);
+
+            $responseBody = json_decode($response->getBody(), true);
+            //check if the request was successful
+            if ($responseBody['status'] == 'success') {
+                return redirect()->away($responseBody['data']['link']);
+            } else {
+                return redirect()->back()->with('error', 'Payment request failed!');
+            }
+
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $responseBody = json_decode($e->getResponse()->getBody(), true);
+                return redirect()->back()->with('error', $responseBody['message']);
+            } else {
+                return redirect()->back()->with('error', 'Payment request failed!');
+            }
+        }
     }
 
     public function confirm_attendence(Request $request)
