@@ -4,7 +4,7 @@
 @if((!\Auth::user()->latestMembership))
 <div class="card p-1">
 	<div class="card-body text-center">
-		Please subcribe to the membership package to activate account. <a href="{{ url('subscribe') }}" class="btn btn-warning">Subscribe Now</a>
+		Please subcribe to the membership package to activate account. <a href="/pay" id="subscribe" class="btn btn-warning">Subscribe Now</a>
 	</div>
 </div>
 @else
@@ -186,4 +186,19 @@
         <a href="{{ url('profile') }}" class="btn btn-primary">Edit Profile</a>
     </div>
 </div> --}}
+
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="paymentFrame" src="" width="100%" height="400px"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 @endsection

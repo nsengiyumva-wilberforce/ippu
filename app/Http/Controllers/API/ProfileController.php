@@ -9,6 +9,8 @@ use Auth;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Carbon\Carbon;
+use App\Models\AccountType;
+
 class ProfileController extends Controller
 {
     /**
@@ -24,11 +26,15 @@ class ProfileController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
 
+        $user->membership_amount = AccountType::find($user->account_type_id)->rate;
+        
         // Check if the user has a latest membership
         $latestMembership = $user->latestMembership;
 
-        // Set the subscription status based on the presence of a latest membership
-        $subscriptionStatus = $latestMembership ? $latestMembership->status : false;
+            $subscriptionStatus = \DB::table('memberships')
+            ->where('expiry_date', '>', Carbon::now())
+            ->where('user_id', $user->id)->orderBy('created_at', 'desc')->first()->status??false;
+     
 
         // Update the user's subscription_status field
         $user->subscription_status = $subscriptionStatus;

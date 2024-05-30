@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Cpd;
 use App\Models\Event;
 use Illuminate\Http\JsonResponse;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -61,6 +64,74 @@ class DashboardController extends Controller
         }
         
         
+    }
+
+    public function redirect_url()
+    {
+        $payment_details = request()->all();
+
+        if ($payment_details['status'] == 'successful') {
+            $membership = new \App\Models\Membership;
+            $membership->user_id = \Auth::user()->id;
+            $membership->status = "Pending";
+            $membership->save();
+
+            \Mail::to(Auth::user())->send(new \App\Mail\ApplicationReview($membership));
+            return view('members.dashboard')->with('success', 'Payment was successful!');
+        }
+
+        return view('members.dashboard')->with('success', 'Payment was not successful!');
+    }
+
+       public function pay()
+    {
+        try {
+            $client = new Client();
+
+            $response = $client->post('https://api.flutterwave.com/v3/payments', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . env('FLW_SECRET_KEY'),
+                ],
+                'json' => [
+                    'tx_ref' => Str::uuid(),
+                    'amount' => 10000,
+                    'currency' => 'UGX',
+                    'redirect_url' => url('redirect_url'),
+                    'meta' => [
+                        'consumer_id' => auth()->user()->id,
+                        "full_name" => auth()->user()->name,
+                        "email" => auth()->user()->email,
+                        "being_payment_for" => "Membership Subscription",
+                        "flw_app_id" => env('FLW_APP_ID'),
+                    ],
+                    'customer' => [
+                        'email' => auth()->user()->email,
+                        'phonenumber' => auth()->user()->phone_no,
+                        'name' => auth()->user()->name,
+                    ],
+                    'customizations' => [
+                        'title' => 'IPP Membership APP',
+                        'logo' => 'https://ippu.or.ug/wp-content/uploads/2020/03/cropped-Logo-192x192.png',
+                    ],
+                ],
+            ]);
+
+            $responseBody = json_decode($response->getBody(), true);
+            //check if the request was successful
+            if ($responseBody['status'] == 'success') {
+                return redirect()->to($responseBody['data']['link']);
+            } else {
+                return response()->json(['success' => false, "Payment request failed!"]);
+            }
+
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $responseBody = json_decode($e->getResponse()->getBody(), true);
+                return response()->json(['success' => false, "Payment request failed!"]);
+            } else {
+                return response()->json(['success' => false, "Payment request failed!"]);
+            }
+        }
     }
 
     public function approve($id)
@@ -158,6 +229,7 @@ class DashboardController extends Controller
             
             $membership->comment = $request->comment;
             $membership->processed_by = Auth::user()->id;
+            $membership->expiry_date = date('Y-12-31');
             $membership->processed_date = date('Y-m-d');
             $membership->save();
 

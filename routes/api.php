@@ -11,6 +11,8 @@ use App\Http\Controllers\API\AccountTypeController;
 use App\Http\Controllers\API\JobsController;
 use App\Http\Controllers\API\CommunicationController;
 use App\Http\Controllers\API\UserFcmDeviceTokenController;
+use App\Http\Controllers\FlutterwaveWebhookController;
+use App\Http\Controllers\API\PaymentController;
 
 //routes for authentication
 Route::controller(AuthController::class)->group(function () {
@@ -28,7 +30,7 @@ Route::post('education-background', [EducationBackgroundController::class, 'stor
 Route::get('work-experience/{userId}', [WorkExperienceController::class, 'index']);
 Route::put('edit-work-experience', [WorkExperienceController::class, 'update']);
 Route::post('work-experience', [WorkExperienceController::class, 'store']);
-
+Route::post('/webhook/flutterwave', [FlutterwaveWebhookController::class, 'handleWebhook']);
 //cpds routes
 Route::get('cpds/{userId}', [CpdsController::class, 'index']);
 Route::get('upcoming-cpds/{userId}', [CpdsController::class, 'upcoming']);
@@ -71,5 +73,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('events/certificate/{event}', [EventController::class, 'generate_certificate']);
     Route::get('cpds/certificate/{event}', [CpdsController::class, 'generate_certificate']);
     Route::get('attended-cpds', [CpdsController::class, 'attended']);
+    Route::get('/payments-history', [PaymentController::class, 'flutterWavePayment']);
 });
 

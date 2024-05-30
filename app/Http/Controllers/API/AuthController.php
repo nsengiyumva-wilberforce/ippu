@@ -404,7 +404,7 @@ class AuthController extends Controller
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'profile_pic' => $filename,
-                    'account_type_id' => 1,
+                    'account_type_id' => 8,
                     'password' => Hash::make('password'),
                 ]);
             }
@@ -437,7 +437,7 @@ class AuthController extends Controller
                 $user = User::create([
                     'name' => $request->fullName,
                     'email' => $request->email,
-                    'account_type_id' => 1,
+                    'account_type_id' => 8,
                     'password' => Hash::make('password'),
                 ]);
             }

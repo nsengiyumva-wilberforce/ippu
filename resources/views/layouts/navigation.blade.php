@@ -48,6 +48,12 @@
             </a>
         </li>
         @endcan
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/transactions') }}">
+                <i class="las la-users"></i> <span data-key="t-members">Transactions</span>
+            </a>
+        </li>
     
         <li class="nav-item">
             <a class="nav-link menu-link" href="#sidebarCPDs" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
