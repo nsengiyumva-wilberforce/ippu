@@ -296,6 +296,12 @@ class CpdsController extends Controller
 
 public function generate_qr($type, $id)
 {
+    
+    if (!filled($type))
+    {
+        return "the type is empty";
+    } else {
+        dd('$type');
     $url = config('app.url') . "/direct_attendence/" . $type . "/" . $id;
 
     // Create options for QR code generation
@@ -318,9 +324,11 @@ public function generate_qr($type, $id)
     $qrCode = $writer->writeString($url);
 
     // Prompt the user to save the image
-    header('Content-Disposition: attachment; filename="qr_code.png"');
-    header('Content-Type: image/png');
-    echo $qrCode;
+    return response($qrCode)
+        ->header('Content-Disposition: attachment; filename="qr_code.png"')
+        ->header('Content-Type: image/png');
+    //echo $qrCode;
+    }
 }
 
 

@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\BillsController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\CommunicationsController;
 use App\Http\Controllers\UsersController;
+use Spatie\Honeypot\ProtectAgainstSpam;
 
 /*
 |--------------------------------------------------------------------------

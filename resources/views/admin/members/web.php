@@ -143,7 +143,7 @@ Route::prefix('admin')->middleware(['auth','verified'])->group(function(){
     Route::get('members/{id}', [MembersController::class,'show']);
     Route::get('change_member_status/{member}', [MembersController::class,'change_member_status']);
     Route::get('update_member_details/{member_id}',[MembersController::class,'update_member_details']);
-    Route::post('update_member_details',[MembersController::class,'post_member_details'])
+    Route::post('update_member_details',[MembersController::class,'post_member_details']);
     Route::POST('change_member_status', [MembersController::class,'update_member_status']);
     Route::resource('customers', CustomersController::class);
     Route::resource('vendors', VendorsController::class);

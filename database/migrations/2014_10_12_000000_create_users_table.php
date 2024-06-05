@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('account_type_id');
             $table->enum('user_type',['Admin','Member'])->default('Member');
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

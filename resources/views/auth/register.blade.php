@@ -1,7 +1,8 @@
 {{-- <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
-
+        @honeypot
+        
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -141,6 +142,7 @@
                                         <div class="mt-4">
                                             <form class="needs-validation row" method="POST" novalidate action="{{ url('register') }}">
                                                 @csrf
+                                                @honeypot
                                                 @if ($errors->any())
                                                 @foreach ($errors->all() as $error)
                                                 <div class="alert alert-danger text-center">

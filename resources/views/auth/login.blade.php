@@ -4,7 +4,8 @@
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
+        <x-honeypot />
+    
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
@@ -116,6 +117,7 @@
                                 <div class="p-2 mt-4">
                                     <form action="{{ url('login') }}" method="POST">
                                         @csrf
+                                        @honeypot
                                         @if ($errors->any())
                                           @foreach ($errors->all() as $error)
                                             <div class="alert alert-danger text-center">
