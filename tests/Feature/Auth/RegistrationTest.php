@@ -29,4 +29,22 @@ class RegistrationTest extends TestCase
         $this->assertAuthenticated();
         $response->assertRedirect(RouteServiceProvider::HOME);
     }
+
+    public function test_that_bot_is_detected_and_user_not_authenticated(): void 
+    {
+        $response = $this -> post ('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'otp_code' => 'password',
+            'account_type'=>'student'
+        ]);
+
+
+        $this->assertGuest($quard = null );
+    }
+
+    
+
 }

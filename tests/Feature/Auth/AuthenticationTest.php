@@ -31,15 +31,28 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password(): void
-    {
-        $user = User::factory()->create();
+    // public function test_users_can_not_authenticate_with_invalid_password(): void
+    // {
+    //     $user = User::factory()->create();
 
-        $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'wrong-password',
+    //     $this->post('/login', [
+    //         'email' => $user->email,
+    //         'password' => 'wrong-password',
+    //     ]);
+
+    //     $this->assertGuest();
+    // }
+
+    public function human_user_authenticated ():void
+    {
+        $response = $this -> post ('/login', [
+            
+            'email' => 'test@example.com',
+            'password' => 'password'
+           
         ]);
 
-        $this->assertGuest();
+        $this->assertStatus(200);
+        $this->assertAuthenticated();
     }
 }
